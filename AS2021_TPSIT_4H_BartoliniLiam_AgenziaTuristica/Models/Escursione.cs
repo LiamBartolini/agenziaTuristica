@@ -12,13 +12,21 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         double _costo = 70; // imposto un costo base per entrambe le gite
         int _numeroMaxPartecipanti;
         string _optional; // pranzo, merenda, visita
-
+        int _numeroOptional;
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
+
         public enum MaxPartecipanti
         {
             gitaBarca = 10, 
             gitaCavallo = 5
+        }
+
+        public enum PrezziOptional
+        {
+            pranzo = 25,
+            merenda = 15,
+            visita = 20
         }
 
         public Escursione(DateTime data, string tipo, string descrizione, string optional = null)
@@ -27,24 +35,52 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _tipo = tipo;
             _descrizione = descrizione;
             _numeroMaxPartecipanti = tipo == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
-            
-            int numeroOptional = 0;
+           
             if (optional == null)
                 _optional = "";
             else
             {
                 _optional = optional;
-                numeroOptional = 1;
+                _numeroOptional = 1;
+
+                RicercaOptional(optional);
             }
+        }
 
-            // trasformo da string ad array, per contare il numero di optional scelti, controllando se ci sono virgole
-            var opt = _optional.ToString().ToCharArray();
-            foreach (var i in opt)
-                if (i == ',')
-                    numeroOptional += 1;
+        public void AggiuntaOptional(string optional)
+        {
+            RicercaOptional(optional);
+            _costo = 25 * _numeroOptional;
+        }
 
-            // se non ci sono optional non aggiungo nulla al prezzo base, altrimenti aggiungo 25 euro per ogni optional
-            _costo += _optional == null ? 0 : 25 * numeroOptional;
+        public void CambioTipo(string tipo)
+        {
+
+        }
+
+        void RicercaOptional(string optional)
+        {
+            var opt = optional.Split(',');
+            for (int i = 0; i < opt.Length; i++)
+            {
+                if (opt[i] == "pranzo")
+                {
+                    _costo += (int)PrezziOptional.pranzo;
+                    continue;
+                }
+
+                if (opt[i] == "merenda")
+                {
+                    _costo += (int)PrezziOptional.merenda;
+                    continue;
+                }
+
+                if (opt[i] == "visita")
+                {
+                    _costo += (int)PrezziOptional.visita;
+                    continue;
+                }
+            }
         }
     }
 }

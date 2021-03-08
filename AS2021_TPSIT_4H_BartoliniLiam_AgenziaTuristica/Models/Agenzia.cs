@@ -27,8 +27,22 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 throw new Exception($"Le persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
         }
 
-        public void ModificaEscursione(int numeroEscursione) { }
+        public void ModificaEscursione(int numeroEscursione) 
+        {
 
-        public void EliminazioneEscursione(int numeroEscursione) { }
+        }
+
+        public string EliminazioneEscursione(int numeroEscursione) 
+        {
+            try
+            {
+                _escursioni.RemoveAt(numeroEscursione);
+                return "Eliminazione avvenuta con successo!";
+            }
+            catch
+            {
+                return "Errore durante l'eliminazione della gita!";
+            }
+        }
     }
 }
