@@ -1,4 +1,5 @@
 ﻿using System;
+using AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 {
@@ -6,7 +7,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            Console.WriteLine("Liam Bartolini, agenzia turistica");
         }
     }
 }
