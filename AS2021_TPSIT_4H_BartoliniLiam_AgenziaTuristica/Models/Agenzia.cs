@@ -15,12 +15,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _persone = new List<Persona>();
         }
 
-        public void NuovaEscursione(Escursione escursione, Persona[] persone)
+        public void NuovaEscursione(Escursione escursione, List<Persona> persone)
         {
-            _escursioni.Add(escursione);
-            if (persone.Length <= _escursioni[0].NumeroMassimoPartecipanti)
+            // Controllo che il numero di persone sia conforme ai limiti stabiliti
+            if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
+            {
+                _escursioni.Add(escursione);
                 _persone.AddRange(persone);
-            else
+            }
+            else // In caso negativo lancio una eccezzione
                 throw new Exception($"Le persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
         }
 

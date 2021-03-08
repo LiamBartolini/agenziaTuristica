@@ -14,8 +14,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _optional; // pranzo, merenda, visita
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
-
-        enum MaxPartecipanti
+        public string Tipo { get => _tipo; }
+        public enum MaxPartecipanti
         {
             gitaBarca = 10, 
             gitaCavallo = 5
