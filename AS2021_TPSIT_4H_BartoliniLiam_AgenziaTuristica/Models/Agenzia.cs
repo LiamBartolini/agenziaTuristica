@@ -27,10 +27,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 throw new Exception($"Le persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
         }
 
-        public void ModificaEscursione(int numeroEscursione) 
-        {
-
-        }
+        public void ModificaEscursione(int numeroEscursione) { }
 
         public string EliminazioneEscursione(int numeroEscursione) 
         {
@@ -44,5 +41,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 return "Errore durante l'eliminazione della gita!";
             }
         }
+
+        public void RegistrazionePartecipante(int numeroEscursione, Persona persona)
+        {
+            // Aggiungo la persona alla lista di persone iscritte a quella escursione se c'è posto
+            if (_escursioni[numeroEscursione].PersoneIscritteEscursione.Count < _escursioni[numeroEscursione].NumeroMassimoPartecipanti)
+                _escursioni[numeroEscursione].PersoneIscritteEscursione.Add(persona);
+            else
+                throw new Exception($"Per l'escursione numero: {numeroEscursione} il numero partecipanti è al completo!");
+        }
+
+        public void CancellazionePrenotazione(Persona persona) { }
     }
 }

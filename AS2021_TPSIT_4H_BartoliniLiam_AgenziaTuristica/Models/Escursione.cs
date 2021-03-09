@@ -9,10 +9,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
-        double _costo = 70; // imposto un costo base per entrambe le gite
+        int _costo = 70; // imposto un costo base per entrambe le gite
         int _numeroMaxPartecipanti;
         string _optional; // pranzo, merenda, visita
-        int _numeroOptional;
+        public List<Persona> PersoneIscritteEscursione;
+
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
 
@@ -31,6 +32,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         public Escursione(DateTime data, string tipo, string descrizione, string optional = null)
         {
+            PersoneIscritteEscursione = new List<Persona>();
             _data = data;
             _tipo = tipo;
             _descrizione = descrizione;
@@ -41,22 +43,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             else
             {
                 _optional = optional;
-                _numeroOptional = 1;
 
                 RicercaOptional(optional);
             }
         }
 
-        public void AggiuntaOptional(string optional)
+        public void AggiuntaOptional(string optional, Persona persona)
         {
+            PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = _costo;
             RicercaOptional(optional);
-            _costo = 25 * _numeroOptional;
-        }
+        } 
 
-        public void CambioTipo(string tipo)
-        {
-
-        }
+        public void CambioTipo(string tipo) => _tipo = tipo; 
 
         void RicercaOptional(string optional)
         {
