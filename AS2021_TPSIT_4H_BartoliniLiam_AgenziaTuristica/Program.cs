@@ -8,25 +8,24 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Liam Bartolini, agenzia turistica");
+            Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
-            // Faccio una lista delle persone iscritte alla prima escursione in barca
-            List<Persona> personePrimaEscursione = new List<Persona>();
-            personePrimaEscursione.Add(new Persona("Liam", "Bartolini", "BRTLMI03A29H294W", "via Nabucco, 9"));
-            personePrimaEscursione.Add(new Persona("Nando", "Zalando", "NNDZNL98A29H456J", "via Angela, 201"));
-            
-            // Creo la prima escursione
-            Escursione primaEscursione = new Escursione(DateTime.Today, "gita in barca", "prima gita in barca", personePrimaEscursione);
-            
-            // Creo la vera e propria escursione
-            try
-            {
-                Agenzia.NuovaEscursione(primaEscursione, personePrimaEscursione);
-            }
-            catch (Exception e)
-            {
-                Output(e);
-            }
+            //aggiungo all'archivion dell'agenzia una persona
+            Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
+            //creo una nuova escursione
+            Agenzia.NuovaEscursione(1, 70,  DateTime.Today.AddMonths(2), "gitaCavallo", "Gita a cavallo");
+            //assegno a questa nuova escursione un partecipante
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA1", "pranzo,merenda"));
+
+            Agenzia.AggiungiPersona("Verdi", "Rossi", "AAA2", "via Roma, 18");
+            Agenzia.AggiungiPersona("Giacomo", "Puccini", "AAA3", "Via sinfonia, 77");
+            Agenzia.AggiungiPersona("Mirko", "Alessandrini", "AAA89", "Via dei Paguri, 89");
+            Agenzia.AggiungiPersona("El", "Bombarder", "AAA4", "Via Attenzione, 45");
+
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA2", "visita,merenda"));
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA3", "nessuno"));
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA89", "visita,pranzo,merenda"));
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA4", "merenda"));
         }
 
         static void Output(Exception e)

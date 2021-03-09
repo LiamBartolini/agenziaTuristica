@@ -6,15 +6,23 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     class Escursione
     {
+        int _codice; //codice identificativo
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
-        int _prezzoBase = 70; // imposto un costo base per entrambe le gite
+        double _prezzo; // costo dell'escursione
         int _numeroMaxPartecipanti;
-        public List<Persona> PersoneIscritteEscursione;
+
+        //persone attualemnte iscritte all'escursione
+        public List<Persona> PersoneIscritteEscursione = new List<Persona>();
+
+        //lista parallela che contiene gli optional scleti da ogni partecipante
+        public List<string> optionalPartecipante = new List<string>();
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
+        public int Codice { get => _codice; }
+        public double Prezzo { get => _prezzo; }
 
         public enum MaxPartecipanti
         {
@@ -29,32 +37,33 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             visita = 20
         }
 
-        public Escursione(DateTime data, string tipo, string descrizione, List<Persona> persone)
+        public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione)
         {
-            PersoneIscritteEscursione = new List<Persona>();
+            _codice = codice;
             _data = data;
+            _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
             _numeroMaxPartecipanti = tipo == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
 
-            PersoneIscritteEscursione.AddRange(persone);
+            //PersoneIscritteEscursione.AddRange(persone);
 
             // Assegno ad ogni persona iscritta il prezzo base
-            foreach (Persona persona in PersoneIscritteEscursione)
-                persona.Prezzo = _prezzoBase;
+            //foreach (Persona persona in PersoneIscritteEscursione)
+            //    persona.Prezzo = _prezzoBase;
         }
 
         // Se qualcuno vuole gli optional li aggiunge
-        public void AggiuntaOptional(string optional, Persona persona)
-        {
-            //PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
-            int costo = CalcoloOptional(optional); // Calcolo il prezzo degli optional
-            persona.Prezzo = costo; // Lo aggiungo ad ogni persona
-        } 
+        //public void AggiuntaOptional(string optional, Persona persona)
+        //{
+        //    //PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
+        //    int costo = CalcoloOptional(optional); // Calcolo il prezzo degli optional
+        //    persona.Prezzo = costo; // Lo aggiungo ad ogni persona
+        //} 
 
         public void CambioTipo(string tipo) => _tipo = tipo; 
 
-        int CalcoloOptional(string optional)
+        public int CalcoloOptional(string optional)
         {
             int retVal = 0;
             var opt = optional.Split(',');

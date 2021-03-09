@@ -8,16 +8,24 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
-        static public void NuovaEscursione(Escursione escursione, List<Persona> persone)
+        static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione)
         {
-            // Controllo che il numero di _persone sia conforme ai limiti stabiliti
-            if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
-            {
-                _escursioni.Add(escursione);
-                _persone.AddRange(persone);
-            }
-            else // In caso negativo lancio una eccezzione
-                throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
+            //// Controllo che il numero di _persone sia conforme ai limiti stabiliti
+            //if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
+            //{
+            //    _escursioni.Add(escursione);
+            //    _persone.AddRange(persone);
+            //}
+            //else // In caso negativo lancio una eccezzione
+            //    throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
+
+            //aggiungo alla lista di escursioni disponibili una nuova escursione
+            _escursioni.Add(new Escursione(codice, prezzo,  data, type, descrizione));
+        }
+
+        static public void AggiungiPersona (string nome, string cognome, string codiceFiscale, string indirizzo)
+        {
+            _persone.Add(new Persona(nome, cognome, codiceFiscale, indirizzo));
         }
 
         static public void ModificaEscursione(int numeroEscursione) { }
@@ -35,16 +43,44 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
-        static public void RegistrazionePartecipante(int numeroEscursione, Persona persona)
-        {
-            // Aggiungo la persona alla lista di _persone iscritte a quella escursione se c'è posto
-            if (_escursioni[numeroEscursione].PersoneIscritteEscursione.Count < _escursioni[numeroEscursione].NumeroMassimoPartecipanti)
+        //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
+        static public string RegistrazionePartecipante(int codiceEscursione, string codiceFiscale, string optional)
+        { 
+            double costo = 0; //prezzo di partecipazione a secondo del prezzo base e l'aggiunta dei vari optional
+            string nomeCognome = "";
+
+            //cerco l'escursione in cui aggiungere il partecipante
+            foreach(var e in _escursioni)
             {
-                _escursioni[numeroEscursione].PersoneIscritteEscursione.Add(persona); // Inserisco dentro le persone iscritte ad una determinata escursione il nuovo partecipante
-                persona.Escursioni.Add(_escursioni[numeroEscursione]); // Aggiungo l'escursione al partecipante
+                if (e.Codice == codiceEscursione)
+                {
+                    costo += e.Prezzo; //aggiungo al prezzo da pagare il costo base della escursione
+                    costo += e.CalcoloOptional(optional); //aggiungo al costo il prezzo di vari optional
+
+                    if (e.PersoneIscritteEscursione.Count < e.NumeroMassimoPartecipanti) //una volta trovata verifico che vi siano posti liberi
+                    {
+                        foreach (var p in _persone)  //se vi sono procedo alla registrazione della persona ricercando il partecipante nell'archivio dell'agenzia
+                        {
+                            if (p.CodiceFiscale == codiceFiscale)
+                            {
+                                nomeCognome = p.Nome + " " + p.Cognome;
+
+                                e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
+
+                                e.optionalPartecipante.Add(optional); //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
+                                                                      //verrà aggiunta la stringa "nessuno"
+                                break;
+                            }
+                        }
+                    }
+                    break;
+                }
+                else
+                    throw new Exception($"Escrursione con codice {codiceEscursione} non trovata!");
             }
-            else
-                throw new Exception($"Per l'escursione numero: {numeroEscursione} il numero partecipanti è al completo!");
+
+
+            return $"\nIl costo da pagare da parte del cliente {nomeCognome} equivale a: \t{costo}";
         }
 
         static public void CancellazionePrenotazione(int numeroEscursione, Persona persona) { }
