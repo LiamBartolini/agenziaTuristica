@@ -73,10 +73,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                             }
                         }
                     }
+                    else
+                        throw new Exception($"Limite massimo di partecipanti raggiunto!");
                     break;
                 }
                 else
-                    throw new Exception($"Escrursione con codice {codiceEscursione} non trovata!");
+                    throw new Exception($"Escursione con codice {codiceEscursione} non trovata!");
             }
 
 

@@ -17,11 +17,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             //assegno a questa nuova escursione un partecipante
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA1", "pranzo,merenda"));
 
+            //aggiungo altri partecipanti
             Agenzia.AggiungiPersona("Verdi", "Rossi", "AAA2", "via Roma, 18");
             Agenzia.AggiungiPersona("Giacomo", "Puccini", "AAA3", "Via sinfonia, 77");
             Agenzia.AggiungiPersona("Mirko", "Alessandrini", "AAA89", "Via dei Paguri, 89");
             Agenzia.AggiungiPersona("El", "Bombarder", "AAA4", "Via Attenzione, 45");
 
+            //e li registro all'escursione con codice 1
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA2", "visita,merenda"));
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA3", "nessuno"));
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA89", "visita,pranzo,merenda"));
