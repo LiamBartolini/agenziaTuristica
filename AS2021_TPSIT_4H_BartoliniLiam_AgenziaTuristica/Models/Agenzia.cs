@@ -15,16 +15,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _persone = new List<Persona>();
         }
 
-        public void NuovaEscursione(Escursione escursione, List<Persona> persone)
+        public void NuovaEscursione(Escursione escursione, List<Persona> _persone)
         {
-            // Controllo che il numero di persone sia conforme ai limiti stabiliti
-            if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
+            // Controllo che il numero di _persone sia conforme ai limiti stabiliti
+            if (_persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
             {
                 _escursioni.Add(escursione);
-                _persone.AddRange(persone);
+                _persone.AddRange(_persone);
             }
             else // In caso negativo lancio una eccezzione
-                throw new Exception($"Le persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
+                throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
         }
 
         public void ModificaEscursione(int numeroEscursione) { }
@@ -44,13 +44,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         public void RegistrazionePartecipante(int numeroEscursione, Persona persona)
         {
-            // Aggiungo la persona alla lista di persone iscritte a quella escursione se c'è posto
+            // Aggiungo la persona alla lista di _persone iscritte a quella escursione se c'è posto
             if (_escursioni[numeroEscursione].PersoneIscritteEscursione.Count < _escursioni[numeroEscursione].NumeroMassimoPartecipanti)
-                _escursioni[numeroEscursione].PersoneIscritteEscursione.Add(persona);
+            {
+                _escursioni[numeroEscursione].PersoneIscritteEscursione.Add(persona); // Inserisco dentro le persone iscritte ad una determinata escursione il nuovo partecipante
+                persona.Escursioni.Add(_escursioni[numeroEscursione]); // Aggiungo l'escursione al partecipante
+            }
             else
                 throw new Exception($"Per l'escursione numero: {numeroEscursione} il numero partecipanti è al completo!");
         }
 
-        public void CancellazionePrenotazione(Persona persona) { }
+        public void CancellazionePrenotazione(int numeroEscursione, Persona persona) { }
     }
 }
