@@ -4,32 +4,26 @@ using System.Text;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
-    class Agenzia
+    static class Agenzia
     {
-        List<Escursione> _escursioni;
-        List<Persona> _persone;
+        static List<Escursione> _escursioni = new List<Escursione>();
+        static List<Persona> _persone = new List<Persona>();
 
-        public Agenzia()
-        {
-            _escursioni = new List<Escursione>();
-            _persone = new List<Persona>();
-        }
-
-        public void NuovaEscursione(Escursione escursione, List<Persona> _persone)
+        static public void NuovaEscursione(Escursione escursione, List<Persona> persone)
         {
             // Controllo che il numero di _persone sia conforme ai limiti stabiliti
-            if (_persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
+            if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
             {
                 _escursioni.Add(escursione);
-                _persone.AddRange(_persone);
+                _persone.AddRange(persone);
             }
             else // In caso negativo lancio una eccezzione
                 throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
         }
 
-        public void ModificaEscursione(int numeroEscursione) { }
+        static public void ModificaEscursione(int numeroEscursione) { }
 
-        public string EliminazioneEscursione(int numeroEscursione) 
+        static public string EliminazioneEscursione(int numeroEscursione) 
         {
             try
             {
@@ -42,7 +36,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
-        public void RegistrazionePartecipante(int numeroEscursione, Persona persona)
+        static public void RegistrazionePartecipante(int numeroEscursione, Persona persona)
         {
             // Aggiungo la persona alla lista di _persone iscritte a quella escursione se c'è posto
             if (_escursioni[numeroEscursione].PersoneIscritteEscursione.Count < _escursioni[numeroEscursione].NumeroMassimoPartecipanti)
@@ -54,6 +48,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 throw new Exception($"Per l'escursione numero: {numeroEscursione} il numero partecipanti è al completo!");
         }
 
-        public void CancellazionePrenotazione(int numeroEscursione, Persona persona) { }
+        static public void CancellazionePrenotazione(int numeroEscursione, Persona persona) { }
     }
 }

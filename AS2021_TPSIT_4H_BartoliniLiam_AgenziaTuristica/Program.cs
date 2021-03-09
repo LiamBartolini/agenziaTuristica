@@ -10,10 +10,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
         {
             Console.WriteLine("Liam Bartolini, agenzia turistica");
 
-            //_ = new Escursione(DateTime.Today, "gita in barca", "prima gita in barca", "pranzo");
-
-            Agenzia agenzia = new Agenzia();
-            
             // Creo la prima escursione
             Escursione primaEscursione = new Escursione(DateTime.Today, "gita in barca", "prima gita in barca", "pranzo");
             
@@ -25,7 +21,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             // Creo la vera e propria escursione
             try
             {
-                agenzia.NuovaEscursione(primaEscursione, personePrimaEscursione);
+                Agenzia.NuovaEscursione(primaEscursione, personePrimaEscursione);
             }
             catch (Exception e)
             {

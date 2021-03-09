@@ -47,7 +47,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
-        public void AggiuntaOptional(string optional, int numeroEscursione,Persona persona)
+        public void AggiuntaOptional(string optional, int numeroEscursione, Persona persona)
         {
             PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
             RicercaOptional(optional);
