@@ -9,9 +9,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
-        int _costo = 70; // imposto un costo base per entrambe le gite
+        int _prezzoBase = 70; // imposto un costo base per entrambe le gite
         int _numeroMaxPartecipanti;
-        string _optional; // pranzo, merenda, visita
         public List<Persona> PersoneIscritteEscursione;
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
@@ -30,54 +29,69 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             visita = 20
         }
 
-        public Escursione(DateTime data, string tipo, string descrizione, string optional = null)
+        public Escursione(DateTime data, string tipo, string descrizione, List<Persona> persone)
         {
             PersoneIscritteEscursione = new List<Persona>();
             _data = data;
             _tipo = tipo;
             _descrizione = descrizione;
             _numeroMaxPartecipanti = tipo == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
-           
-            if (optional == null)
-                _optional = "";
-            else
-            {
-                _optional = optional;
-                RicercaOptional(optional);
-            }
+
+            PersoneIscritteEscursione.AddRange(persone);
+
+            // Assegno ad ogni persona iscritta il prezzo base
+            foreach (Persona persona in PersoneIscritteEscursione)
+                persona.Prezzo = _prezzoBase;
         }
 
-        public void AggiuntaOptional(string optional, int numeroEscursione,Persona persona)
+        // Se qualcuno vuole gli optional li aggiunge
+        public void AggiuntaOptional(string optional, Persona persona)
         {
-            PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
-            RicercaOptional(optional);
+            //PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
+            int costo = CalcoloOptional(optional); // Calcolo il prezzo degli optional
+            persona.Prezzo = costo; // Lo aggiungo ad ogni persona
         } 
 
         public void CambioTipo(string tipo) => _tipo = tipo; 
 
-        void RicercaOptional(string optional)
+        int CalcoloOptional(string optional)
         {
+            int retVal = 0;
             var opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
                 if (opt[i] == "pranzo")
                 {
-                    _costo += (int)PrezziOptional.pranzo;
+                    retVal += (int)PrezziOptional.pranzo;
                     continue;
                 }
 
                 if (opt[i] == "merenda")
                 {
-                    _costo += (int)PrezziOptional.merenda;
+                    retVal += (int)PrezziOptional.merenda;
                     continue;
                 }
 
                 if (opt[i] == "visita")
                 {
-                    _costo += (int)PrezziOptional.visita;
+                    retVal += (int)PrezziOptional.visita;
                     continue;
                 }
             }
+
+            return retVal;
+        }
+
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Data:\t{_data:dd/MM/yyyy}");
+            sb.AppendLine($"Tipo:\t{_tipo}");
+            sb.AppendLine($"Descrizione:{_descrizione}");
+            sb.AppendLine("Persone iscritte alla escursione:");
+            foreach (Persona persona in PersoneIscritteEscursione)
+                sb.AppendLine(persona.ToString());
+            return sb.ToString();
         }
     }
 }
