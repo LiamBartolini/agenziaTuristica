@@ -11,10 +11,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _codiceFiscale;
         string _indirizzo;
 
-        // Tupla per il costo dell'escursione e il suo numero
-        public (int, int) CostoEscursione;
-        // Tupla per gli optional e il numero di escursione a cui sono legati
-        public (string, int) Optional;
+        public int Prezzo;
+
         // Ogni persona si può iscrivere a più escursioni
         public List<Escursione> Escursioni;
         
@@ -28,6 +26,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _indirizzo = indirizzo;
         }
 
-        public Persona() { }
+        public override string ToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Nome:\t{_nome}");
+            sb.AppendLine($"Cognome:\t{_cognome}");
+            sb.AppendLine($"Codice fiscale:\t{_codiceFiscale}");
+            sb.AppendLine($"Indirizzo:\t{_indirizzo}");
+            sb.AppendLine("===============");
+            return sb.ToString();
+        }
     }
 }
