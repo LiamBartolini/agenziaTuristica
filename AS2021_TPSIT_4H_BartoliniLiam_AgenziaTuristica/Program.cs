@@ -33,8 +33,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             }
         }
 
-        //PORCO DIO
-
         static void Output(Exception e)
         {
             Console.ForegroundColor = ConsoleColor.Red;
