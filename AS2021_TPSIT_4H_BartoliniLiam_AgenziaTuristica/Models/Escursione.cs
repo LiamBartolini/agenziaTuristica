@@ -19,6 +19,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //lista parallela che contiene gli optional scleti da ogni partecipante
         public List<string> optionalPartecipante = new List<string>();
 
+        //lista parallela che conterrà il costi dell'escursione per ogni partecipante a seconda del prezzo base e dei vari optional
+        public List<double> costoPartecipante = new List<double>();
+
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
         public int Codice { get => _codice; }
@@ -45,23 +48,19 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _tipo = tipo;
             _descrizione = descrizione;
             _numeroMaxPartecipanti = tipo == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
-
-            //PersoneIscritteEscursione.AddRange(persone);
-
-            // Assegno ad ogni persona iscritta il prezzo base
-            //foreach (Persona persona in PersoneIscritteEscursione)
-            //    persona.Prezzo = _prezzoBase;
         }
 
-        // Se qualcuno vuole gli optional li aggiunge
-        //public void AggiuntaOptional(string optional, Persona persona)
-        //{
-        //    //PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
-        //    int costo = CalcoloOptional(optional); // Calcolo il prezzo degli optional
-        //    persona.Prezzo = costo; // Lo aggiungo ad ogni persona
-        //} 
+        //cambio del tipo di escursione
+        public void CambioTipo(string tipo) => _tipo = tipo;
 
-        public void CambioTipo(string tipo) => _tipo = tipo; 
+        //cambio descrizione dell'escursione
+        public void CambioDescrizione(string descrizione) => _descrizione = descrizione;
+
+        //cambio del costo della escursione (da finire in quanto il prezzo di ogni partecipante va ricalcolato)
+        public void CambioCosto(double costo) 
+        {
+            _prezzo = costo;
+        }
 
         public int CalcoloOptional(string optional)
         {
@@ -89,6 +88,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
 
             return retVal;
+        }
+
+
+        // Possibile modifica degli optional da patrte di un utente
+        public void ModificaOptional(string optional, string codiceFiscale)
+        {
+            
         }
 
         public override string ToString()

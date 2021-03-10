@@ -88,6 +88,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return $"\nIl costo da pagare da parte del cliente {nomeCognome} equivale a: \t{costo}";
         }
 
-        static public void CancellazionePrenotazione(int numeroEscursione, Persona persona) { }
+        static public void CancellazionePrenotazione(int numeroEscursione, string codiceFiscale) { }
     }
 }
