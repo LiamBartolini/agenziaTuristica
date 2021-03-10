@@ -44,7 +44,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
-        static public string RegistrazionePartecipante(int codiceEscursione, string codiceFiscale, string optional)
+        static public string RegistrazionePartecipante(int codiceEscursione, string codiceFiscale, string optional = null)
         { 
             double costo = 0; //prezzo di partecipazione a secondo del prezzo base e l'aggiunta dei vari optional
             string nomeCognome = "";
@@ -67,8 +67,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
                                 e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
 
-                                e.optionalPartecipante.Add(optional); //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
-                                                                      //verrà aggiunta la stringa "nessuno"
+                                if (optional == null)                            //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
+                                    e.optionalPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
+                                else
+                                    e.optionalPartecipante.Add(optional);
+                                                                                                      
                                 break;
                             }
                         }
