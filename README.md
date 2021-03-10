@@ -1,2 +1,2 @@
 # agenziaTuristica
-![alt text](https://github.com/[loricur321]/[LiamBartolini/agenziaTuristica]/blob/[Lorenzo]/C:\Users\loric\Desktop\agenziaTuristica\CasiDuso.png?raw=true)
+![CasiDuso](https://user-images.githubusercontent.com/77383997/110598742-63800d00-8182-11eb-9f25-591a56f693da.png)
