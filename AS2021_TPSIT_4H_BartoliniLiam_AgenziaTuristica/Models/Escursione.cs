@@ -47,19 +47,43 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
-            _numeroMaxPartecipanti = tipo == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
+            _numeroMaxPartecipanti = tipo.ToLower() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
+        }
+
+        //cambio della data in cui verrà effettuata l'escursione
+        public void CambioData (DateTime date)
+        {
+            //verifico che la nuova data in cui avverrà l'escursione sia maggiore della data odierna
+            if(DateTime.Compare(date, DateTime.Today) > 0)
+            {
+                _data = date;
+            }
         }
 
         //cambio del tipo di escursione
-        public void CambioTipo(string tipo) => _tipo = tipo;
+        public void CambioTipo(string tipo)
+        {
+            //verifico che la tipologia sia conforme alle due tipologie offerte dall'agenzia
+            if (tipo.ToLower() == "gita in barca" || tipo.ToLower() == "gita a cavallo")
+                _tipo = tipo.ToLower();
+        }
 
         //cambio descrizione dell'escursione
         public void CambioDescrizione(string descrizione) => _descrizione = descrizione;
 
         //cambio del costo della escursione (da finire in quanto il prezzo di ogni partecipante va ricalcolato)
         public void CambioCosto(double costo) 
-        {
-            _prezzo = costo;
+        {   
+            //il prezzo per essere valido deve essere maggiore di zero
+            if (costo > 0)
+            {
+                //in caso sia giusto assegno il nuovo prezzo all'escursione
+                _prezzo = costo;
+
+                //procedo ricalcolando il costo dell'escursione per ogni partecipante
+                for (int i = 0; i < costoPartecipanti.Count; i++)
+                    costoPartecipanti[i] = _prezzo + CalcoloOptional(optionalPartecipanti[i]);
+            }
         }
 
         public int CalcoloOptional(string optional)
