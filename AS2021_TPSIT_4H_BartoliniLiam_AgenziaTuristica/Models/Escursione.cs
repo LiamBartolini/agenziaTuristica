@@ -17,10 +17,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public List<Persona> PersoneIscritteEscursione = new List<Persona>();
 
         //lista parallela che contiene gli optional scleti da ogni partecipante
-        public List<string> optionalPartecipante = new List<string>();
+        public List<string> optionalPerPartecipante = new List<string>();
 
         //lista parallela che conterrà il costi dell'escursione per ogni partecipante a seconda del prezzo base e dei vari optional
-        public List<double> costoPartecipante = new List<double>();
+        public List<double> costoPerPartecipante = new List<double>();
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
@@ -90,11 +90,29 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return retVal;
         }
 
+        public void RimozioneOptional(string optional, string codiceFiscale)
+        {
+            foreach (Persona persona in PersoneIscritteEscursione)
+                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
+                {
+                    // Divido la stringa
+                    string[] splitted = optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)].Split(',');
+
+                    // Cerco se tra quelle stringhe c'è l'optional da rimuovere
+                    foreach (string s in splitted)
+                        if (s == optional)
+                            splitted[Array.IndexOf(splitted, s)] = ","; // al posto di quel optional metto uno spazio vuoto
+
+                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] = splitted.ToString().Trim(); // Aggiungere l'optional alla sua lista
+                }
+        }
 
         // Possibile modifica degli optional da patrte di un utente
-        public void ModificaOptional(string optional, string codiceFiscale)
+        public void AggiuntaOptional(string optional, string codiceFiscale)
         {
-            
+            foreach (Persona persona in PersoneIscritteEscursione)
+                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
+                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] += " " + optional; // Aggiungere l'optional alla sua lista
         }
 
         public override string ToString()

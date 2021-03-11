@@ -68,9 +68,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                                 e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
 
                                 if (optional == null)                            //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
-                                    e.optionalPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
+                                    e.optionalPerPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
                                 else
-                                    e.optionalPartecipante.Add(optional);
+                                    e.optionalPerPartecipante.Add(optional);
                                                                                                       
                                 break;
                             }
@@ -83,8 +83,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 else
                     throw new Exception($"Escursione con codice {codiceEscursione} non trovata!");
             }
-
-
             return $"\nIl costo da pagare da parte del cliente {nomeCognome} equivale a: \t{costo}";
         }
 
