@@ -29,12 +29,5 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA89", "pranzo,merenda"));
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA4", "merenda"));
         }
-
-        static void Output(Exception e)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(e.Message);
-            Console.ResetColor();
-        }
     }
 }
