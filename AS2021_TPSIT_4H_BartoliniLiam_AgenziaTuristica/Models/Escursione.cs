@@ -39,6 +39,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             merenda = 15,
             visita = 20
         }
+        
+        public Escursione() { }
 
         public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione)
         {

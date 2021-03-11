@@ -28,6 +28,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA3", "nessuno"));
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA89", "pranzo,merenda"));
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA4", "merenda"));
+
+            Escursione escursione = new Escursione();
+            escursione.RimozioneOptional("visita", "AAA2");
         }
     }
 }

@@ -49,41 +49,53 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             double costo = 0; //prezzo di partecipazione a secondo del prezzo base e l'aggiunta dei vari optional
             string nomeCognome = "";
 
-            //cerco l'escursione in cui aggiungere il partecipante
-            foreach(var e in _escursioni)
-            {
-                if (e.Codice == codiceEscursione)
-                {
-                    costo += e.Prezzo; //aggiungo al prezzo da pagare il costo base della escursione
-                    costo += e.CalcoloOptional(optional); //aggiungo al costo il prezzo di vari optional
+            var escursione = _escursioni[codiceEscursione - 1];
+            costo = escursione.Prezzo + escursione.CalcoloOptional(optional);
 
-                    if (e.PersoneIscritteEscursione.Count < e.NumeroMassimoPartecipanti) //una volta trovata verifico che vi siano posti liberi
+            if (escursione.PersoneIscritteEscursione.Count < escursione.NumeroMassimoPartecipanti)
+                foreach (Persona persona in _persone)
+                    if (persona.CodiceFiscale == codiceFiscale && optional != null)
                     {
-                        foreach (var p in _persone)  //se vi sono procedo alla registrazione della persona ricercando il partecipante nell'archivio dell'agenzia
-                        {
-                            if (p.CodiceFiscale == codiceFiscale)
-                            {
-                                nomeCognome = p.Nome + " " + p.Cognome;
-
-                                e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
-
-                                if (optional == null)                            //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
-                                    e.optionalPerPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
-                                else
-                                    e.optionalPerPartecipante.Add(optional);
-                                                                                                      
-                                break;
-                            }
-                        }
+                        escursione.optionalPerPartecipante.Add(optional);
+                        nomeCognome = $"{persona.Nome} {persona.Cognome}";
                     }
-                    else
-                        throw new Exception($"Limite massimo di partecipanti raggiunto!");
-                    break;
-                }
-                else
-                    throw new Exception($"Escursione con codice {codiceEscursione} non trovata!");
-            }
-            return $"\nIl costo da pagare da parte del cliente {nomeCognome} equivale a: \t{costo}";
+            return $"Il prezzo da pgare per {nomeCognome} è di {costo} euro";
+
+            ////cerco l'escursione in cui aggiungere il partecipante
+            //foreach(var e in _escursioni)
+            //{
+            //    if (e.Codice == codiceEscursione)
+            //    {
+            //        costo += e.Prezzo; //aggiungo al prezzo da pagare il costo base della escursione
+            //        costo += e.CalcoloOptional(optional); //aggiungo al costo il prezzo di vari optional
+
+            //        if (e.PersoneIscritteEscursione.Count < e.NumeroMassimoPartecipanti) //una volta trovata verifico che vi siano posti liberi
+            //        {
+            //            foreach (var p in _persone)  //se vi sono procedo alla registrazione della persona ricercando il partecipante nell'archivio dell'agenzia
+            //            {
+            //                if (p.CodiceFiscale == codiceFiscale)
+            //                {
+            //                    nomeCognome = p.Nome + " " + p.Cognome;
+
+            //                    e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
+
+            //                    if (optional == null)                            //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
+            //                        e.optionalPerPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
+            //                    else
+            //                        e.optionalPerPartecipante.Add(optional);
+                                                                                                      
+            //                    break;
+            //                }
+            //            }
+            //        }
+            //        else
+            //            throw new Exception($"Limite massimo di partecipanti raggiunto!");
+            //        break;
+            //    }
+            //    else
+            //        throw new Exception($"Escursione con codice {codiceEscursione} non trovata!");
+            //}
+            //return $"\nIl costo da pagare da parte del cliente {nomeCognome} equivale a: \t{costo}";
         }
 
         static public void CancellazionePrenotazione(int numeroEscursione, string codiceFiscale) { }
