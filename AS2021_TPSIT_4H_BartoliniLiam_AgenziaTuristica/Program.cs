@@ -13,7 +13,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             //aggiungo all'archivion dell'agenzia una persona
             Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
             //creo una nuova escursione
-            Agenzia.NuovaEscursione(1, 70,  DateTime.Today.AddMonths(2), "gitaCavallo", "Gita a cavallo");
+            Agenzia.NuovaEscursione(1, 70,  DateTime.Today.AddMonths(2), "gita a cavallo", "Gita a cavallo");
             //assegno a questa nuova escursione un partecipante
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA1", "pranzo,merenda"));
 

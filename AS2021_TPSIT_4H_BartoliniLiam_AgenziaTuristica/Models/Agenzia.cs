@@ -68,9 +68,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                                 e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
 
                                 if (optional == null)                            //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
-                                    e.optionalPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
+                                    e.optionalPartecipanti.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
                                 else
-                                    e.optionalPartecipante.Add(optional);
+                                    e.optionalPartecipanti.Add(optional);
                                                                                                       
                                 break;
                             }
