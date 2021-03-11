@@ -11,15 +11,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _codiceFiscale;
         string _indirizzo;
 
-        public int Prezzo;
+        //Property sola lettura
+        public string Nome { get => _nome; }
+        public string Cognome { get => _cognome; }
+        public string CodiceFiscale { get => _codiceFiscale; }
+        public string Indirizzo { get => _indirizzo; }
 
-        // Ogni persona si può iscrivere a più escursioni
-        public List<Escursione> Escursioni;
+
         
         // Costruttore standard
         public Persona(string nome, string cognome, string codiceFiscale, string indirizzo)
         {
-            Escursioni = new List<Escursione>();
             _nome = nome;
             _cognome = cognome;
             _codiceFiscale = codiceFiscale;

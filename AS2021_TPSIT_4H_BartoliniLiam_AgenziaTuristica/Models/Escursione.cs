@@ -6,15 +6,26 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     class Escursione
     {
+        int _codice; //codice identificativo
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
-        int _prezzoBase = 70; // imposto un costo base per entrambe le gite
+        double _prezzo; // costo dell'escursione
         int _numeroMaxPartecipanti;
-        public List<Persona> PersoneIscritteEscursione;
+
+        //persone attualemnte iscritte all'escursione
+        public List<Persona> PersoneIscritteEscursione = new List<Persona>();
+
+        //lista parallela che contiene gli optional scleti da ogni partecipante
+        public List<string> optionalPerPartecipante = new List<string>();
+
+        //lista parallela che conterrà il costi dell'escursione per ogni partecipante a seconda del prezzo base e dei vari optional
+        public List<double> costoPerPartecipante = new List<double>();
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
+        public int Codice { get => _codice; }
+        public double Prezzo { get => _prezzo; }
 
         public enum MaxPartecipanti
         {
@@ -29,32 +40,29 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             visita = 20
         }
 
-        public Escursione(DateTime data, string tipo, string descrizione, List<Persona> persone)
+        public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione)
         {
-            PersoneIscritteEscursione = new List<Persona>();
+            _codice = codice;
             _data = data;
+            _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
             _numeroMaxPartecipanti = tipo == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
-
-            PersoneIscritteEscursione.AddRange(persone);
-
-            // Assegno ad ogni persona iscritta il prezzo base
-            foreach (Persona persona in PersoneIscritteEscursione)
-                persona.Prezzo = _prezzoBase;
         }
 
-        // Se qualcuno vuole gli optional li aggiunge
-        public void AggiuntaOptional(string optional, Persona persona)
+        //cambio del tipo di escursione
+        public void CambioTipo(string tipo) => _tipo = tipo;
+
+        //cambio descrizione dell'escursione
+        public void CambioDescrizione(string descrizione) => _descrizione = descrizione;
+
+        //cambio del costo della escursione (da finire in quanto il prezzo di ogni partecipante va ricalcolato)
+        public void CambioCosto(double costo) 
         {
-            //PersoneIscritteEscursione[PersoneIscritteEscursione.IndexOf(persona)].CostoEscursione = (_costo, numeroEscursione);
-            int costo = CalcoloOptional(optional); // Calcolo il prezzo degli optional
-            persona.Prezzo = costo; // Lo aggiungo ad ogni persona
-        } 
+            _prezzo = costo;
+        }
 
-        public void CambioTipo(string tipo) => _tipo = tipo; 
-
-        int CalcoloOptional(string optional)
+        public int CalcoloOptional(string optional)
         {
             int retVal = 0;
             var opt = optional.Split(',');
@@ -80,6 +88,31 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
 
             return retVal;
+        }
+
+        public void RimozioneOptional(string optional, string codiceFiscale)
+        {
+            foreach (Persona persona in PersoneIscritteEscursione)
+                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
+                {
+                    // Divido la stringa
+                    string[] splitted = optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)].Split(',');
+
+                    // Cerco se tra quelle stringhe c'è l'optional da rimuovere
+                    foreach (string s in splitted)
+                        if (s == optional)
+                            splitted[Array.IndexOf(splitted, s)] = ","; // al posto di quel optional metto uno spazio vuoto
+
+                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] = splitted.ToString().Trim(); // Aggiungere l'optional alla sua lista
+                }
+        }
+
+        // Possibile modifica degli optional da patrte di un utente
+        public void AggiuntaOptional(string optional, string codiceFiscale)
+        {
+            foreach (Persona persona in PersoneIscritteEscursione)
+                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
+                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] += " " + optional; // Aggiungere l'optional alla sua lista
         }
 
         public override string ToString()
