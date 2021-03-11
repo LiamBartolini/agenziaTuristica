@@ -54,48 +54,70 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
             if (escursione.PersoneIscritteEscursione.Count < escursione.NumeroMassimoPartecipanti)
                 foreach (Persona persona in _persone)
-                    if (persona.CodiceFiscale == codiceFiscale && optional != null)
+                    if (persona.CodiceFiscale == codiceFiscale)
                     {
+                        escursione.PersoneIscritteEscursione.Add(persona);
                         escursione.optionalPerPartecipante.Add(optional);
+                        escursione.costoPerPartecipante.Add(escursione.CalcoloOptional(optional));
                         nomeCognome = $"{persona.Nome} {persona.Cognome}";
                     }
-            return $"Il prezzo da pgare per {nomeCognome} è di {costo} euro";
+            return $"Il prezzo da pagare per {nomeCognome} è di {costo} euro";
+        }
 
-            ////cerco l'escursione in cui aggiungere il partecipante
-            //foreach(var e in _escursioni)
-            //{
-            //    if (e.Codice == codiceEscursione)
-            //    {
-            //        costo += e.Prezzo; //aggiungo al prezzo da pagare il costo base della escursione
-            //        costo += e.CalcoloOptional(optional); //aggiungo al costo il prezzo di vari optional
+        static public void RimozioneOptional(int numeroEscursione, string optional, string codiceFiscale)
+        {
+            // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
+            var escursione = _escursioni[numeroEscursione - 1];
+            foreach (Persona persona in escursione.PersoneIscritteEscursione)
+            {
+                if (persona.CodiceFiscale == codiceFiscale)
+                {
+                    int indicePersonaTrovata = escursione.PersoneIscritteEscursione.IndexOf(persona);
+                    string updateOptional = "";
+                    string[] splitted = escursione.optionalPerPartecipante[indicePersonaTrovata].Split(',');
 
-            //        if (e.PersoneIscritteEscursione.Count < e.NumeroMassimoPartecipanti) //una volta trovata verifico che vi siano posti liberi
-            //        {
-            //            foreach (var p in _persone)  //se vi sono procedo alla registrazione della persona ricercando il partecipante nell'archivio dell'agenzia
-            //            {
-            //                if (p.CodiceFiscale == codiceFiscale)
-            //                {
-            //                    nomeCognome = p.Nome + " " + p.Cognome;
+                    if (optional.Split(',').Length == 1) // Se l'optional da cercare è solo uno
+                    {
+                        // Cerco se tra quelle stringhe c'è l'optional da rimuovere
+                        foreach (string s in splitted)
+                            if (s == optional)
+                                splitted[Array.IndexOf(splitted, s)] = "";
 
-            //                    e.PersoneIscritteEscursione.Add(p); //in caso lo trovi lo registro 
+                        // Ricompongo la stringa
+                        for (int i = 0; i < splitted.Length; i++)
+                            if (i != splitted.Length - 1 && i != 0)
+                                updateOptional += splitted[i] + ",";
+                            else
+                                updateOptional += splitted[i];
+                    }
+                    else
+                    {
+                        // Splitto gli optional da eliminare
+                        string[] optionalSplitted = optional.Split(',');
 
-            //                    if (optional == null)                            //aggiungo gli optional scelti dal partecipante. Se non è stato scleto alcun optional
-            //                        e.optionalPerPartecipante.Add("Nessuno");       //verrà aggiunta la stringa "nessuno"
-            //                    else
-            //                        e.optionalPerPartecipante.Add(optional);
-                                                                                                      
-            //                    break;
-            //                }
-            //            }
-            //        }
-            //        else
-            //            throw new Exception($"Limite massimo di partecipanti raggiunto!");
-            //        break;
-            //    }
-            //    else
-            //        throw new Exception($"Escursione con codice {codiceEscursione} non trovata!");
-            //}
-            //return $"\nIl costo da pagare da parte del cliente {nomeCognome} equivale a: \t{costo}";
+                        // Li cerco, se li trovo li sostituisco con una stringa vuota
+                        for (int i = 0; i < optionalSplitted.Length; i++)
+                            for (int j = 0; j < splitted.Length; j++)
+                                if (optionalSplitted[i] == splitted[j])
+                                    splitted[Array.IndexOf(splitted, splitted[j])] = "";
+
+                        // Ricompongo la stringa
+                        for (int i = 0; i < splitted.Length; i++)
+                            if (splitted[i] != "" && i != splitted.Length - 1 && i != 0)
+                                updateOptional += splitted[i] + ",";
+                            else
+                                updateOptional += splitted[i];
+                    }
+
+                    // Assegno gli optional aggiornati alla persona
+                    escursione.optionalPerPartecipante[indicePersonaTrovata] = updateOptional;
+
+                    // Ricalcolo del prezzo!
+                    double newPrezzo = escursione.CalcoloOptional(updateOptional);
+                    escursione.costoPerPartecipante[indicePersonaTrovata] = newPrezzo;
+                    break;
+                }
+            }
         }
 
         static public void CancellazionePrenotazione(int numeroEscursione, string codiceFiscale) { }
