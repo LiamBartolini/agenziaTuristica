@@ -8,7 +8,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
-        static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione)
+        static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione, string optional)
         {
             //// Controllo che il numero di _persone sia conforme ai limiti stabiliti
             //if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
@@ -20,7 +20,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             //    throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
 
             //aggiungo alla lista di escursioni disponibili una nuova escursione
-            _escursioni.Add(new Escursione(codice, prezzo, data, type, descrizione));
+            _escursioni.Add(new Escursione(codice, prezzo, data, type, descrizione, optional));
         }
 
         static public void AggiungiPersona(string nome, string cognome, string codiceFiscale, string indirizzo)
@@ -44,7 +44,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
-        static public string RegistrazionePartecipante(int codiceEscursione, string codiceFiscale, string optional = null)
+        static public string RegistrazionePartecipante(int codiceEscursione, string codiceFiscale, string optional = "")
         {
             double costo = 0; //prezzo di partecipazione a secondo del prezzo base e l'aggiunta dei vari optional
             string nomeCognome = "";
@@ -60,17 +60,51 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
 
             costo = escursione.Prezzo + escursione.CalcoloOptional(optional);
-
+            string optionalScelti = VerificaOptional(escursione.OptionalDisponibili, optional);
+                
             if (escursione.PersoneIscritteEscursione.Count < escursione.NumeroMassimoPartecipanti)
                 foreach (Persona persona in _persone)
                     if (persona.CodiceFiscale == codiceFiscale)
                     {
                         escursione.PersoneIscritteEscursione.Add(persona);
-                        escursione.optionalPerPartecipante.Add(optional);
-                        escursione.costoPerPartecipante.Add(escursione.CalcoloOptional(optional));
+                        escursione.optionalPerPartecipante.Add(optionalScelti);
+                        escursione.costoPerPartecipante.Add(escursione.CalcoloOptional(optionalScelti));
                         nomeCognome = $"{persona.Nome} {persona.Cognome}";
                     }
             return $"Il prezzo da pagare per {nomeCognome} è di {costo} euro";
+        }
+
+        static private string VerificaOptional (string optionalEscursione, string optionalPartecipante)
+        {
+            var splittedOptionalEscursione = optionalEscursione.Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalPartecipante = optionalPartecipante.Split(','); //splitto gli optional scleti dal partecipante
+            string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
+
+            for(int i = 0; i < splittedOptionalEscursione.Length; i++)
+            {
+                for(int j = 0; j < splittedOptionalPartecipante.Length; j++)
+                {
+                    if (splittedOptionalEscursione[i] == "pranzo" && splittedOptionalPartecipante[j] == "pranzo")
+                    {
+                        retVal += "pranzo,";
+                        continue;
+                    }
+
+                    if (splittedOptionalEscursione[i] == "merenda" && splittedOptionalPartecipante[j] == "merenda")
+                    {
+                        retVal += "merenda,";
+                        continue;
+                    }
+
+                    if (splittedOptionalEscursione[i] == "visita" && splittedOptionalPartecipante[j] == "visita")
+                    {
+                        retVal += "visita,";
+                        continue;
+                    }
+                }
+            }
+
+            return retVal;
         }
 
         static public void RimozioneOptional(int numeroEscursione, string optional, string codiceFiscale)

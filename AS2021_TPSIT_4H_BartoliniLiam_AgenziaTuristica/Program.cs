@@ -13,7 +13,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             //aggiungo all'archivion dell'agenzia una persona
             Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
             //creo una nuova escursione
-            Agenzia.NuovaEscursione(1, 70,  DateTime.Today.AddMonths(2), "gitaCavallo", "Gita a cavallo");
+            //Agenzia.NuovaEscursione(1, 70,  DateTime.Today.AddMonths(2), "gitaCavallo", "Gita a cavallo", "pranzo,visita");
             //assegno a questa nuova escursione un partecipante
             //Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA1", "pranzo,merenda"));
 
@@ -29,9 +29,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             //Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA89", "pranzo,merenda"));
             //Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA4", "merenda"));
 
-            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca");
+            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,visita");
             Agenzia.AggiungiPersona("dio", "cane", "PPP", "l'olimpo del porcaccioiddio");
-            Agenzia.RegistrazionePartecipante(1, "PPP", "visita,pranzo,merenda");
+            Agenzia.RegistrazionePartecipante(1, "PPP", "pranzo,merenda,visita");
             Agenzia.RimozioneOptional(1, "pranzo,merenda", "PPP");
         }
     }
