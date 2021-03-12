@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
@@ -44,34 +45,22 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
-        static public string RegistrazionePartecipante(int codiceEscursione, string codiceFiscale, string optional = "")
+        static public string RegistrazionePartecipante(int codiceEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
-            double costo = 0; //prezzo di partecipazione a secondo del prezzo base e l'aggiunta dei vari optional
-            string nomeCognome = "";
-            
-            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
-            for(int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
-            {
-                if(_escursioni[i].Codice == codiceEscursione) //ricerco l'escursione con il codice desiderato
-                {
-                    escursione = _escursioni[i];
-                    break;
-                }
-            }
+            var escursione = _escursioni[codiceEscursione - 1]; // -1 perché è 0-based
+            _persone.AddRange(personeIscritte); // Aggiungo tutte le persone iscritte alla lista di persone
+            escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Inserisco all'interno dell' escursione la lista di persone che si sono iscritte
+            escursione.optionalPerPartecipante.AddRange(optionalPersoneIscritte); //Inserisco gli optional per ogni persona dentro la lista
 
-            costo = escursione.Prezzo + escursione.CalcoloOptional(optional);
-            string optionalScelti = VerificaOptional(escursione.OptionalDisponibili, optional);
-                
-            if (escursione.PersoneIscritteEscursione.Count < escursione.NumeroMassimoPartecipanti)
-                foreach (Persona persona in _persone)
-                    if (persona.CodiceFiscale == codiceFiscale)
-                    {
-                        escursione.PersoneIscritteEscursione.Add(persona);
-                        escursione.optionalPerPartecipante.Add(optionalScelti);
-                        escursione.costoPerPartecipante.Add(escursione.CalcoloOptional(optionalScelti));
-                        nomeCognome = $"{persona.Nome} {persona.Cognome}";
-                    }
-            return $"Il prezzo da pagare per {nomeCognome} è di {costo} euro";
+            // Devo calcolare il prezzo in base agli optional che vengono decisi da ogni persone
+            StringBuilder sb = new StringBuilder();
+            foreach (Persona persona in personeIscritte)
+            {
+                int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
+                escursione.costoPerPartecipante.Add(escursione.CalcoloOptional(escursione.optionalPerPartecipante[indexPersona]));
+                sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.costoPerPartecipante[indexPersona]} €");
+            }
+            return sb.ToString();
         }
 
         static private string VerificaOptional (string optionalEscursione, string optionalPartecipante)
