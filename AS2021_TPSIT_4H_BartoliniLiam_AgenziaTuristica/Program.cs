@@ -32,7 +32,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca");
             Agenzia.AggiungiPersona("dio", "cane", "PPP", "l'olimpo del porcaccioiddio");
             Agenzia.RegistrazionePartecipante(1, "PPP", "visita,pranzo,merenda");
-            Agenzia.RimozioneOptional(1, "pranzo", "PPP");
+            Agenzia.RimozioneOptional(1, "pranzo,merenda", "PPP");
         }
     }
 }

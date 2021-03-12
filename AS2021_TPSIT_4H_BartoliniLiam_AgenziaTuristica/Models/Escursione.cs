@@ -55,8 +55,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //cambio della data in cui verrà effettuata l'escursione
         public void CambioData (DateTime date)
         {
-            //verifico che la nuova data in cui avverrà l'escursione sia maggiore della data odierna
-            if(DateTime.Compare(date, DateTime.Today) > 0)
+            //verifico che la nuova data in cui avverrà l'escursione sia maggiore o uguale alla data odierna
+            if(DateTime.Compare(date, DateTime.Today) >= 0)
             {
                 _data = date;
             }
