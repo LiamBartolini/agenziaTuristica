@@ -59,7 +59,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public void CambioDescrizione(string descrizione) => _descrizione = descrizione;
 
         //cambio del costo della escursione (da finire in quanto il prezzo di ogni partecipante va ricalcolato)
-        public void CambioCosto(double costo) 
+        public void CambioCosto(double costo)
         {
             _prezzo = costo;
         }
