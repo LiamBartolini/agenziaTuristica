@@ -47,7 +47,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
         static public string RegistrazionePartecipante(int codiceEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
-            var escursione = _escursioni[codiceEscursione - 1]; // -1 perché è 0-based
+            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
+            for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
+            {
+                if (_escursioni[i].Codice == codiceEscursione) //ricerco l'escursione con il codice desiderato
+                {
+                    escursione = _escursioni[i];
+                    break;
+                }
+            }
+
             _persone.AddRange(personeIscritte); // Aggiungo tutte le persone iscritte alla lista di persone
             escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Inserisco all'interno dell' escursione la lista di persone che si sono iscritte
             escursione.optionalPerPartecipante.AddRange(optionalPersoneIscritte); //Inserisco gli optional per ogni persona dentro la lista
