@@ -48,8 +48,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             double costo = 0; //prezzo di partecipazione a secondo del prezzo base e l'aggiunta dei vari optional
             string nomeCognome = "";
+            
+            bool isFindend = false;
+            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
+            for(int i = 0; i < _escursioni.Count && isFindend != true; i++) //il ciclo si ferma se rileva che isFinded è diventato true
+            {
+                if(_escursioni[i].Codice == codiceEscursione) //ricerco l'escursione con il codice desiderato
+                {
+                    escursione = _escursioni[i];
+                    isFindend = true;
+                }
+            }
 
-            var escursione = _escursioni[codiceEscursione - 1];
             costo = escursione.Prezzo + escursione.CalcoloOptional(optional);
 
             if (escursione.PersoneIscritteEscursione.Count < escursione.NumeroMassimoPartecipanti)
@@ -67,7 +77,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public void RimozioneOptional(int numeroEscursione, string optional, string codiceFiscale)
         {
             // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
-            var escursione = _escursioni[numeroEscursione - 1];
+            bool isFindend = false;
+            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
+            for (int i = 0; i < _escursioni.Count && isFindend != true; i++) //il ciclo si ferma se rileva che isFinded è diventato true
+            {
+                if (_escursioni[i].Codice == numeroEscursione) //ricerco l'escursione con il codice desiderato
+                {
+                    escursione = _escursioni[i];
+                    isFindend = true;
+                }
+            }
+
             foreach (Persona persona in escursione.PersoneIscritteEscursione)
             {
                 if (persona.CodiceFiscale == codiceFiscale)
