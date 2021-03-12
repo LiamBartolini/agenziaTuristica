@@ -39,6 +39,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             merenda = 15,
             visita = 20
         }
+        
+        public Escursione() { }
 
         public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione)
         {
@@ -81,15 +83,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 _prezzo = costo;
 
                 //procedo ricalcolando il costo dell'escursione per ogni partecipante
-                for (int i = 0; i < costoPartecipanti.Count; i++)
-                    costoPartecipanti[i] = _prezzo + CalcoloOptional(optionalPartecipanti[i]);
+                for (int i = 0; i < costoPerPartecipante.Count; i++)
+                    costoPerPartecipante[i] = _prezzo + CalcoloOptional(optionalPerPartecipante[i]);
             }
         }
 
-        public int CalcoloOptional(string optional)
+        public double CalcoloOptional(string optional)
         {
-            int retVal = 0;
-            var opt = optional.Split(',');
+            double retVal = 0;
+            string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
                 if (opt[i] == "pranzo")
@@ -112,23 +114,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
 
             return retVal;
-        }
-
-        public void RimozioneOptional(string optional, string codiceFiscale)
-        {
-            foreach (Persona persona in PersoneIscritteEscursione)
-                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
-                {
-                    // Divido la stringa
-                    string[] splitted = optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)].Split(',');
-
-                    // Cerco se tra quelle stringhe c'è l'optional da rimuovere
-                    foreach (string s in splitted)
-                        if (s == optional)
-                            splitted[Array.IndexOf(splitted, s)] = ","; // al posto di quel optional metto uno spazio vuoto
-
-                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] = splitted.ToString().Trim(); // Aggiungere l'optional alla sua lista
-                }
         }
 
         // Possibile modifica degli optional da patrte di un utente
