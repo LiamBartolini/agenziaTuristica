@@ -20,17 +20,21 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             // Creo una lista di partecipanti
             List<Persona> partecipantiPrimaEscursione = new List<Persona>();
             List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
-            partecipantiPrimaEscursione.Add(new Persona("Mario", "Rossi", "ASDASD", "123490"));
+            partecipantiPrimaEscursione.Add(new Persona("Mario", "Rossi", "mrsiosisosi", ""));
             optionalPerPartecipantiPrimaEscursione.Add("visita,pranzo");
 
             partecipantiPrimaEscursione.Add(new Persona("Liam", "Rossi", "ASDASD", "123490"));
             optionalPerPartecipantiPrimaEscursione.Add("visita");
 
-            partecipantiPrimaEscursione.Add(new Persona("Piergiovanniiddio", "Rossi", "ASDASD", "123490"));
+            partecipantiPrimaEscursione.Add(new Persona("Piergiovanniiddio", "iddio", "popiPopi", "123490"));
             optionalPerPartecipantiPrimaEscursione.Add("pranzo");
 
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
             Agenzia.RimozioneOptional(1, "pranzo", "PPP");
+
+            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
+
+            //Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
         }
     }
 }
