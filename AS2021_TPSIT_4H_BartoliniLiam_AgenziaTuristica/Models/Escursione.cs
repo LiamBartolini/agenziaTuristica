@@ -12,6 +12,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _descrizione;
         double _prezzo; // costo dell'escursione
         int _numeroMaxPartecipanti;
+        string _optionalDisponibili; //optional offerti dall'escursione
 
         //persone attualemnte iscritte all'escursione
         public List<Persona> PersoneIscritteEscursione = new List<Persona>();
@@ -26,6 +27,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public string Tipo { get => _tipo; }
         public int Codice { get => _codice; }
         public double Prezzo { get => _prezzo; }
+        public string OptionalDisponibili { get => _optionalDisponibili; }
 
         public enum MaxPartecipanti
         {
@@ -39,22 +41,25 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             merenda = 15,
             visita = 20
         }
+        
+        public Escursione() { }
 
-        public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione)
+        public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
             _codice = codice;
             _data = data;
             _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
+            _optionalDisponibili = optional;
             _numeroMaxPartecipanti = tipo.ToLower() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
         }
 
         //cambio della data in cui verrà effettuata l'escursione
         public void CambioData (DateTime date)
         {
-            //verifico che la nuova data in cui avverrà l'escursione sia maggiore della data odierna
-            if(DateTime.Compare(date, DateTime.Today) > 0)
+            //verifico che la nuova data in cui avverrà l'escursione sia maggiore o uguale alla data odierna
+            if(DateTime.Compare(date, DateTime.Today) >= 0)
             {
                 _data = date;
             }
@@ -81,15 +86,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 _prezzo = costo;
 
                 //procedo ricalcolando il costo dell'escursione per ogni partecipante
-                for (int i = 0; i < costoPartecipanti.Count; i++)
-                    costoPartecipanti[i] = _prezzo + CalcoloOptional(optionalPartecipanti[i]);
+                for (int i = 0; i < costoPerPartecipante.Count; i++)
+                    costoPerPartecipante[i] = _prezzo + CalcoloOptional(optionalPerPartecipante[i]);
             }
         }
 
-        public int CalcoloOptional(string optional)
+        public double CalcoloOptional(string optional)
         {
-            int retVal = 0;
-            var opt = optional.Split(',');
+            double retVal = 0;
+            string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
                 if (opt[i] == "pranzo")
@@ -112,23 +117,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
 
             return retVal;
-        }
-
-        public void RimozioneOptional(string optional, string codiceFiscale)
-        {
-            foreach (Persona persona in PersoneIscritteEscursione)
-                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
-                {
-                    // Divido la stringa
-                    string[] splitted = optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)].Split(',');
-
-                    // Cerco se tra quelle stringhe c'è l'optional da rimuovere
-                    foreach (string s in splitted)
-                        if (s == optional)
-                            splitted[Array.IndexOf(splitted, s)] = ","; // al posto di quel optional metto uno spazio vuoto
-
-                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] = splitted.ToString().Trim(); // Aggiungere l'optional alla sua lista
-                }
         }
 
         // Possibile modifica degli optional da patrte di un utente

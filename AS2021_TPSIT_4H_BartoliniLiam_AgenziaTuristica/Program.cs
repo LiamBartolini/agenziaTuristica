@@ -8,26 +8,33 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
     {
         static void Main(string[] args)
         {
+            Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
             //aggiungo all'archivion dell'agenzia una persona
             Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
-            //creo una nuova escursione
-            Agenzia.NuovaEscursione(1, 70,  DateTime.Today.AddMonths(2), "gita a cavallo", "Gita a cavallo");
-            //assegno a questa nuova escursione un partecipante
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA1", "pranzo,merenda"));
 
-            //aggiungo altri partecipanti
-            Agenzia.AggiungiPersona("Verdi", "Rossi", "AAA2", "via Roma, 18");
-            Agenzia.AggiungiPersona("Giacomo", "Puccini", "AAA3", "Via sinfonia, 77");
-            Agenzia.AggiungiPersona("Mirko", "Alessandrini", "AAA89", "Via dei Paguri, 89");
-            Agenzia.AggiungiPersona("El", "Bombarder", "AAA4", "Via Attenzione, 45");
+            // Creo una nuova Escursione
+            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
 
-            //e li registro all'escursione con codice 1
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA2", "visita,merenda"));
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA3", "nessuno"));
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA89", "pranzo,merenda"));
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, "AAA4", "merenda"));
+            // Creo una lista di partecipanti
+            List<Persona> partecipantiPrimaEscursione = new List<Persona>();
+            List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
+            partecipantiPrimaEscursione.Add(new Persona("Mario", "Rossi", "mrsiosisosi", ""));
+            optionalPerPartecipantiPrimaEscursione.Add("visita,pranzo");
+
+            partecipantiPrimaEscursione.Add(new Persona("Liam", "Rossi", "ASDASD", "123490"));
+            optionalPerPartecipantiPrimaEscursione.Add("visita");
+
+            partecipantiPrimaEscursione.Add(new Persona("Piergiovanniiddio", "iddio", "popiPopi", "123490"));
+            optionalPerPartecipantiPrimaEscursione.Add("pranzo");
+
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
+            Agenzia.RimozioneOptional(1, "pranzo", "PPP");
+
+            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
+
+            //Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
         }
     }
 }
