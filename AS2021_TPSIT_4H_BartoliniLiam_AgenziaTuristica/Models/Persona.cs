@@ -17,6 +17,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public string CodiceFiscale { get => _codiceFiscale; }
         public string Indirizzo { get => _indirizzo; }
         
+        public Persona () { }
+
         // Costruttore standard
         public Persona(string nome, string cognome, string codiceFiscale, string indirizzo)
         {

@@ -15,7 +15,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
 
             // Creo una nuova Escursione
-            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca");
+            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
 
             // Creo una lista di partecipanti
             List<Persona> partecipantiPrimaEscursione = new List<Persona>();
@@ -25,7 +25,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
             partecipantiPrimaEscursione.Add(new Persona("Liam", "Rossi", "ASDASD", "123490"));
             optionalPerPartecipantiPrimaEscursione.Add("visita");
-            
+
             partecipantiPrimaEscursione.Add(new Persona("Piergiovanniiddio", "Rossi", "ASDASD", "123490"));
             optionalPerPartecipantiPrimaEscursione.Add("pranzo");
 

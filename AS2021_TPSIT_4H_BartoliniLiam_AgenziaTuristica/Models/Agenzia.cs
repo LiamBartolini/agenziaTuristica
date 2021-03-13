@@ -9,7 +9,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
-        static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione)
+        static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione, string optional)
         {
             //// Controllo che il numero di _persone sia conforme ai limiti stabiliti
             //if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
@@ -21,17 +21,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             //    throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
 
             //aggiungo alla lista di escursioni disponibili una nuova escursione
-            _escursioni.Add(new Escursione(codice, prezzo,  data, type, descrizione));
+            _escursioni.Add(new Escursione(codice, prezzo, data, type, descrizione, optional));
         }
 
-        static public void AggiungiPersona (string nome, string cognome, string codiceFiscale, string indirizzo)
+        static public void AggiungiPersona(string nome, string cognome, string codiceFiscale, string indirizzo)
         {
             _persone.Add(new Persona(nome, cognome, codiceFiscale, indirizzo));
         }
 
         static public void ModificaEscursione(int numeroEscursione) { }
 
-        static public string EliminazioneEscursione(int numeroEscursione) 
+        static public string EliminazioneEscursione(int numeroEscursione)
         {
             try
             {
@@ -47,7 +47,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
         static public string RegistrazionePartecipante(int codiceEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
-            var escursione = _escursioni[codiceEscursione - 1]; // -1 perché è 0-based
+            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
+            for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
+            {
+                if (_escursioni[i].Codice == codiceEscursione) //ricerco l'escursione con il codice desiderato
+                {
+                    escursione = _escursioni[i];
+                    break;
+                }
+            }
+
             _persone.AddRange(personeIscritte); // Aggiungo tutte le persone iscritte alla lista di persone
             escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Inserisco all'interno dell' escursione la lista di persone che si sono iscritte
             escursione.optionalPerPartecipante.AddRange(optionalPersoneIscritte); //Inserisco gli optional per ogni persona dentro la lista
@@ -63,10 +72,43 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return sb.ToString();
         }
 
+        static private string VerificaOptional(string optionalEscursione, string optionalPartecipante)
+        {
+            var splittedOptionalEscursione = optionalEscursione.Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalPartecipante = optionalPartecipante.Split(','); //splitto gli optional scleti dal partecipante
+            string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
+
+            for(int i = 0; i < splittedOptionalEscursione.Length; i++)
+            {
+                for(int j = 0; j < splittedOptionalPartecipante.Length; j++)
+                {
+                    if (splittedOptionalEscursione[i] == "pranzo" && splittedOptionalPartecipante[j] == "pranzo")
+                    {
+                        retVal += "pranzo,";
+                        continue;
+                    }
+
+                    if (splittedOptionalEscursione[i] == "merenda" && splittedOptionalPartecipante[j] == "merenda")
+                    {
+                        retVal += "merenda,";
+                        continue;
+                    }
+
+                    if (splittedOptionalEscursione[i] == "visita" && splittedOptionalPartecipante[j] == "visita")
+                    {
+                        retVal += "visita,";
+                        continue;
+                    }
+                }
+            }
+
+            return retVal;
+        }
+
         static public void RimozioneOptional(int numeroEscursione, string optional, string codiceFiscale)
         {
-            // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
-            var escursione = _escursioni[numeroEscursione - 1];
+            var escursione = RicercaEscursione(numeroEscursione);
+
             foreach (Persona persona in escursione.PersoneIscritteEscursione)
             {
                 if (persona.CodiceFiscale == codiceFiscale)
@@ -120,5 +162,21 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         static public void CancellazionePrenotazione(int numeroEscursione, string codiceFiscale) { }
+
+        static Escursione RicercaEscursione(int numeroEscursione)
+        {
+            // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
+            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
+            for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
+            {
+                if (_escursioni[i].Codice == numeroEscursione) //ricerco l'escursione con il codice desiderato
+                {
+                    escursione = _escursioni[i];
+                    break;
+                }
+            }
+
+            return escursione;
+        }
     }
 }
