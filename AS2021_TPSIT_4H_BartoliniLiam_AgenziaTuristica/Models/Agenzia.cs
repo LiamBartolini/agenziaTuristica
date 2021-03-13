@@ -31,11 +31,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         static public void ModificaEscursione(int numeroEscursione) { }
 
-        static public string EliminazioneEscursione(int numeroEscursione)
+        //metodo per annullare un escursione
+        static public string EliminazioneEscursione(int codiceEscursione)
         {
             try
             {
-                _escursioni.RemoveAt(numeroEscursione);
+                for(int i = 0; i < _escursioni.Count; i++)
+                    if(_escursioni[i].Codice == codiceEscursione) //cerco l'escursione con codice dato
+                    {
+                        _escursioni.RemoveAt(i); //e la rimuovo dalla lista
+                        break;
+                    }
                 return "Eliminazione avvenuta con successo!";
             }
             catch
@@ -47,19 +53,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
         static public string RegistrazionePartecipante(int codiceEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
-            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
-            for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
-            {
-                if (_escursioni[i].Codice == codiceEscursione) //ricerco l'escursione con il codice desiderato
-                {
-                    escursione = _escursioni[i];
-                    break;
-                }
-            }
+            var escursione = RicercaEscursione(codiceEscursione); //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
 
             _persone.AddRange(personeIscritte); // Aggiungo tutte le persone iscritte alla lista di persone
             escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Inserisco all'interno dell' escursione la lista di persone che si sono iscritte
-            escursione.optionalPerPartecipante.AddRange(optionalPersoneIscritte); //Inserisco gli optional per ogni persona dentro la lista
+           
+            //Inserisco gli optional per ogni persona dentro la lista
+            for(int i = 0; i < optionalPersoneIscritte.Count; i++)
+            {
+                escursione.optionalPerPartecipante.Add(VerificaOptional(escursione.OptionalDisponibili, optionalPersoneIscritte[i]));
+            }
 
             // Devo calcolare il prezzo in base agli optional che vengono decisi da ogni persone
             StringBuilder sb = new StringBuilder();
@@ -159,6 +162,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     break;
                 }
             }
+        }
+
+        // Possibile modifica degli optional da patrte di un utente
+        static public void AggiuntaOptional(string optional, string codiceFiscale, int codiceEsursione)
+        {
+            var escursione = RicercaEscursione(codiceEsursione);
+
+            foreach (Persona persona in escursione.PersoneIscritteEscursione)
+                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
+                    escursione.optionalPerPartecipante[escursione.PersoneIscritteEscursione.IndexOf(persona)] += " " + optional; // Aggiungere l'optional alla sua lista
         }
 
         static public void CancellazionePrenotazione(int numeroEscursione, string codiceFiscale) { }

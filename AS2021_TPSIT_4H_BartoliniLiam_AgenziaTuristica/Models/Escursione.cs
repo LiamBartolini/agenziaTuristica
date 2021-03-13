@@ -119,14 +119,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return retVal;
         }
 
-        // Possibile modifica degli optional da patrte di un utente
-        public void AggiuntaOptional(string optional, string codiceFiscale)
-        {
-            foreach (Persona persona in PersoneIscritteEscursione)
-                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
-                    optionalPerPartecipante[PersoneIscritteEscursione.IndexOf(persona)] += " " + optional; // Aggiungere l'optional alla sua lista
-        }
-
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
