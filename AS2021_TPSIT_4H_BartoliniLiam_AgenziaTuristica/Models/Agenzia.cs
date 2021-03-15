@@ -86,12 +86,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         static private string VerificaOptional(string optionalEscursione, string optionalPartecipante)
         {
-            var splittedOptionalEscursione = optionalEscursione.Split(',');//splitto gli optional offerti dall'escursione
-            var splittedOptionalPartecipante = optionalPartecipante.Split(','); //splitto gli optional scleti dal partecipante
+            string[] splittedOptionalEscursione = optionalEscursione.Split(',');//splitto gli optional offerti dall'escursione
+            string[] splittedOptionalPartecipante = optionalPartecipante.Split(','); //splitto gli optional scleti dal partecipante
             string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
 
             for(int i = 0; i < splittedOptionalEscursione.Length; i++)
-            {
                 for(int j = 0; j < splittedOptionalPartecipante.Length; j++)
                 {
                     if (splittedOptionalEscursione[i] == "pranzo" && splittedOptionalPartecipante[j] == "pranzo")
@@ -112,8 +111,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         continue;
                     }
                 }
-            }
 
+            if (retVal.Length < 1)
+                return retVal;
+
+            // rimuovo l'ultima virgola
+            retVal = retVal.Remove(retVal.Length - 1);
             return retVal;
         }
 
