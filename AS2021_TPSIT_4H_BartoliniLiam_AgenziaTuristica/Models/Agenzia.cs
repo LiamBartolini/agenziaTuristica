@@ -50,15 +50,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
-        static public string RegistrazionePartecipante(int codiceEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
+        static public string RegistrazionePartecipante(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
-            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
-            for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
-                if (_escursioni[i].Codice == codiceEscursione) //ricerco l'escursione con il codice desiderato
-                {
-                    escursione = _escursioni[i];
-                    break;
-                }
+            var escursione = RicercaEscursione(numeroEscursione);
 
             // Controllo se le persone aggiunte non siano gia stata iscritte altre volte
             for (int i = 0; i < personeIscritte.Count; i++)
@@ -184,15 +178,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static Escursione RicercaEscursione(int numeroEscursione)
         {
             // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
-            var escursione = _escursioni[0]; //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
             for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
                 if (_escursioni[i].Codice == numeroEscursione) //ricerco l'escursione con il codice desiderato
-                {
-                    escursione = _escursioni[i];
-                    break;
-                }
+                    return _escursioni[i];
 
-            return escursione;
+            return null;
         }
     }
 }
