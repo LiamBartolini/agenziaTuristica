@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Text;
+using Newtonsoft.Json;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
@@ -27,6 +29,25 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public void AggiungiPersona(string nome, string cognome, string codiceFiscale, string indirizzo)
         {
             _persone.Add(new Persona(nome, cognome, codiceFiscale, indirizzo));
+        }
+
+        //aggiunta di più persone all'archivio tramite l'utilizzo di un json
+        static public string AggiungiPersona(string file)
+        {
+            StreamReader sr = new StreamReader(file); //avvio la lettura del file json
+            string json = sr.ReadToEnd(); //salvo all'interno di una variabile il suo contenuto
+            sr.Close();
+
+            try
+            {
+                //deserializzo il contenuto del file json specificando il tipo di dato presente al suo interno
+                _persone.AddRange(JsonConvert.DeserializeObject<Persona[]>(json));
+                return "Operazione riuscita.";
+            }
+            catch
+            {
+                return "Operazione non riuscita.";
+            }
         }
 
         static public void ModificaEscursione(int numeroEscursione, double? costo = null, string descrizione = "", string optional = "") 
@@ -92,7 +113,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
 
             for(int i = 0; i < splittedOptionalEscursione.Length; i++)
-            {
                 for(int j = 0; j < splittedOptionalPartecipante.Length; j++)
                 {
                     if (splittedOptionalEscursione[i] == "pranzo" && splittedOptionalPartecipante[j] == "pranzo")
@@ -113,8 +133,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         continue;
                     }
                 }
-            }
 
+            if (retVal.Length < 1)
+                return retVal;
+
+            // rimuovo l'ultima virgola
+            retVal = retVal.Remove(retVal.Length - 1);
             return retVal;
         }
 
@@ -205,6 +229,34 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     return _escursioni[i];
 
             return null;
+        }
+
+        static public string VisualizzaPersone()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Le persone presenti nell'archivio sono: \n");
+
+            foreach (var p in _persone)
+                sb.AppendLine(p.ToString());
+
+            return sb.ToString();
+        }
+
+        static public string VisualizzaEscursioni()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine("Le escursioni all'attivo sono: \n");
+
+            if (_escursioni.Count != 0)
+                foreach (var s in _escursioni)
+                    sb.AppendLine(s.ToString());
+            else
+                sb.AppendLine("Non vi è alcuna escursione attiva al momento.");
+
+
+            return sb.ToString();
         }
     }
 }

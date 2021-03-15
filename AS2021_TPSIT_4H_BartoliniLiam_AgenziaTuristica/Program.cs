@@ -11,8 +11,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
-            //aggiungo all'archivion dell'agenzia una persona
-            Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
+            Agenzia.AggiungiPersona("Persone.json");
 
             // Creo una nuova Escursione
             Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
@@ -35,6 +34,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
 
             //Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
+
+            Console.WriteLine("\n" + Agenzia.VisualizzaPersone());
+            Console.WriteLine("\n" + Agenzia.VisualizzaEscursioni());
         }
     }
 }

@@ -124,8 +124,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Data:\t{_data:dd/MM/yyyy}");
             sb.AppendLine($"Tipo:\t{_tipo}");
-            sb.AppendLine($"Descrizione:{_descrizione}");
-            sb.AppendLine("Persone iscritte alla escursione:");
+            sb.AppendLine($"Descrizione:\t{_descrizione}");
+            sb.AppendLine("Persone iscritte alla escursione: \n");
             foreach (Persona persona in PersoneIscritteEscursione)
                 sb.AppendLine(persona.ToString());
             return sb.ToString();
