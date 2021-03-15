@@ -70,6 +70,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             //Inserisco gli optional per ogni persona dentro la lista
             for(int i = 0; i < optionalPersoneIscritte.Count; i++)
             {
+                //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli scleti dall'escursione
                 escursione.optionalPerPartecipante.Add(VerificaOptional(escursione.OptionalDisponibili, optionalPersoneIscritte[i]));
             }
 
@@ -86,8 +87,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         static private string VerificaOptional(string optionalEscursione, string optionalPartecipante)
         {
-            var splittedOptionalEscursione = optionalEscursione.Split(',');//splitto gli optional offerti dall'escursione
-            var splittedOptionalPartecipante = optionalPartecipante.Split(','); //splitto gli optional scleti dal partecipante
+            var splittedOptionalEscursione = optionalEscursione.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
             string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
 
             for(int i = 0; i < splittedOptionalEscursione.Length; i++)
