@@ -11,17 +11,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
-            //aggiungo all'archivion dell'agenzia una persona
-            Agenzia.AggiungiPersona("Mario", "Rossi", "AAA1", "via Scampia, 666");
-
             // Creo una nuova Escursione
-            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
+            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo, merenda");
 
             // Creo una lista di partecipanti
             List<Persona> partecipantiPrimaEscursione = new List<Persona>();
             List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
-            partecipantiPrimaEscursione.Add(new Persona("Mario", "Rossi", "mrsiosisosi", ""));
-            optionalPerPartecipantiPrimaEscursione.Add("visita,pranzo");
+            partecipantiPrimaEscursione.Add(new Persona("Mario", "Rossi", "mrsiosisosi", "VIA ER FAINA, 4ccendin0"));
+            optionalPerPartecipantiPrimaEscursione.Add("merenda, pranzo");
+            
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
+            Agenzia.RimozioneOptional(1, "pranzo, merenda", "mrsiosisosi");
 
             partecipantiPrimaEscursione.Add(new Persona("Liam", "Rossi", "ASDASD", "123490"));
             optionalPerPartecipantiPrimaEscursione.Add("visita");
@@ -30,9 +30,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             optionalPerPartecipantiPrimaEscursione.Add("pranzo");
 
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
-            Agenzia.RimozioneOptional(1, "pranzo", "PPP");
 
-            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
+            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "AAA1"));
+            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "popiPopi"));
 
             //Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
         }
