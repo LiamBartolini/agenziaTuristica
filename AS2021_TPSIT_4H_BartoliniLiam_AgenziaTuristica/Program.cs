@@ -31,12 +31,14 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
             Agenzia.RimozioneOptional(1, "pranzo", "PPP");
 
-            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
+            //Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
 
             //Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
 
             Console.WriteLine("\n" + Agenzia.VisualizzaPersone());
             Console.WriteLine("\n" + Agenzia.VisualizzaEscursioni());
+
+            Agenzia.SalvataggioDati();
         }
     }
 }

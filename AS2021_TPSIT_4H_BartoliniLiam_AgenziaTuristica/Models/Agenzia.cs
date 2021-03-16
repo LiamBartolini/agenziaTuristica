@@ -13,15 +13,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione, string optional)
         {
-            //// Controllo che il numero di _persone sia conforme ai limiti stabiliti
-            //if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
-            //{
-            //    _escursioni.Add(escursione);
-            //    _persone.AddRange(persone);
-            //}
-            //else // In caso negativo lancio una eccezzione
-            //    throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
-
             //aggiungo alla lista di escursioni disponibili una nuova escursione
             _escursioni.Add(new Escursione(codice, prezzo, data, type, descrizione, optional));
         }
@@ -76,26 +67,28 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
-        //ritorna un double in quanto comunica il prezzo per la partecipazione all'escursione
+        //Metodo con cui si registra un gruppo di partecipanti a una data escursione
+        //In caso le persone che si iscriveranno all'escursione non siano presenti alla lista _persone verranno aggiunte ad essa
         static public string RegistrazionePartecipante(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
             var escursione = RicercaEscursione(numeroEscursione); //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
 
-            // Controllo se le persone aggiunte non siano gia stata iscritte altre volte
+            // Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
             for (int i = 0; i < personeIscritte.Count; i++)
                 if (!_persone.Contains(personeIscritte[i]))
                     _persone.Add(personeIscritte[i]);
             
-            escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Inserisco all'interno dell' escursione la lista di persone che si sono iscritte
+            escursione.PersoneIscritteEscursione.AddRange(personeIscritte); 
            
             //Inserisco gli optional per ogni persona dentro la lista
             for(int i = 0; i < optionalPersoneIscritte.Count; i++)
             {
-                //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli scleti dall'escursione
+                //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
                 escursione.optionalPerPartecipante.Add(VerificaOptional(escursione.OptionalDisponibili, optionalPersoneIscritte[i]));
             }
 
-            // Devo calcolare il prezzo in base agli optional che vengono decisi da ogni persone
+            // Calcolo il prezzo dell'escursione per ogni partecipante e lo aggiungo alla lista costoPerPartecipante dell'istanza della classe Escursione
+            // Inoltre creo una stringa con la quale comunicherò i prezzi a seconda dei partecipanti
             StringBuilder sb = new StringBuilder();
             foreach (Persona persona in personeIscritte)
             {
@@ -106,6 +99,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return sb.ToString();
         }
 
+        //Metodo che consente di verificare che gli optional scelti da un partecipante siano conformi con quelli offerti dall'escursione
+        //Ritorna una stringa che conterrà gli opotional del partecipante
         static private string VerificaOptional(string optionalEscursione, string optionalPartecipante)
         {
             var splittedOptionalEscursione = optionalEscursione.ToLower().Split(',');//splitto gli optional offerti dall'escursione
@@ -137,11 +132,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             if (retVal.Length < 1)
                 return retVal;
 
-            // rimuovo l'ultima virgola
+            // in caso vi sia più di un optional rimuovo la virgola ridondante
             retVal = retVal.Remove(retVal.Length - 1);
             return retVal;
         }
 
+        //Metodo che consente ad un utente di rimuovere aventuali optional scelti durante l'iscrizione all'escursione
+        //Una volta rimossi gli optional il metodo rieseguirà anche il calcolo del costo dell'escursione per il partecipante
         static public void RimozioneOptional(int numeroEscursione, string optional, string codiceFiscale)
         {
             var escursione = RicercaEscursione(numeroEscursione);
@@ -198,16 +195,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
-        // Possibile modifica degli optional da patrte di un utente
+        // Possibile modifica degli optional da parte di un utente
         static public void AggiuntaOptional(string optional, string codiceFiscale, int codiceEsursione)
         {
             var escursione = RicercaEscursione(codiceEsursione);
 
             foreach (Persona persona in escursione.PersoneIscritteEscursione)
-                if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
-                    escursione.optionalPerPartecipante[escursione.PersoneIscritteEscursione.IndexOf(persona)] += " " + optional; // Aggiungere l'optional alla sua lista
+                if (persona.CodiceFiscale == codiceFiscale) // Cerco l'utente usando il suo codice fiscale
+                    escursione.optionalPerPartecipante[escursione.PersoneIscritteEscursione.IndexOf(persona)] += " " + VerificaOptional(escursione.OptionalDisponibili, optional); // Aggiungo gli optional verificandoli con il metodo VerificaOptional
         }
 
+        //Metodo con il quale si annulla l'iscrizione di un utente ad una escursione
         static public string CancellazionePrenotazione(int numeroEscursione, string codiceFiscale) 
         {
             var escursione = RicercaEscursione(numeroEscursione);
@@ -221,6 +219,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!";
         }
 
+        //Metodo interno con il quale ricerco la posizione di una escursione all'interno della lista _escursioni
         static Escursione RicercaEscursione(int numeroEscursione)
         {
             // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
@@ -231,6 +230,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return null;
         }
 
+        //Metodo di stampa che ritorna una stringa contenente tutte le informazioni riguardanti le persone presenti in _persone
         static public string VisualizzaPersone()
         {
             StringBuilder sb = new StringBuilder();
@@ -243,6 +243,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return sb.ToString();
         }
 
+        //Metodo di stampa che ritorna una stringa contenente tutte le informazioni delle escursioni presenti in _escursioni
         static public string VisualizzaEscursioni()
         {
             StringBuilder sb = new StringBuilder();
@@ -257,6 +258,27 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
 
             return sb.ToString();
+        }
+
+        //Salvataggio dati su file di testo
+        static public string SalvataggioDati()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.AppendLine($"Salvataggio dati del giorno: {DateTime.Today}");
+            sb.AppendLine(VisualizzaPersone());
+            sb.AppendLine(VisualizzaEscursioni());
+            
+            try
+            {
+                File.AppendAllText("Salvataggio.txt", sb.ToString());
+                return "Operazione riucita.";
+            }
+            catch
+            {
+                return "Operazione non riuscita.";
+            }
+
         }
     }
 }

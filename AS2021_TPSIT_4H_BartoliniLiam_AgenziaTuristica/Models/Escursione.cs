@@ -14,7 +14,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         int _numeroMaxPartecipanti;
         string _optionalDisponibili; //optional offerti dall'escursione
 
-        //persone attualemnte iscritte all'escursione
+        //persone attualmente iscritte all'escursione
         public List<Persona> PersoneIscritteEscursione = new List<Persona>();
 
         //lista parallela che contiene gli optional scleti da ogni partecipante
@@ -91,6 +91,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
+        //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
         public double CalcoloOptional(string optional)
         {
             double retVal = 0;
