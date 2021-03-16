@@ -12,7 +12,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
             // Creo una nuova Escursione
-            Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo, merenda");
+            try { Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo, merenda"); }
+            catch (Exception e) { Output(e); }
+
+            try { Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo, merenda"); }
+            catch (Exception e) { Output(e); }
 
             // Creo una lista di partecipanti
             List<Persona> partecipantiPrimaEscursione = new List<Persona>();
@@ -35,6 +39,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "popiPopi"));
 
             //Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
+        }
+
+        static void Output(Exception e)
+        {
+            Console.ForegroundColor = ConsoleColor.Red;
+            Console.WriteLine(e.Message);
+            Console.ResetColor();
         }
     }
 }

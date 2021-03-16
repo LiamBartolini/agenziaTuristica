@@ -9,19 +9,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
-        static public void NuovaEscursione(int codice, double prezzo, DateTime data, string type, string descrizione, string optional)
+        static public void NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string type, string descrizione, string optional)
         {
-            //// Controllo che il numero di _persone sia conforme ai limiti stabiliti
-            //if (persone.Count <= (escursione.Tipo == "gita in barca" ? 10 : 5))
-            //{
-            //    _escursioni.Add(escursione);
-            //    _persone.AddRange(persone);
-            //}
-            //else // In caso negativo lancio una eccezzione
-            //    throw new Exception($"Le _persone iscritte all'escursione sono maggiori rispetto al numero massimo!\nGita in barca - 10\nGita a cavallo - 5");
+            foreach (Escursione e in _escursioni)
+                if (e.Codice == numeroEscursione)
+                    throw new Exception($"Esiste gia un'escursione di {numeroEscursione} numero!");
 
-            //aggiungo alla lista di escursioni disponibili una nuova escursione
-            _escursioni.Add(new Escursione(codice, prezzo, data, type, descrizione, optional));
+            _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, type, descrizione, optional));
         }
 
         static public void ModificaEscursione(int numeroEscursione, double? costo = null, string descrizione = "", string optional = "") 
@@ -168,9 +162,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         // Possibile modifica degli optional da patrte di un utente
-        static public void AggiuntaOptional(string optional, string codiceFiscale, int codiceEsursione)
+        static public void AggiuntaOptional(string optional, string codiceFiscale, int numeroEsursione)
         {
-            Escursione escursione = RicercaEscursione(codiceEsursione);
+            Escursione escursione = RicercaEscursione(numeroEsursione);
 
             foreach (Persona persona in escursione.PersoneIscritteEscursione)
                 if (persona.CodiceFiscale == codiceFiscale) // Cercare l'utente con il cf dentro la lista
