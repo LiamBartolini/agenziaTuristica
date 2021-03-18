@@ -12,10 +12,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _indirizzo;
 
         //Property sola lettura
-        public string Nome { get => _nome; set => _nome = value; }
-        public string Cognome { get => _cognome; set => _cognome = value; }
-        public string CodiceFiscale { get => _codiceFiscale; set => _codiceFiscale = value; }
-        public string Indirizzo { get => _indirizzo; set => _indirizzo = value; }
+        public string Nome { get => _nome;}
+        public string Cognome { get => _cognome;}
+        public string CodiceFiscale { get => _codiceFiscale; }
+        public string Indirizzo { get => _indirizzo; }
         
         public Persona () { }
 
@@ -27,12 +27,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _codiceFiscale = codiceFiscale;
             _indirizzo = indirizzo;
         }
-
-        ////deserializzatore json 
-        //static public void DeseriealizzaJson (string json)
-        //{
-        //    JsonConvert.DeserializeObject<Persona>(json);
-        //}
 
         public override string ToString()
         {
