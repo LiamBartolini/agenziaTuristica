@@ -60,7 +60,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             for(int i = 0; i < optionalPersoneIscritte.Count; i++)
             {
                 //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
-                escursione.optionalPerPartecipante.Add(VerificaOptional(escursione.OptionalDisponibili, optionalPersoneIscritte[i]));
+                escursione.optionalPerPartecipante.Add(escursione.VerificaOptional(optionalPersoneIscritte[i]));
             }
 
             // Calcolo il prezzo dell'escursione per ogni partecipante e lo aggiungo alla lista costoPerPartecipante dell'istanza della classe Escursione
@@ -77,41 +77,41 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         //Metodo che consente di verificare che gli optional scelti da un partecipante siano conformi con quelli offerti dall'escursione
         //Ritorna una stringa che conterrà gli opotional del partecipante
-        static private string VerificaOptional(string optionalEscursione, string optionalPartecipante)
-        {
-            var splittedOptionalEscursione = optionalEscursione.ToLower().Split(',');//splitto gli optional offerti dall'escursione
-            var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
-            string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
+        //static private string VerificaOptional(string optionalEscursione, string optionalPartecipante)
+        //{
+        //    var splittedOptionalEscursione = optionalEscursione.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+        //    var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
+        //    string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
 
-            for(int i = 0; i < splittedOptionalEscursione.Length; i++)
-                for(int j = 0; j < splittedOptionalPartecipante.Length; j++)
-                {
-                    if (splittedOptionalEscursione[i].Trim() == "pranzo" && splittedOptionalPartecipante[j].Trim() == "pranzo")
-                    {
-                        retVal += "pranzo,";
-                        continue;
-                    }
+        //    for(int i = 0; i < splittedOptionalEscursione.Length; i++)
+        //        for(int j = 0; j < splittedOptionalPartecipante.Length; j++)
+        //        {
+        //            if (splittedOptionalEscursione[i].Trim() == "pranzo" && splittedOptionalPartecipante[j].Trim() == "pranzo")
+        //            {
+        //                retVal += "pranzo,";
+        //                continue;
+        //            }
 
-                    if (splittedOptionalEscursione[i].Trim() == "merenda" && splittedOptionalPartecipante[j].Trim() == "merenda")
-                    {
-                        retVal += "merenda,";
-                        continue;
-                    }
+        //            if (splittedOptionalEscursione[i].Trim() == "merenda" && splittedOptionalPartecipante[j].Trim() == "merenda")
+        //            {
+        //                retVal += "merenda,";
+        //                continue;
+        //            }
 
-                    if (splittedOptionalEscursione[i].Trim() == "visita" && splittedOptionalPartecipante[j].Trim() == "visita")
-                    {
-                        retVal += "visita,";
-                        continue;
-                    }
-                }
+        //            if (splittedOptionalEscursione[i].Trim() == "visita" && splittedOptionalPartecipante[j].Trim() == "visita")
+        //            {
+        //                retVal += "visita,";
+        //                continue;
+        //            }
+        //        }
 
-            if (retVal.Length < 1)
-                return retVal;
+        //    if (retVal.Length < 1)
+        //        return retVal;
 
-            // in caso vi sia più di un optional rimuovo la virgola ridondante
-            retVal = retVal.Remove(retVal.Length - 1);
-            return retVal;
-        }
+        //    // in caso vi sia più di un optional rimuovo la virgola ridondante
+        //    retVal = retVal.Remove(retVal.Length - 1);
+        //    return retVal;
+        //}
 
         //Metodo che consente ad un utente di rimuovere aventuali optional scelti durante l'iscrizione all'escursione
         //Una volta rimossi gli optional il metodo rieseguirà anche il calcolo del costo dell'escursione per il partecipante
@@ -179,7 +179,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
             foreach (Persona persona in escursione.PersoneIscritteEscursione)
                 if (persona.CodiceFiscale == codiceFiscale) // Cerco l'utente usando il suo codice fiscale
-                    escursione.optionalPerPartecipante[escursione.PersoneIscritteEscursione.IndexOf(persona)] += " " + VerificaOptional(escursione.OptionalDisponibili, optional); // Aggiungo gli optional verificandoli con il metodo VerificaOptional
+                    escursione.optionalPerPartecipante[escursione.PersoneIscritteEscursione.IndexOf(persona)] += " " + escursione.VerificaOptional(optional); // Aggiungo gli optional verificandoli con il metodo VerificaOptional
         }
 
         //Metodo con il quale si annulla l'iscrizione di un utente ad una escursione
