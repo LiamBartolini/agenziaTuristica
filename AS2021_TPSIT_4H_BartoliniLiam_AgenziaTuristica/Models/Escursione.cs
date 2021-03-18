@@ -91,6 +91,21 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
+        //Metodo che consente di modificare gli optional offerti da una escursione
+        public void CambioOptional (string optional)
+        {
+            _optionalDisponibili = optional; //cambio gli optional dell'escursione
+
+            //procedo al cambio degli optional di ogni partecipante
+            for (int i = 0; i < optionalPerPartecipante.Count; i++)
+            {
+                //optional scelti dal partecipante
+                string tmp = optionalPerPartecipante[i];
+                //ricontrollo gli optional scelti dal partecipante usando il metodo VerificaOptional()
+                optionalPerPartecipante[i] = VerificaOptional(tmp);
+            }             
+        }
+
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
         public double CalcoloOptional(string optional)
         {
@@ -117,6 +132,44 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 }
             }
 
+            return retVal;
+        }
+
+        //Metodo che consente di verificare che gli optional scelti da un partecipante siano conformi con quelli offerti dall'escursione
+        //Ritorna una stringa che conterrà gli opotional del partecipante
+        public string VerificaOptional(string optionalPartecipante)
+        {
+            var splittedOptionalEscursione = this._optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
+            string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
+
+            for (int i = 0; i < splittedOptionalEscursione.Length; i++)
+                for (int j = 0; j < splittedOptionalPartecipante.Length; j++)
+                {
+                    if (splittedOptionalEscursione[i].Trim() == "pranzo" && splittedOptionalPartecipante[j].Trim() == "pranzo")
+                    {
+                        retVal += "pranzo,";
+                        continue;
+                    }
+
+                    if (splittedOptionalEscursione[i].Trim() == "merenda" && splittedOptionalPartecipante[j].Trim() == "merenda")
+                    {
+                        retVal += "merenda,";
+                        continue;
+                    }
+
+                    if (splittedOptionalEscursione[i].Trim() == "visita" && splittedOptionalPartecipante[j].Trim() == "visita")
+                    {
+                        retVal += "visita,";
+                        continue;
+                    }
+                }
+
+            if (retVal.Length < 1)
+                return retVal;
+
+            // in caso vi sia più di un optional rimuovo la virgola ridondante
+            retVal = retVal.Remove(retVal.Length - 1);
             return retVal;
         }
 
