@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
@@ -210,10 +209,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.AppendLine($"Salvataggio dati del giorno: {DateTime.Today}");
+            sb.AppendLine($"Salvataggio dati del giorno: {DateTime.Now}");
             sb.AppendLine(VisualizzaPersone());
             sb.AppendLine(VisualizzaEscursioni());
-            
+
             try
             {
                 File.AppendAllText("Salvataggio.txt", sb.ToString());
