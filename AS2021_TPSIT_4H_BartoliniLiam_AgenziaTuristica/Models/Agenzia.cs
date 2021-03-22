@@ -178,7 +178,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
                 if (_escursioni[i].Codice == numeroEscursione) //ricerco l'escursione con il codice desiderato
                     return _escursioni[i];
-
             return null;
         }
 
@@ -186,12 +185,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string VisualizzaPersone()
         {
             StringBuilder sb = new StringBuilder();
-
             sb.AppendLine("Le persone presenti nell'archivio sono: \n");
 
-            foreach (var p in _persone)
+            foreach (Persona p in _persone)
                 sb.AppendLine(p.ToString());
-
             return sb.ToString();
         }
 
@@ -199,16 +196,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string VisualizzaEscursioni()
         {
             StringBuilder sb = new StringBuilder();
-
             sb.AppendLine("Le escursioni all'attivo sono: \n");
 
             if (_escursioni.Count != 0)
-                foreach (var s in _escursioni)
+                foreach (Escursione s in _escursioni)
                     sb.AppendLine(s.ToString());
             else
                 sb.AppendLine("Non vi è alcuna escursione attiva al momento.");
-
-
             return sb.ToString();
         }
 
@@ -216,7 +210,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string SalvataggioDati()
         {
             StringBuilder sb = new StringBuilder();
-
             sb.AppendLine($"Salvataggio dati del giorno: {DateTime.Today}");
             sb.AppendLine(VisualizzaPersone());
             sb.AppendLine(VisualizzaEscursioni());
@@ -226,10 +219,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 File.AppendAllText("Salvataggio.txt", sb.ToString());
                 return "Operazione riucita.";
             }
-            catch
-            {
-                return "Operazione non riuscita.";
-            }
+            catch { return "Operazione non riuscita."; }
 
         }
     }
