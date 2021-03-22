@@ -11,38 +11,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
-            //// Creo una nuova Escursione
-            //try { Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo, merenda"); }
-            //catch (Exception e) { Output(e); }
-
-            //try { Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo, merenda"); }
-            //catch (Exception e) { Output(e); }
-
-            //// Creo una lista di partecipanti
-            //List<Persona> partecipantiPrimaEscursione = new List<Persona>();
-            //List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
-            //partecipantiPrimaEscursione.Add(new Persona("Mario", "Rossi", "mrsiosisosi", "VIA ER FAINA, 4ccendin0"));
-            //optionalPerPartecipantiPrimaEscursione.Add("merenda, pranzo");
-            
-            //Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
-            //Agenzia.RimozioneOptional(1, "pranzo, merenda", "mrsiosisosi");
-
-            //partecipantiPrimaEscursione.Add(new Persona("Liam", "Rossi", "ASDASD", "123490"));
-            //optionalPerPartecipantiPrimaEscursione.Add("visita");
-
-            //partecipantiPrimaEscursione.Add(new Persona("Piergiovanniiddio", "iddio", "popiPopi", "123490"));
-            //optionalPerPartecipantiPrimaEscursione.Add("pranzo");
-
-            //Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
-
-            //Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "AAA1"));
-            //Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "popiPopi"));
-
-            ////Agenzia.ModificaEscursione(numeroEscursione : 2, descrizione : "descrizione");
-
-            //Console.WriteLine("\n" + Agenzia.VisualizzaPersone());
-            //Console.WriteLine("\n" + Agenzia.VisualizzaEscursioni());
-
             //Creo una nuova escursione in barca
             try { Agenzia.NuovaEscursione(1, 50, DateTime.Today.AddMonths(1), "Gita in barca", "Gita in barca presso le coste di Napoli", "merenda"); }
             catch(Exception e) { Output(e); }
@@ -68,23 +36,48 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Agenzia.ModificaEscursione(1, optional: "merenda, visita");
 
             //Visto la possibilità aggiungo l'optional a tutti i partecipanti
-            Agenzia.AggiuntaOptional("MRROH22", "visita", 1);
-            Agenzia.AggiuntaOptional("FRROH22", "visita", 1);
-            Agenzia.AggiuntaOptional("PRLIH22", "visita", 1);
-            Agenzia.AggiuntaOptional("GNPAH22", "visita", 1);
+            Console.WriteLine(Agenzia.AggiuntaOptional("MRROH22", "visita", 1));
+            Console.WriteLine(Agenzia.AggiuntaOptional("FRROH22", "visita", 1));
+            Console.WriteLine(Agenzia.AggiuntaOptional("PRLIH22", "visita", 1));
+            Console.WriteLine(Agenzia.AggiuntaOptional("GNPAH22", "visita", 1));
 
             //Rimuovo l'optional merenda ai partecipanti
-            Agenzia.RimozioneOptional(1, "merenda", "MRROH22");
-            Agenzia.RimozioneOptional(1, "merenda", "FRROH22");
-            Agenzia.RimozioneOptional(1, "merenda", "PRLIH22");
-            Agenzia.RimozioneOptional(1, "merenda", "GNPAH22");
+            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "MRROH22"));
+            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "FRROH22"));
+            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "PRLIH22"));
+            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "GNPAH22"));
 
             //Cancello la prenotazione di un partecipante
             Agenzia.CancellazionePrenotazione(1, "GNPAH22");
 
+            //Creo una nuova escursione
+            try { Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra", "pranzo,merenda"); }
+            catch (Exception e) { Output(e); }
+
+            //Creo una lista di partecipanti che si iscriveranno all'escursione
+            List<Persona> partecipantiEscursione2 = new List<Persona>();
+            List<string> optionalPartecipantiEscursione2 = new List<string>();
+            partecipantiEscursione2.Add(new Persona("Verdi", "Massimo", "VRMMM33", "Via Circonvallazione, 59"));
+            optionalPartecipantiEscursione2.Add("merenda,pranzo,visita");
+            partecipantiEscursione2.Add(new Persona("Angela", "Colonna", "ANCAN44", "Via Spiovente, 150"));
+            optionalPartecipantiEscursione1.Add("merenda");
+            partecipantiEscursione2.Add(new Persona("PierLuigi", "Pardo", "PRPRJ23", "Via delgi Ulivi, 45"));
+            optionalPartecipantiEscursione2.Add("merenda,pranzo");
+            partecipantiEscursione2.Add(new Persona("GianPaolo", "Franco", "GAFOH21", "Via Nuova, 66"));
+            optionalPartecipantiEscursione2.Add("pranzo");
+            partecipantiEscursione2.Add(new Persona("Steve", "Block", "SEBKA13", "Via Bloccata, 24"));
+            optionalPartecipantiEscursione2.Add("pranzo,merenda");
+
+            //Registro i partecipanti all'escursione
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(2, partecipantiEscursione2, optionalPartecipantiEscursione2)); //genera errore runtime, perchè dio bubu?
+
+            //Cambio il costo base dell'escursione 
+            Agenzia.ModificaEscursione(2, costo: 80);
+
+
             //Visualizzo la lista delle escursioni e delle persone all'attivo
-            Console.WriteLine(Agenzia.VisualizzaPersone());
-            Console.WriteLine(Agenzia.VisualizzaEscursioni());
+            Console.WriteLine("\n" + Agenzia.VisualizzaPersone());
+            Console.WriteLine("\n" + Agenzia.VisualizzaEscursioni());
 
             Agenzia.SalvataggioDati();
         }
