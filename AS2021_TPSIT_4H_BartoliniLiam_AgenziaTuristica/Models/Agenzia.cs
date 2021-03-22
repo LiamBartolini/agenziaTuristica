@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
-using Newtonsoft.Json;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
