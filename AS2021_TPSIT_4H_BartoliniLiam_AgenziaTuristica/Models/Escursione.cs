@@ -87,7 +87,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
                 //procedo ricalcolando il costo dell'escursione per ogni partecipante
                 for (int i = 0; i < costoPerPartecipante.Count; i++)
-                    costoPerPartecipante[i] = _prezzo + CalcoloOptional(optionalPerPartecipante[i]);
+                    costoPerPartecipante[i] = _prezzo + CalcoloCostoEscursione(optionalPerPartecipante[i]);
             }
         }
 
@@ -107,25 +107,25 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
-        public double CalcoloOptional(string optional)
+        public double CalcoloCostoEscursione(string optional)
         {
-            double retVal = 0;
+            double retVal = Prezzo; //aggiungo il costo base dell'escursione
             string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
-                if (opt[i] == "pranzo")
+                if (opt[i].Trim() == "pranzo")
                 {
                     retVal += (int)PrezziOptional.pranzo;
                     continue;
                 }
 
-                if (opt[i] == "merenda")
+                if (opt[i].Trim() == "merenda")
                 {
                     retVal += (int)PrezziOptional.merenda;
                     continue;
                 }
 
-                if (opt[i] == "visita")
+                if (opt[i].Trim() == "visita")
                 {
                     retVal += (int)PrezziOptional.visita;
                     continue;
@@ -165,12 +165,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     }
                 }
 
-            if (retVal.Length < 1)
+            //if (retVal.Length < 1)
                 return retVal;
 
-            // in caso vi sia più di un optional rimuovo la virgola ridondante
-            retVal = retVal.Remove(retVal.Length - 1);
-            return retVal;
+            //// in caso vi sia più di un optional rimuovo la virgola ridondante
+            //retVal = retVal.Remove(retVal.Length - 1);
+            //return retVal;
         }
 
         public override string ToString()

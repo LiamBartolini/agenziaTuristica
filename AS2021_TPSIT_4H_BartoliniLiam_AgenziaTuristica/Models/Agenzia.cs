@@ -74,7 +74,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             foreach (Persona persona in personeIscritte)
             {
                 int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
-                escursione.costoPerPartecipante.Add(escursione.CalcoloOptional(escursione.optionalPerPartecipante[indexPersona]));
+                escursione.costoPerPartecipante.Add(escursione.CalcoloCostoEscursione(escursione.optionalPerPartecipante[indexPersona]));
                 sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.costoPerPartecipante[indexPersona]} €");
             }
             return sb.ToString();
@@ -133,7 +133,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     escursione.optionalPerPartecipante[indicePersonaTrovata] = updatedOptional;
 
                     // Ricalcolo del prezzo!
-                    double newPrezzo = escursione.CalcoloOptional(updatedOptional);
+                    double newPrezzo = escursione.CalcoloCostoEscursione(updatedOptional);
                     escursione.costoPerPartecipante[indicePersonaTrovata] = newPrezzo;
                     break;
                 }
@@ -141,7 +141,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         // Possibile modifica degli optional da parte di un utente
-        static public void AggiuntaOptional(string optional, string codiceFiscale, int codiceEsursione)
+        static public void AggiuntaOptional(string codiceFiscale, string optional, int codiceEsursione)
         {
             Escursione escursione = RicercaEscursione(codiceEsursione);
 
