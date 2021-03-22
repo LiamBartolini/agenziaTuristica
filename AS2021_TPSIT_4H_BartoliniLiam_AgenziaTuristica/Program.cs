@@ -50,9 +50,34 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             //Cancello la prenotazione di un partecipante
             Agenzia.CancellazionePrenotazione(1, "GNPAH22");
 
+            //Creo una nuova escursione
+            try { Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra", "pranzo,merenda"); }
+            catch (Exception e) { Output(e); }
+
+            //Creo una lista di partecipanti che si iscriveranno all'escursione
+            List<Persona> partecipantiEscursione2 = new List<Persona>();
+            List<string> optionalPartecipantiEscursione2 = new List<string>();
+            partecipantiEscursione2.Add(new Persona("Verdi", "Massimo", "VRMMM33", "Via Circonvallazione, 59"));
+            optionalPartecipantiEscursione2.Add("merenda,pranzo,visita");
+            partecipantiEscursione2.Add(new Persona("Angela", "Colonna", "ANCAN44", "Via Spiovente, 150"));
+            optionalPartecipantiEscursione1.Add("merenda");
+            partecipantiEscursione2.Add(new Persona("PierLuigi", "Pardo", "PRPRJ23", "Via delgi Ulivi, 45"));
+            optionalPartecipantiEscursione2.Add("merenda,pranzo");
+            partecipantiEscursione2.Add(new Persona("GianPaolo", "Franco", "GAFOH21", "Via Nuova, 66"));
+            optionalPartecipantiEscursione2.Add("pranzo");
+            partecipantiEscursione2.Add(new Persona("Steve", "Block", "SEBKA13", "Via Bloccata, 24"));
+            optionalPartecipantiEscursione2.Add("pranzo,merenda");
+
+            //Registro i partecipanti all'escursione
+            Console.WriteLine(Agenzia.RegistrazionePartecipante(2, partecipantiEscursione2, optionalPartecipantiEscursione2)); //genera errore runtime, perchè dio bubu?
+
+            //Cambio il costo base dell'escursione 
+            Agenzia.ModificaEscursione(2, costo: 80);
+
+
             //Visualizzo la lista delle escursioni e delle persone all'attivo
-            Console.WriteLine(Agenzia.VisualizzaPersone());
-            Console.WriteLine(Agenzia.VisualizzaEscursioni());
+            Console.WriteLine("\n" + Agenzia.VisualizzaPersone());
+            Console.WriteLine("\n" + Agenzia.VisualizzaEscursioni());
 
             Agenzia.SalvataggioDati();
         }

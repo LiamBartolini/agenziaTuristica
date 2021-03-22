@@ -14,7 +14,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             foreach (Escursione e in _escursioni)
                 if (e.Codice == numeroEscursione)
-                    throw new Exception($"Esiste gia un'escursione di {numeroEscursione} numero!");
+                    throw new Exception($"Esiste gia un'escursione con codice {numeroEscursione}!");
 
             _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, type, descrizione, optional));
         }
@@ -209,7 +209,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string SalvataggioDati()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Salvataggio dati del giorno: {DateTime.Today}");
+
+            sb.AppendLine($"Salvataggio dati del giorno: {DateTime.Now}");
             sb.AppendLine(VisualizzaPersone());
             sb.AppendLine(VisualizzaEscursioni());
 
