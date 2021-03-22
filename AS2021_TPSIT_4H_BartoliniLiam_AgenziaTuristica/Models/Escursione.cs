@@ -120,7 +120,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return retVal;
         }
 
-
         //Metodo che consente di verificare che gli optional scelti da un partecipante siano conformi con quelli offerti dall'escursione
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
