@@ -87,30 +87,45 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
                 //procedo ricalcolando il costo dell'escursione per ogni partecipante
                 for (int i = 0; i < costoPerPartecipante.Count; i++)
-                    costoPerPartecipante[i] = _prezzo + CalcoloOptional(VerificaOptional(optionalPerPartecipante[i]));
+                    costoPerPartecipante[i] = _prezzo + CalcoloCostoEscursione(optionalPerPartecipante[i]);
             }
         }
 
-        //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
-        public double CalcoloOptional(string optional)
+        //Metodo che consente di modificare gli optional offerti da una escursione
+        public void CambioOptional (string optional)
         {
-            double retVal = 0;
+            _optionalDisponibili = optional; //cambio gli optional dell'escursione
+
+            //procedo al cambio degli optional di ogni partecipante
+            for (int i = 0; i < optionalPerPartecipante.Count; i++)
+            {
+                //optional scelti dal partecipante
+                string tmp = optionalPerPartecipante[i];
+                //ricontrollo gli optional scelti dal partecipante usando il metodo VerificaOptional()
+                optionalPerPartecipante[i] = VerificaOptional(tmp);
+            }             
+        }
+
+        //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
+        public double CalcoloCostoEscursione(string optional)
+        {
+            double retVal = Prezzo; //aggiungo il costo base dell'escursione
             string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
-                if (opt[i] == "pranzo")
+                if (opt[i].Trim() == "pranzo")
                 {
                     retVal += (int)PrezziOptional.pranzo;
                     continue;
                 }
 
-                if (opt[i] == "merenda")
+                if (opt[i].Trim() == "merenda")
                 {
                     retVal += (int)PrezziOptional.merenda;
                     continue;
                 }
 
-                if (opt[i] == "visita")
+                if (opt[i].Trim() == "visita")
                 {
                     retVal += (int)PrezziOptional.visita;
                     continue;
@@ -124,9 +139,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
         {
-            //VerificaOptional(escursione.OptionalDisponibili, optionalPersoneIscritte[i])
-            string[] splittedOptionalEscursione = OptionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
-            string[] splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
+            var splittedOptionalEscursione = this._optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
             string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
 
             for (int i = 0; i < splittedOptionalEscursione.Length; i++)
@@ -151,12 +165,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     }
                 }
 
-            if (retVal.Length < 1)
+            //if (retVal.Length < 1)
                 return retVal;
 
-            // in caso vi sia più di un optional rimuovo la virgola ridondante
-            retVal = retVal.Remove(retVal.Length - 1);
-            return retVal;
+            //// in caso vi sia più di un optional rimuovo la virgola ridondante
+            //retVal = retVal.Remove(retVal.Length - 1);
+            //return retVal;
         }
 
         public override string ToString()
