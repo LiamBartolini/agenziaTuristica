@@ -131,7 +131,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     continue;
                 }
             }
-
             return retVal;
         }
 
