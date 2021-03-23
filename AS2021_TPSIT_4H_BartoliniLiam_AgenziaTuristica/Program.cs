@@ -50,20 +50,21 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Agenzia.ModificaEscursione(1, optional: "merenda, visita");
 
             //Visto la possibilità aggiungo l'optional a tutti i partecipanti
-            Console.WriteLine(Agenzia.AggiuntaOptional("MRROH22", "visita", 1));
-            Console.WriteLine(Agenzia.AggiuntaOptional("FRROH22", "visita", 1));
-            Console.WriteLine(Agenzia.AggiuntaOptional("PRLIH22", "visita", 1));
-            Console.WriteLine(Agenzia.AggiuntaOptional("GNPAH22", "visita", 1));
+            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("MRROH22", "visita", 1));
+            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("FRROH22", "visita", 1));
+            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("PRLIH22", "visita", 1));
+            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("GNPAH22", "visita", 1));
 
             //Rimuovo l'optional merenda ai partecipanti
-            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "MRROH22"));
-            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "FRROH22"));
-            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "PRLIH22"));
-            Console.WriteLine(Agenzia.RimozioneOptional(1, "merenda", "GNPAH22"));
+            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "MRROH22"));
+            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "FRROH22"));
+            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "PRLIH22"));
+            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "GNPAH22"));
 
             //Cancello la prenotazione di un partecipante
             Agenzia.CancellazionePrenotazione(1, "GNPAH22");
 
+            //----------------------------------------------------------------------------------------------------------------------------------------
             //Creo una nuova escursione
             try { Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"); }
             catch (Exception e) { Output(e); }
@@ -87,6 +88,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
             //Cambio il costo base dell'escursione 
             Agenzia.ModificaEscursione(2, costo: 80);
+
+            //Cancello la prenotazione di un partecipante
+            Agenzia.CancellazionePrenotazione(2, "VRMMM33");
 
             //Visualizzo la lista delle escursioni e delle persone all'attivo
             Console.WriteLine($"\n{Agenzia.VisualizzaPersone()}");

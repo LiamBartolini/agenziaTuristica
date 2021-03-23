@@ -89,8 +89,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 escursione.PersoneIscritteEscursione.AddRange(personeIscritte.GetRange(0, numMax)); 
 
                 for (int i = 0; i < numMax; i++)
+                    //Aggiungo gli optional per ogni paretcipante
                     escursione.OptionalPerPartecipante.Add(escursione.VerificaOptional(optionalPersoneIscritte[i]));
 
+                //Infine calcolo il costo dell'escursione di ogni partecipante e lo salvo nella lista CostoPerPartecipante presente nella classe escursione
+                //inoltre mi creo una stringa che potrà venire utilizzata in caso si voglia comunicare i costi all'utente
                 StringBuilder sb = new StringBuilder();
                 for (int i = 0; i < numMax; i++)
                 {
@@ -99,7 +102,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     escursione.CostoPerPartecipante.Add(escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]));
                     sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.CostoPerPartecipante[indexPersona]} €");
                 }
-                return $"{sb} sono stati selezionati solo le prime {numMax} persone, il numero di partecipanti era superiore a quello limite {numMax}!";
+                return $"{sb}sono stati selezionati solo le prime {numMax} persone, il numero di partecipanti era superiore a quello limite {numMax}!";
             }
         }
 
@@ -183,11 +186,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string CancellazionePrenotazione(int numeroEscursione, string codiceFiscale)
         {
             Escursione escursione = RicercaEscursione(numeroEscursione);
-            foreach (Persona persona in _persone)
+            foreach (Persona persona in escursione.PersoneIscritteEscursione)
                 if (persona.CodiceFiscale == codiceFiscale)
                 {
-                    int indicePersona = _persone.IndexOf(persona);
-                    escursione.PersoneIscritteEscursione.RemoveAt(indicePersona - 1); // Rimuovo la persona dalla lista di persone dell'escursione scelta
+                    int indicePersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
+                    escursione.PersoneIscritteEscursione.RemoveAt(indicePersona); // Rimuovo la persona dalla lista di persone dell'escursione scelta
+                    escursione.OptionalPerPartecipante.RemoveAt(indicePersona); //Rimuovo gli optional scleti dal partecipante
+                    escursione.CostoPerPartecipante.RemoveAt(indicePersona); //Rimuovo il costo dell'escursione per il partecipante
                     return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Numero} è stata cancellata con successo!";
                 }
             return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Numero} non è stata trovata!";
