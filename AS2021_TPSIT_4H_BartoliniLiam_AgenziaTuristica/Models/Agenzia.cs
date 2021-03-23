@@ -13,7 +13,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public void NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string type, string descrizione, string optional)
         {
             foreach (Escursione e in _escursioni)
-                if (e.Codice == numeroEscursione)
+                if (e.Numero == numeroEscursione)
                     throw new Exception($"Esiste gia un'escursione con codice {numeroEscursione}!");
 
             _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, type, descrizione, optional));
@@ -22,7 +22,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Metodo che consente di modificare alcune propietà di una escursione già presente
         static public void ModificaEscursione(int numeroEscursione, double? costo = null, string descrizione = "", string tipologia = "", string optional = "")
         {
-            var escursione = RicercaEscursione(numeroEscursione); //Ricerco l'escursione cercata
+            Escursione escursione = RicercaEscursione(numeroEscursione); //Ricerco l'escursione cercata
 
             //in caso i parametri opzionali siano diversi dai parametri di default richiamo i metodi appositi della classe Escursione
             if (costo != null) escursione.CambioCosto((double)costo);
@@ -32,12 +32,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //metodo per annullare un escursione
-        static public string EliminazioneEscursione(int codiceEscursione)
+        static public string EliminazioneEscursione(int numeroEscursione)
         {
             try
             {
                 for (int i = 0; i < _escursioni.Count; i++)
-                    if (_escursioni[i].Codice == codiceEscursione) //cerco l'escursione con codice dato
+                    if (_escursioni[i].Numero == numeroEscursione) //cerco l'escursione con codice dato
                     {
                         _escursioni.RemoveAt(i); //e la rimuovo dalla lista
                         break;
@@ -52,33 +52,56 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string RegistrazionePartecipante(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
             Escursione escursione = RicercaEscursione(numeroEscursione); //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
-
-            // Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
-            for (int i = 0; i < personeIscritte.Count; i++)
-                if (!_persone.Contains(personeIscritte[i])) // Se tra le persone che ho gia in archivio non ne trovo una uguale allora la aggiungo
-                    _persone.Add(personeIscritte[i]);
-
-            escursione.PersoneIscritteEscursione.AddRange(personeIscritte);
-
-            //Inserisco gli optional per ogni persona dentro la lista
-            for (int i = 0; i < optionalPersoneIscritte.Count; i++)
+            int numMax = escursione.NumeroMassimoPartecipanti;
+            if (personeIscritte.Count <= numMax)
             {
-                //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
-                escursione.optionalPerPartecipante.Add(escursione.VerificaOptional(optionalPersoneIscritte[i]));
-            }
+                // Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
+                for (int i = 0; i < personeIscritte.Count; i++)
+                    if (!_persone.Contains(personeIscritte[i])) // Se tra le persone che ho gia in archivio non ne trovo una uguale allora la aggiungo
+                        _persone.Add(personeIscritte[i]);
 
-            // Calcolo il prezzo dell'escursione per ogni partecipante e lo aggiungo alla lista costoPerPartecipante dell'istanza della classe Escursione
-            // Inoltre creo una stringa con la quale comunicherò i prezzi a seconda dei partecipanti
-            StringBuilder sb = new StringBuilder();
-            foreach (Persona persona in personeIscritte)
-            {
-                int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
-                escursione.costoPerPartecipante.Add(escursione.CalcoloCostoEscursione(escursione.optionalPerPartecipante[indexPersona]));
-                sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.costoPerPartecipante[indexPersona]} €");
+                escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Aggiungo tutte le persone iscritte all'escursione
+
+                //Inserisco gli optional per ogni persona dentro la lista
+                for (int i = 0; i < optionalPersoneIscritte.Count; i++)
+                    //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
+                    escursione.OptionalPerPartecipante.Add(escursione.VerificaOptional(optionalPersoneIscritte[i]));
+                
+                // Calcolo il prezzo dell'escursione per ogni partecipante e lo aggiungo alla lista costoPerPartecipante dell'istanza della classe Escursione
+                // Inoltre creo una stringa con la quale comunicherò i prezzi a seconda dei partecipanti
+                StringBuilder sb = new StringBuilder();
+                foreach (Persona persona in personeIscritte)
+                {
+                    int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
+                    escursione.CostoPerPartecipante.Add(escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]));
+                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.CostoPerPartecipante[indexPersona]} €");
+                }
+                return sb.ToString();
             }
-            return sb.ToString();
+            else
+            {
+                for (int i = 0; i < numMax; i++)
+                    // Controllo che non ci siano gia le stesse persone
+                    if (!_persone.Contains(personeIscritte[i]))
+                        _persone.Add(personeIscritte[i]);
+                
+                // Aggiungo le prime 10 persone della lista di iscritti
+                escursione.PersoneIscritteEscursione.AddRange(personeIscritte.GetRange(0, numMax)); 
+
+                for (int i = 0; i < numMax; i++)
+                    escursione.OptionalPerPartecipante.Add(escursione.VerificaOptional(optionalPersoneIscritte[i]));
+
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < numMax; i++)
+                {
+                    Persona persona = personeIscritte[i];
+                    int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
+                    escursione.CostoPerPartecipante.Add(escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]));
+                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.CostoPerPartecipante[indexPersona]} €");
+                }
+                return $"{sb} sono stati selezionati solo le prime {numMax} persone, il numero di partecipanti era superiore a quello limite {numMax}!";
+            }
         }
-
 
         //Metodo che consente ad un utente di rimuovere aventuali optional scelti durante l'iscrizione all'escursione
         //Una volta rimossi gli optional il metodo rieseguirà anche il calcolo del costo dell'escursione per il partecipante
@@ -92,51 +115,52 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 {
                     int indicePersonaTrovata = escursione.PersoneIscritteEscursione.IndexOf(persona);
                     string updatedOptional = "";
-                    string[] splitted = escursione.optionalPerPartecipante[indicePersonaTrovata].Trim().Split(',');
-                    string[] splittedOptional = optional.Trim().Split(',');
+                    string[] splittedOptionalPartecipante = escursione.OptionalPerPartecipante[indicePersonaTrovata].Trim().Split(',');
+                    string[] splittedOptionalScelto = optional.Trim().Split(',');
 
-                    if (splittedOptional.Length == 1) // Se l'optional da cercare è solo uno
+                    if (splittedOptionalScelto.Length == 1) // Se l'optional da cercare è solo uno
                     {
                         // Cerco se tra quelle stringhe c'è l'optional da rimuovere
-                        foreach (string s in splitted)
+                        foreach (string s in splittedOptionalPartecipante)
                             if (s == optional)
-                                splitted[Array.IndexOf(splitted, s)] = "";
+                                splittedOptionalPartecipante[Array.IndexOf(splittedOptionalPartecipante, s)] = string.Empty;
 
                         // Ricompongo la stringa
-                        for (int i = 0; i < splitted.Length; i++)
-                            if (i != splitted.Length - 1 && i != 0)
-                                updatedOptional += splitted[i] + ",";
+                        for (int i = 0; i < splittedOptionalPartecipante.Length; i++)
+                            if (i != splittedOptionalPartecipante.Length - 1 && i != 0)
+                                updatedOptional += splittedOptionalPartecipante[i] + ",";
                             else
-                                updatedOptional += splitted[i];
+                                updatedOptional += splittedOptionalPartecipante[i];
                     }
                     else
                     {
-                        // Splitto gli optional da 
                         // Li cerco, se li trovo li sostituisco con una stringa vuota
-                        for (int i = 0; i < splittedOptional.Length; i++)
-                            for (int j = 0; j < splitted.Length; j++)
-                                if (splittedOptional[i] == splitted[j])
-                                    splitted[Array.IndexOf(splitted, splitted[j])] = "";
+                        for (int i = 0; i < splittedOptionalScelto.Length; i++)
+                            for (int j = 0; j < splittedOptionalPartecipante.Length; j++)
+                                if (splittedOptionalScelto[i] == splittedOptionalPartecipante[j])
+                                    splittedOptionalPartecipante[Array.IndexOf(splittedOptionalPartecipante, splittedOptionalPartecipante[j])] = string.Empty;
 
                         // Ricompongo la stringa
-                        for (int i = 0; i < splitted.Length; i++)
-                            if (splitted[i] != "" && i != splitted.Length - 1 && i != 0)
-                                updatedOptional += splitted[i] + ",";
+                        for (int i = 0; i < splittedOptionalPartecipante.Length; i++)
+                            if (splittedOptionalPartecipante[i] != "" && i != splittedOptionalPartecipante.Length - 1 && i != 0)
+                                updatedOptional += splittedOptionalPartecipante[i] + ",";
                             else
-                                updatedOptional += splitted[i];
+                                updatedOptional += splittedOptionalPartecipante[i];
                     }
 
                     // Assegno gli optional aggiornati alla persona
-                    escursione.optionalPerPartecipante[indicePersonaTrovata] = updatedOptional;
+                    escursione.OptionalPerPartecipante[indicePersonaTrovata] = updatedOptional;
 
-                    // Ricalcolo del prezzo!
+                    // Ricalcolo del prezzo
                     double newPrezzo = escursione.CalcoloCostoEscursione(updatedOptional);
-                    escursione.costoPerPartecipante[indicePersonaTrovata] = newPrezzo;
-                    return $"Optional rimosso prezzo aggiornato per `{codiceFiscale}`: {newPrezzo}€";
+                    escursione.CostoPerPartecipante[indicePersonaTrovata] = newPrezzo;
+                    return $"Optional rimosso prezzo aggiornato per `{codiceFiscale}`: {newPrezzo} €";
                 }
+                else
+                    return $"`{codiceFiscale}` non trovato!";
             }
 
-            return $"`{codiceFiscale}` non trovato!";
+            return $"Escursione n° {numeroEscursione} non trovata!";
         }
 
         // Possibile modifica degli optional da parte di un utente
@@ -148,11 +172,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 if (persona.CodiceFiscale == codiceFiscale) // Cerco l'utente usando il suo codice fiscale
                 {
                     int indicePersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
-                    escursione.optionalPerPartecipante[indicePersona] += " " + escursione.VerificaOptional(optional); // Aggiungo gli optional verificandoli con il metodo VerificaOptional
-                    double costo = escursione.CalcoloCostoEscursione(escursione.optionalPerPartecipante[indicePersona]);
-                    return $"Optional aggiunto prezzo aggiornato per `{codiceFiscale}`: {costo}€";
+                    escursione.OptionalPerPartecipante[indicePersona] += " " + escursione.VerificaOptional(optional); // Aggiungo gli optional verificandoli con il metodo VerificaOptional
+                    double costo = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indicePersona]);
+                    return $"Optional aggiunto prezzo aggiornato per `{codiceFiscale}`: {costo} €";
                 }
-
             return $"`{codiceFiscale}` non trovato!";
         }
 
@@ -165,9 +188,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 {
                     int indicePersona = _persone.IndexOf(persona);
                     escursione.PersoneIscritteEscursione.RemoveAt(indicePersona - 1); // Rimuovo la persona dalla lista di persone dell'escursione scelta
-                    return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Codice} è stata cancellata con successo!";
+                    return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Numero} è stata cancellata con successo!";
                 }
-            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!";
+            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Numero} non è stata trovata!";
         }
 
         //Metodo interno con il quale ricerco la posizione di una escursione all'interno della lista _escursioni
@@ -175,7 +198,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
             for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
-                if (_escursioni[i].Codice == numeroEscursione) //ricerco l'escursione con il codice desiderato
+                if (_escursioni[i].Numero == numeroEscursione) //ricerco l'escursione con il codice desiderato
                     return _escursioni[i];
             return null;
         }
@@ -184,10 +207,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string VisualizzaPersone()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Le persone presenti nell'archivio sono: \n");
-
+            sb.AppendLine($"Le persone presenti nell'archivio sono {_persone.Count}: \n");
+            int i = 1;
             foreach (Persona p in _persone)
-                sb.AppendLine(p.ToString());
+            {
+                sb.AppendLine($"\n\t{i}\n{p}");
+                i++;
+            }
             return sb.ToString();
         }
 
@@ -195,7 +221,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public string VisualizzaEscursioni()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("Le escursioni all'attivo sono: \n");
+            sb.AppendLine($"Le escursioni all'attivo sono {_escursioni.Count}: \n");
 
             if (_escursioni.Count != 0)
                 foreach (Escursione s in _escursioni)
@@ -220,7 +246,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 return "Operazione riucita.";
             }
             catch { return "Operazione non riuscita."; }
-
         }
     }
 }

@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Text;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
@@ -16,8 +14,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public string Cognome { get => _cognome;}
         public string CodiceFiscale { get => _codiceFiscale; }
         public string Indirizzo { get => _indirizzo; }
-        
-        public Persona () { }
 
         // Costruttore standard
         public Persona(string nome, string cognome, string codiceFiscale, string indirizzo)
@@ -35,7 +31,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             sb.AppendLine($"Cognome:\t{_cognome}");
             sb.AppendLine($"Codice fiscale:\t{_codiceFiscale}");
             sb.AppendLine($"Indirizzo:\t{_indirizzo}");
-            sb.AppendLine("===============");
+            sb.AppendLine("\t===============");
             return sb.ToString();
         }
     }

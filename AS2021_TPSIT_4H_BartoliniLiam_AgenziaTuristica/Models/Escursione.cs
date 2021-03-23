@@ -6,7 +6,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     class Escursione
     {
-        int _codice; //codice identificativo
+        int _numero; //codice identificativo
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
@@ -18,14 +18,14 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public List<Persona> PersoneIscritteEscursione = new List<Persona>();
 
         //lista parallela che contiene gli optional scleti da ogni partecipante
-        public List<string> optionalPerPartecipante = new List<string>();
+        public List<string> OptionalPerPartecipante = new List<string>();
 
         //lista parallela che conterrà il costi dell'escursione per ogni partecipante a seconda del prezzo base e dei vari optional
-        public List<double> costoPerPartecipante = new List<double>();
+        public List<double> CostoPerPartecipante = new List<double>();
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public string Tipo { get => _tipo; }
-        public int Codice { get => _codice; }
+        public int Numero { get => _numero; }
         public double Prezzo { get => _prezzo; }
         public string OptionalDisponibili { get => _optionalDisponibili; }
 
@@ -46,7 +46,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
-            _codice = codice;
+            _numero = codice;
             _data = data;
             _prezzo = prezzo;
             _tipo = tipo;
@@ -59,10 +59,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public void CambioData (DateTime date)
         {
             //verifico che la nuova data in cui avverrà l'escursione sia maggiore o uguale alla data odierna
-            if(DateTime.Compare(date, DateTime.Today) >= 0)
-            {
-                _data = date;
-            }
+            if(DateTime.Compare(date, DateTime.Today) >= 0) _data = date;
         }
 
         //cambio del tipo di escursione
@@ -86,30 +83,30 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 _prezzo = costo;
 
                 //procedo ricalcolando il costo dell'escursione per ogni partecipante
-                for (int i = 0; i < costoPerPartecipante.Count; i++)
-                    costoPerPartecipante[i] = _prezzo + CalcoloCostoEscursione(optionalPerPartecipante[i]);
+                for (int i = 0; i < CostoPerPartecipante.Count; i++)
+                    CostoPerPartecipante[i] = _prezzo + CalcoloCostoEscursione(OptionalPerPartecipante[i]);
             }
         }
 
         //Metodo che consente di modificare gli optional offerti da una escursione
-        public void CambioOptional (string optional)
+        public void CambioOptional(string optional)
         {
             _optionalDisponibili = optional; //cambio gli optional dell'escursione
 
             //procedo al cambio degli optional di ogni partecipante
-            for (int i = 0; i < optionalPerPartecipante.Count; i++)
+            for (int i = 0; i < OptionalPerPartecipante.Count; i++)
             {
                 //optional scelti dal partecipante
-                string tmp = optionalPerPartecipante[i];
+                string tmp = OptionalPerPartecipante[i];
                 //ricontrollo gli optional scelti dal partecipante usando il metodo VerificaOptional()
-                optionalPerPartecipante[i] = VerificaOptional(tmp);
+                OptionalPerPartecipante[i] = VerificaOptional(tmp);
             }             
         }
 
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
         public double CalcoloCostoEscursione(string optional)
         {
-            double retVal = Prezzo; //aggiungo il costo base dell'escursione
+            double retVal = _prezzo; //aggiungo il costo base dell'escursione
             string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
@@ -138,7 +135,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
         {
-            var splittedOptionalEscursione = this._optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalEscursione = _optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
             var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
             string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
 
@@ -164,17 +161,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     }
                 }
 
-            //if (retVal.Length < 1)
                 return retVal;
-
-            //// in caso vi sia più di un optional rimuovo la virgola ridondante
-            //retVal = retVal.Remove(retVal.Length - 1);
-            //return retVal;
-        }
+            }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"Numero:\t{_numero}");
             sb.AppendLine($"Data:\t{_data:dd/MM/yyyy}");
             sb.AppendLine($"Tipo:\t{_tipo}");
             sb.AppendLine($"Descrizione:\t{_descrizione}");
