@@ -80,8 +80,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             optionalPartecipantiEscursione2.Add("merenda,pranzo");
             partecipantiEscursione2.Add(new Persona("GianPaolo", "Franco", "GAFOH21", "Via Nuova, 66"));
             optionalPartecipantiEscursione2.Add("pranzo");
-            partecipantiEscursione2.Add(new Persona("Steve", "Block", "SEBKA13", "Via Bloccata, 24"));
-            optionalPartecipantiEscursione2.Add("pranzo,merenda");
 
             //Registro i partecipanti all'escursione
             Console.WriteLine(Agenzia.RegistrazionePartecipante(2, partecipantiEscursione2, optionalPartecipantiEscursione2));
