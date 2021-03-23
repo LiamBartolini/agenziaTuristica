@@ -6,7 +6,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     class Escursione
     {
-        int _numero; //codice identificativo
+        int _numero; //numero identificativo
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
@@ -42,8 +42,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             visita = 20
         }
         
-        public Escursione() { }
-
         public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
             _numero = codice;

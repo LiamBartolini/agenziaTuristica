@@ -10,13 +10,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
-        static public void NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string type, string descrizione, string optional)
+        static public void NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
             foreach (Escursione e in _escursioni)
                 if (e.Numero == numeroEscursione)
                     throw new Exception($"Esiste gia un'escursione con codice {numeroEscursione}!");
 
-            _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, type, descrizione, optional));
+            _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, tipo, descrizione, optional));
         }
 
         //Metodo che consente di modificare alcune propietà di una escursione già presente
@@ -32,7 +32,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //metodo per annullare un escursione
-        static public string EliminazioneEscursione(int numeroEscursione)
+        static public string EliminaEscursione(int numeroEscursione)
         {
             try
             {
