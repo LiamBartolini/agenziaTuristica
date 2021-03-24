@@ -20,15 +20,20 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         }
 
         //Metodo che consente di modificare alcune propietà di una escursione già presente
-        static public void ModificaEscursione(int numeroEscursione, double? costo = null, string descrizione = "", string tipologia = "", string optional = "")
+        static public string ModificaEscursione(int numeroEscursione, double? costo = null, string descrizione = "", string tipologia = "", string optional = "")
         {
             Escursione escursione = RicercaEscursione(numeroEscursione); //Ricerco l'escursione cercata
 
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"\n\tModifica escursione n°{numeroEscursione}"); // `intestazione` output
+            
             //in caso i parametri opzionali siano diversi dai parametri di default richiamo i metodi appositi della classe Escursione
-            if (costo != null) escursione.CambioCosto((double)costo);
-            if (descrizione != "") escursione.CambioDescrizione(descrizione);
-            if (tipologia != "") escursione.CambioTipo(tipologia);
-            if (optional != "") escursione.CambioOptional(optional);
+            if (costo != null) sb.AppendLine($"Esito modifica costo: {escursione.ModificaCosto((double)costo)}");
+            if (descrizione != "") sb.AppendLine($"Esito modifica descrizione: {escursione.ModificaDescrizione(descrizione)}");
+            if (tipologia != "") sb.AppendLine($"Esito modifica tipo: {escursione.ModificaTipo(tipologia)}");
+            if (optional != "") sb.AppendLine($"Esito modifica optional: {escursione.ModificaOptional(optional)}\n");
+
+            return sb.ToString();
         }
 
         //metodo per annullare un escursione
