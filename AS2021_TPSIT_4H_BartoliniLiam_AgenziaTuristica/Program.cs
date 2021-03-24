@@ -12,8 +12,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
             //Creo una nuova escursione in barca
-            try { Agenzia.NuovaEscursione(1, 50, DateTime.Today.AddMonths(1), "Gita in barca", "Gita in barca presso le coste di Napoli", "merenda"); }
-            catch(Exception e) { Output(e); }
+            Console.WriteLine(Agenzia.NuovaEscursione(1, 50, DateTime.Today.AddMonths(1), "Gita in barca", "Gita in barca presso le coste di Napoli", "merenda"));
 
             //Creo una lista di partecipanti che si iscriveranno all'escursione
             List<Persona> partecipantiEscursione1 = new List<Persona>();
@@ -66,8 +65,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
             //----------------------------------------------------------------------------------------------------------------------------------------
             //Creo una nuova escursione
-            try { Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"); }
-            catch (Exception e) { Output(e); }
+            Console.WriteLine(Agenzia.NuovaEscursione(1, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"));
 
             //Creo una lista di partecipanti che si iscriveranno all'escursione
             List<Persona> partecipantiEscursione2 = new List<Persona>();
@@ -96,13 +94,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine($"\n{Agenzia.VisualizzaEscursioni()}");
 
             Console.WriteLine(Agenzia.SalvataggioDati());
-        }
-
-        static void Output(Exception e)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(e.Message);
-            Console.ResetColor();
         }
     }
 }

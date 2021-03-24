@@ -10,13 +10,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
-        static public void NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string tipo, string descrizione, string optional)
+        static public string NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
             foreach (Escursione e in _escursioni)
                 if (e.Codice == numeroEscursione)
-                    throw new Exception($"Esiste gia un'escursione con codice {numeroEscursione}!");
+                    return $"Esiste gia un'escursione con codice {numeroEscursione}!";
+                    
 
             _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, tipo, descrizione, optional));
+            return "Escursione creata con successo!";
         }
 
         //Metodo che consente di modificare alcune propietà di una escursione già presente
@@ -25,13 +27,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             Escursione escursione = RicercaEscursione(numeroEscursione); //Ricerco l'escursione cercata
 
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"\n\tModifica escursione n°{numeroEscursione}"); // `intestazione` output
-            
+            sb.AppendLine($"Modifica escursione n°{numeroEscursione}"); // `intestazione` output
+
             //in caso i parametri opzionali siano diversi dai parametri di default richiamo i metodi appositi della classe Escursione
-            if (costo != null) sb.AppendLine($"Esito modifica costo: {escursione.ModificaCosto((double)costo)}");
-            if (descrizione != "") sb.AppendLine($"Esito modifica descrizione: {escursione.ModificaDescrizione(descrizione)}");
-            if (tipologia != "") sb.AppendLine($"Esito modifica tipo: {escursione.ModificaTipo(tipologia)}");
-            if (optional != "") sb.AppendLine($"Esito modifica optional: {escursione.ModificaOptional(optional)}\n");
+            if (costo != null) if (escursione.ModificaCosto((double)costo)) sb.AppendLine("Modifica costo riuscita!"); else sb.AppendLine("Modifica costo non riuscita!");
+            if (descrizione != "") if(escursione.ModificaDescrizione(descrizione)) sb.AppendLine("Modifica descrizione riuscita!"); else sb.AppendLine("Modifica descrizione non riuscita!");
+            if (tipologia != "") if(escursione.ModificaTipo(tipologia)) sb.AppendLine("Modifica tipologia riuscita!"); else sb.AppendLine("Modifica tipologia non riuscita!");
+            if (optional != "") if(escursione.ModificaOptional(optional)) sb.AppendLine("Modifica optional riuscita!"); else sb.AppendLine("Modifica optional non riuscita!");
 
             return sb.ToString();
         }

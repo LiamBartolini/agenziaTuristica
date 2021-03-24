@@ -27,10 +27,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Nome:\t\t{Nome}");
-            sb.AppendLine($"Cognome:\t{Cognome}");
-            sb.AppendLine($"Codice fiscale:\t{CodiceFiscale}");
-            sb.AppendLine($"Indirizzo:\t{Indirizzo}");
+            sb.AppendLine($"Nome:\t\t{_nome}");
+            sb.AppendLine($"Cognome:\t{_cognome}");
+            sb.AppendLine($"Codice fiscale:\t{_codiceFiscale}");
+            sb.AppendLine($"Indirizzo:\t{_indirizzo}");
             sb.AppendLine("\t===============");
             return sb.ToString();
         }
