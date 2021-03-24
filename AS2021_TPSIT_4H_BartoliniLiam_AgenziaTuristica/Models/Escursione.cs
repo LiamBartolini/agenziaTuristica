@@ -6,7 +6,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     class Escursione
     {
-        int _numero; //numero identificativo
+        int _codice; //numero identificativo
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
@@ -24,8 +24,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public List<double> CostoPerPartecipante = new List<double>();
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
+        public DateTime Data { get => _data; }
         public string Tipo { get => _tipo; }
-        public int Numero { get => _numero; }
+        public string Descrizione { get => _descrizione; }
+        public int Codice { get => _codice; }
         public double Prezzo { get => _prezzo; }
         public string OptionalDisponibili { get => _optionalDisponibili; }
 
@@ -44,13 +46,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         
         public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
-            _numero = codice;
+            _codice = codice;
             _data = data;
             _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
             _optionalDisponibili = optional;
-            _numeroMaxPartecipanti = tipo.ToLower() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
+            _numeroMaxPartecipanti = tipo.ToLower().Trim().Trim() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
         }
 
         //cambio della data in cui verrà effettuata l'escursione
@@ -64,8 +66,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public void CambioTipo(string tipo)
         {
             //verifico che la tipologia sia conforme alle due tipologie offerte dall'agenzia
-            if (tipo.ToLower() == "gita in barca" || tipo.ToLower() == "gita a cavallo")
-                _tipo = tipo.ToLower();
+            if (tipo.ToLower().Trim().Trim() == "gita in barca" || tipo.ToLower().Trim() == "gita a cavallo")
+                _tipo = tipo.ToLower().Trim();
         }
 
         //cambio descrizione dell'escursione
@@ -104,7 +106,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
         public double CalcoloCostoEscursione(string optional)
         {
-            double retVal = _prezzo; //aggiungo il costo base dell'escursione
+            double retVal = Prezzo; //aggiungo il costo base dell'escursione
             string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
@@ -133,42 +135,42 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
         {
-            var splittedOptionalEscursione = _optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalEscursione = OptionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
             var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
-            string retVal = ""; //stringa in cui salverò gli optional scleti dal partecipante una volta verificati
+            List<string> retVal = new List<string>(); //lista di stringhe in cui aggiungerò gli optional scelti dal partecipante verificando che siano conformi con quelli offerti dalla escursione
 
             for (int i = 0; i < splittedOptionalEscursione.Length; i++)
                 for (int j = 0; j < splittedOptionalPartecipante.Length; j++)
                 {
                     if (splittedOptionalEscursione[i].Trim() == "pranzo" && splittedOptionalPartecipante[j].Trim() == "pranzo")
                     {
-                        retVal += "pranzo,";
+                        retVal.Add("pranzo");
                         continue;
                     }
 
                     if (splittedOptionalEscursione[i].Trim() == "merenda" && splittedOptionalPartecipante[j].Trim() == "merenda")
                     {
-                        retVal += "merenda,";
+                        retVal.Add("merenda");
                         continue;
                     }
 
                     if (splittedOptionalEscursione[i].Trim() == "visita" && splittedOptionalPartecipante[j].Trim() == "visita")
                     {
-                        retVal += "visita,";
+                        retVal.Add("visita");
                         continue;
                     }
                 }
 
-                return retVal;
+                return String.Join(",", retVal); //ritono la stringa unendo in una unica stringa tutit i suoi valori separandoli con una virgola
             }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Numero:\t{_numero}");
-            sb.AppendLine($"Data:\t{_data:dd/MM/yyyy}");
-            sb.AppendLine($"Tipo:\t{_tipo}");
-            sb.AppendLine($"Descrizione:\t{_descrizione}");
+            sb.AppendLine($"Numero:\t{Codice}");
+            sb.AppendLine($"Data:\t{Data:dd/MM/yyyy}");
+            sb.AppendLine($"Tipo:\t{Tipo}");
+            sb.AppendLine($"Descrizione:\t{Descrizione}");
             sb.AppendLine("Persone iscritte alla escursione: \n");
             foreach (Persona persona in PersoneIscritteEscursione)
                 sb.AppendLine(persona.ToString());

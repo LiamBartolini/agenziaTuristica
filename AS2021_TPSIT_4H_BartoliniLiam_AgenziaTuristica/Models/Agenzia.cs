@@ -13,7 +13,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static public void NuovaEscursione(int numeroEscursione, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
             foreach (Escursione e in _escursioni)
-                if (e.Numero == numeroEscursione)
+                if (e.Codice == numeroEscursione)
                     throw new Exception($"Esiste gia un'escursione con codice {numeroEscursione}!");
 
             _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, tipo, descrizione, optional));
@@ -37,7 +37,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             try
             {
                 for (int i = 0; i < _escursioni.Count; i++)
-                    if (_escursioni[i].Numero == numeroEscursione) //cerco l'escursione con codice dato
+                    if (_escursioni[i].Codice == numeroEscursione) //cerco l'escursione con codice dato
                     {
                         _escursioni.RemoveAt(i); //e la rimuovo dalla lista
                         break;
@@ -51,7 +51,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //In caso le persone che si iscriveranno all'escursione non siano presenti alla lista _persone verranno aggiunte ad essa
         static public string RegistrazionePartecipante(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
-            Escursione escursione = RicercaEscursione(numeroEscursione); //variabile in cui salverò le informazione dell'elemento della lista una volta trovato
+            Escursione escursione = RicercaEscursione(numeroEscursione); 
             int numMax = escursione.NumeroMassimoPartecipanti;
             int numeroIscritti = personeIscritte.Count;
             
@@ -205,9 +205,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     escursione.PersoneIscritteEscursione.RemoveAt(indicePersona); // Rimuovo la persona dalla lista di persone dell'escursione scelta
                     escursione.OptionalPerPartecipante.RemoveAt(indicePersona); //Rimuovo gli optional scleti dal partecipante
                     escursione.CostoPerPartecipante.RemoveAt(indicePersona); //Rimuovo il costo dell'escursione per il partecipante
-                    return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Numero} è stata cancellata con successo!";
+                    return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Codice} è stata cancellata con successo!";
                 }
-            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Numero} non è stata trovata!";
+            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!";
         }
 
         //Metodo interno con il quale ricerco la posizione di una escursione all'interno della lista _escursioni
@@ -215,7 +215,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             // Prendere l'escursione, tutti i suoi partecipanti, cercare il partecipante con il cf e togliergli l'optional
             for (int i = 0; i < _escursioni.Count; i++) //il ciclo si ferma se rileva che isFinded è diventato true
-                if (_escursioni[i].Numero == numeroEscursione) //ricerco l'escursione con il codice desiderato
+                if (_escursioni[i].Codice == numeroEscursione) //ricerco l'escursione con il codice desiderato
                     return _escursioni[i];
             return null;
         }
