@@ -66,7 +66,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public void CambioTipo(string tipo)
         {
             //verifico che la tipologia sia conforme alle due tipologie offerte dall'agenzia
-            if (tipo.ToLower().Trim().Trim() == "gita in barca" || tipo.ToLower().Trim() == "gita a cavallo")
+            if (tipo.ToLower().Trim() == "gita in barca" || tipo.ToLower().Trim() == "gita a cavallo")
                 _tipo = tipo.ToLower().Trim();
         }
 
