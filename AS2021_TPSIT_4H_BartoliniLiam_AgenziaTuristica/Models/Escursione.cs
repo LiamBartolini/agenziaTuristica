@@ -15,13 +15,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _optionalDisponibili; //optional offerti dall'escursione
 
         //persone attualmente iscritte all'escursione
-        public List<Persona> PersoneIscritteEscursione = new List<Persona>();
+        public List<Persona> PersoneIscritteEscursione;
 
         //lista parallela che contiene gli optional scleti da ogni partecipante
-        public List<string> OptionalPerPartecipante = new List<string>();
+        public List<string> OptionalPerPartecipante;
 
         //lista parallela che conterrà il costi dell'escursione per ogni partecipante a seconda del prezzo base e dei vari optional
-        public List<double> CostoPerPartecipante = new List<double>();
+        public List<double> CostoPerPartecipante;
 
         public int NumeroMassimoPartecipanti { get => _numeroMaxPartecipanti; }
         public DateTime Data { get => _data; }
@@ -46,35 +46,54 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         
         public Escursione(int codice, double prezzo, DateTime data, string tipo, string descrizione, string optional)
         {
+            // Istanziazione Liste
+            PersoneIscritteEscursione = new List<Persona>();
+            OptionalPerPartecipante = new List<string>();
+            CostoPerPartecipante = new List<double>();
+
             _codice = codice;
             _data = data;
             _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
             _optionalDisponibili = optional;
-            _numeroMaxPartecipanti = tipo.ToLower().Trim().Trim() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
+            _numeroMaxPartecipanti = tipo.ToLower().Trim() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
         }
 
         //cambio della data in cui verrà effettuata l'escursione
-        public void CambioData (DateTime date)
+        public bool ModificaData (DateTime date)
         {
             //verifico che la nuova data in cui avverrà l'escursione sia maggiore o uguale alla data odierna
-            if(DateTime.Compare(date, DateTime.Today) >= 0) _data = date;
+            if (DateTime.Compare(date, DateTime.Today) >= 0)
+            {
+                _data = date;
+                return true;
+            }
+            return false;
         }
 
         //cambio del tipo di escursione
-        public void CambioTipo(string tipo)
+        public bool ModificaTipo(string tipo)
         {
             //verifico che la tipologia sia conforme alle due tipologie offerte dall'agenzia
-            if (tipo.ToLower().Trim() == "gita in barca" || tipo.ToLower().Trim() == "gita a cavallo")
-                _tipo = tipo.ToLower().Trim();
+            string formatted = tipo.ToLower().Trim();
+            if (formatted == "gita in barca" || formatted == "gita a cavallo")
+            {
+                _tipo = formatted;
+                return true;
+            }
+            return false;
         }
 
         //cambio descrizione dell'escursione
-        public void CambioDescrizione(string descrizione) => _descrizione = descrizione;
+        public bool ModificaDescrizione(string descrizione)
+        {
+            try { _descrizione = descrizione; return true; }
+            catch { return false; }
+        }
 
         //cambio del costo della escursione (da finire in quanto il prezzo di ogni partecipante va ricalcolato)
-        public void CambioCosto(double costo) 
+        public bool ModificaCosto(double costo) 
         {   
             //il prezzo per essere valido deve essere maggiore di zero
             if (costo > 0)
@@ -85,22 +104,33 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 //procedo ricalcolando il costo dell'escursione per ogni partecipante
                 for (int i = 0; i < CostoPerPartecipante.Count; i++)
                     CostoPerPartecipante[i] = _prezzo + CalcoloCostoEscursione(OptionalPerPartecipante[i]);
+
+                return true;
             }
+            return false;
         }
 
         //Metodo che consente di modificare gli optional offerti da una escursione
-        public void CambioOptional(string optional)
+        public bool ModificaOptional(string optional)
         {
-            _optionalDisponibili = optional; //cambio gli optional dell'escursione
-
-            //procedo al cambio degli optional di ogni partecipante
-            for (int i = 0; i < OptionalPerPartecipante.Count; i++)
+            try
             {
-                //optional scelti dal partecipante
-                string tmp = OptionalPerPartecipante[i];
-                //ricontrollo gli optional scelti dal partecipante usando il metodo VerificaOptional()
-                OptionalPerPartecipante[i] = VerificaOptional(tmp);
-            }             
+                _optionalDisponibili = optional; //cambio gli optional dell'escursione
+
+                //procedo al cambio degli optional di ogni partecipante
+                for (int i = 0; i < OptionalPerPartecipante.Count; i++)
+                {
+                    //optional scelti dal partecipante
+                    string tmp = OptionalPerPartecipante[i];
+                    //ricontrollo gli optional scelti dal partecipante usando il metodo VerificaOptional()
+                    OptionalPerPartecipante[i] = VerificaOptional(tmp);
+                }
+                return true;
+            }
+            catch
+            {
+                return false;
+            }
         }
 
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
@@ -161,7 +191,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     }
                 }
 
-                return String.Join(",", retVal); //ritono la stringa unendo in una unica stringa tutit i suoi valori separandoli con una virgola
+                return string.Join(",", retVal); //ritono la stringa unendo in una unica stringa tutti i suoi valori separandoli con una virgola
             }
 
         public override string ToString()

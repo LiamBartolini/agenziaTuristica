@@ -47,7 +47,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiEscursione1, optionalPartecipantiEscursione1));
 
             //Cambio gli optional dell'escursione aggiungendo anche l'optional della visita guidata
-            Agenzia.ModificaEscursione(1, optional: "merenda, visita");
+            Console.WriteLine(Agenzia.ModificaEscursione(1, optional: "merenda, visita"));
 
             //Visto la possibilità aggiungo l'optional a tutti i partecipanti
             Console.WriteLine("\n" + Agenzia.AggiuntaOptional("MRROH22", "visita", 1));
@@ -62,7 +62,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "GNPAH22"));
 
             //Cancello la prenotazione di un partecipante
-            Agenzia.CancellazionePrenotazione(1, "GNPAH22");
+            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "GNPAH22"));
 
             //----------------------------------------------------------------------------------------------------------------------------------------
             //Creo una nuova escursione
@@ -85,16 +85,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.RegistrazionePartecipante(2, partecipantiEscursione2, optionalPartecipantiEscursione2));
 
             //Cambio il costo base dell'escursione 
-            Agenzia.ModificaEscursione(2, costo: 80);
+            Console.WriteLine(Agenzia.ModificaEscursione(2, costo: 80));
+            Console.WriteLine(Agenzia.ModificaEscursione(2, tipologia: "test"));
 
             //Cancello la prenotazione di un partecipante
-            Agenzia.CancellazionePrenotazione(2, "VRMMM33");
+            Console.WriteLine(Agenzia.CancellazionePrenotazione(2, "VRMMM33"));
 
             //Visualizzo la lista delle escursioni e delle persone all'attivo
             Console.WriteLine($"\n{Agenzia.VisualizzaPersone()}");
             Console.WriteLine($"\n{Agenzia.VisualizzaEscursioni()}");
 
-            Agenzia.SalvataggioDati();
+            Console.WriteLine(Agenzia.SalvataggioDati());
         }
 
         static void Output(Exception e)
