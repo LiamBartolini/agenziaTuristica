@@ -136,7 +136,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
         public double CalcoloCostoEscursione(string optional)
         {
-            double retVal = Prezzo; //aggiungo il costo base dell'escursione
+            double retVal = _prezzo; //aggiungo il costo base dell'escursione
             string[] opt = optional.Split(',');
             for (int i = 0; i < opt.Length; i++)
             {
@@ -165,7 +165,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
         {
-            var splittedOptionalEscursione = OptionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            var splittedOptionalEscursione = _optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
             var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
             List<string> retVal = new List<string>(); //lista di stringhe in cui aggiungerò gli optional scelti dal partecipante verificando che siano conformi con quelli offerti dalla escursione
 
