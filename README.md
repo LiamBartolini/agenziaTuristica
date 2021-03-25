@@ -5,4 +5,4 @@
 4. Il sistema deve consentire in qualsiasi momento la cancellazione di un utente da una escursione.
 
 Di seguito in allegato il PDF contentenente il porgetto del programma:
-<a href="https://drive.google.com/file/d/13i8nYaoBuTdcMC02TzkmxhTFtBUTc6V2/view?usp=sharing" target="_blank">Diagramma UML</a>
+<a href="https://drive.google.com/file/d/140uGtqJMgykoPXa-Xt0RakQdjNEw0FEm/view?usp=sharing" target="_blank">Diagramma UML</a>
