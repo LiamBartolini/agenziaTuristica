@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Pastel" Version="2.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Persone.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

@@ -66,7 +66,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
             //----------------------------------------------------------------------------------------------------------------------------------------
             //Creo una nuova escursione
-            try { Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"); }
+            try { Agenzia.NuovaEscursione(1, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"); }
             catch (Exception e) { Output(e); }
 
             //Creo una lista di partecipanti che si iscriveranno all'escursione

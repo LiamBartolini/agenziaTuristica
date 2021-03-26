@@ -26,8 +26,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"\n\tModifica escursione n°{numeroEscursione}"); // `intestazione` output
-            
+
             //in caso i parametri opzionali siano diversi dai parametri di default richiamo i metodi appositi della classe Escursione
+            
             if (costo != null) sb.AppendLine($"Esito modifica costo: {escursione.ModificaCosto((double)costo)}");
             if (descrizione != "") sb.AppendLine($"Esito modifica descrizione: {escursione.ModificaDescrizione(descrizione)}");
             if (tipologia != "") sb.AppendLine($"Esito modifica tipo: {escursione.ModificaTipo(tipologia)}");
