@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using Pastel;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
@@ -14,11 +15,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             foreach (Escursione e in _escursioni)
                 if (e.Codice == numeroEscursione)
-                    return $"Esiste gia un'escursione con codice {numeroEscursione}!";
+                    return $"Esiste gia un'escursione con codice {numeroEscursione}!".Pastel("#ff0000");
                     
 
             _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, tipo, descrizione, optional));
-            return "Escursione creata con successo!";
+            return "Escursione creata con successo!".Pastel("#00ff11");
         }
 
         //Metodo che consente di modificare alcune propietà di una escursione già presente
@@ -49,9 +50,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         _escursioni.RemoveAt(i); //e la rimuovo dalla lista
                         break;
                     }
-                return "Eliminazione avvenuta con successo!";
+                return "Eliminazione avvenuta con successo!".Pastel("#00ff11");
             }
-            catch { return "Errore durante l'eliminazione della gita!"; }
+            catch { return "Errore durante l'eliminazione della gita!".Pastel("#ff0000"); }
         }
 
         //Metodo con cui si registra un gruppo di partecipanti a una data escursione
@@ -179,10 +180,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     return $"Optional rimosso prezzo aggiornato per `{codiceFiscale}`: {newPrezzo} €";
                 }
                 else
-                    return $"`{codiceFiscale}` non trovato!";
+                    return $"`{codiceFiscale}` non trovato!".Pastel("#ff0000");
             }
 
-            return $"Escursione n° {numeroEscursione} non trovata!";
+            return $"Escursione n° {numeroEscursione} non trovata!".Pastel("#ff0000");
         }
 
         // Possibile modifica degli optional da parte di un utente
@@ -198,7 +199,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     double costo = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indicePersona]);
                     return $"Optional aggiunto prezzo aggiornato per `{codiceFiscale}`: {costo} €";
                 }
-            return $"`{codiceFiscale}` non trovato!";
+            return $"`{codiceFiscale}` non trovato!".Pastel("#ff0000");
         }
 
         //Metodo con il quale si annulla l'iscrizione di un utente ad una escursione
@@ -212,9 +213,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     escursione.PersoneIscritteEscursione.RemoveAt(indicePersona); // Rimuovo la persona dalla lista di persone dell'escursione scelta
                     escursione.OptionalPerPartecipante.RemoveAt(indicePersona); //Rimuovo gli optional scleti dal partecipante
                     escursione.CostoPerPartecipante.RemoveAt(indicePersona); //Rimuovo il costo dell'escursione per il partecipante
-                    return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Codice} è stata cancellata con successo!";
+                    return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Codice} è stata cancellata con successo!".Pastel("#00ff11");
                 }
-            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!";
+            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!".Pastel("#ff0000");
         }
 
         //Metodo interno con il quale ricerco la posizione di una escursione all'interno della lista _escursioni
@@ -267,9 +268,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             try
             {
                 File.AppendAllText("Salvataggio.txt", sb.ToString());
-                return "Operazione riucita.";
+                return "Operazione di salvataggio riusicta.".Pastel("#00ff11");
             }
-            catch { return "Operazione non riuscita."; }
+            catch { return "Operazione non riuscita.".Pastel("#ff0000"); }
         }
     }
 }
