@@ -1,8 +1,13 @@
 # agenziaTuristica
-1. Questo progetto ha lo scopo di gestire un sistema di escursioni offerto da un agenzia turistica.
-2. Questo programma deve poter aggiungere una nuova escursione all'interno del sistema e deve essere modificabile in un qualsiasi istante.
-3. Il sistema deve poi gestire la registraione di più persone ad una escursione e ogni persona aggiunta deve essere salvata in un archivio all'interno del sistema.
-4. Il sistema deve consentire in qualsiasi momento la cancellazione di un utente da una escursione.
+Questo progetto ha lo scopo di gestire un sistema di escursione offerte da un'agenzia turistica.
 
-Di seguito in allegato il PDF contentenente il perogetto del programma:
+Il progetto in particolare deve poter: 
+1. Aggiungere una nuova escursione all'interno del sistema in un qualsiasi momento specificando gli optional offerti da essa.
+2. Gestire la registrazione di più partecipanti ad una data escursione specificando gli optional scelti da essi.
+3. Consentire in un qualsiasi momento la modifica delle specifiche di una data escursione.
+4. Elimanare una escursione dato il suo codice.
+5. Consentire la modifica degli optional scelti da parte di un partecipante iscritto ad una escursione.
+6. Annullare la prenotazione du un partecipante ad una data escursione.
+
+Di seguito in allegato il PDF contentenente il progetto del programma:
 <a href="https://drive.google.com/file/d/140uGtqJMgykoPXa-Xt0RakQdjNEw0FEm/view?usp=sharing" target="_blank">Diagramma UML</a>
