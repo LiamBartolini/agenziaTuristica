@@ -12,6 +12,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             // Creo una lista di partecipanti
             List<Persona> partecipantiPrimaEscursione = new List<Persona>();
             List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
+            string codiceFiscale = "";
+
+            //MANCANO ANCORA: ModificaEscursione, EliminaEscursione, VisualizzaEscursioni
+
             do
             {
                 Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone iscritte", "Esci" });
@@ -38,10 +42,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         {
                             string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire:");
                             string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire:");
-                            string cf = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:").ToUpper();
+                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:").ToUpper();
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire:");
                             string optionalPartecipante = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ");
-                            partecipantiPrimaEscursione.Add(new Persona(nome, cognome, cf, residenza));
+                            partecipantiPrimaEscursione.Add(new Persona(nome, cognome, codiceFiscale, residenza));
                             optionalPerPartecipantiPrimaEscursione.Add(optionalPartecipante);
 
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -53,23 +57,23 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         optionalPerPartecipantiPrimaEscursione.Clear();
                         break;
                     case 2: // aggiunta optional
-                        //programma vecchio
+                        
                         break;
                     case 3: // rimuovi optional
                         int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out int nEscursione);
-                        string cf1 = RichiestaDati("Inserire il codice fiscale della persona: ");
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");
                         string opt = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");
-                        Agenzia.RimozioneOptional(nEscursione, opt, cf1);
+                        Agenzia.RimozioneOptional(nEscursione, opt, codiceFiscale);
                         break;
                     case 4: // cancella prenotazione
                         //Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
                         int.TryParse(RichiestaDati("Inserire il codice della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);
-                        cf1 = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");
-                        Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, cf1));
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");
+                        Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, codiceFiscale));
                         break;
                     case 5:
                         Console.WriteLine(Agenzia.VisualizzaPersone());
-                        Console.WriteLine("Press any key to clear the window and open menu...");
+                        Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
                         break;
                     case 6: // esci
