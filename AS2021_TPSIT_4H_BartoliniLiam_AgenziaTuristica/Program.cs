@@ -21,21 +21,21 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
             do
             {
-                Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Modifica Escursione","Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone iscritte", "Visualizza tutte le escursione all'attivo", "Esci" });
+                Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Modifica Escursione","Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone iscritte", "Visualizza tutte le escursione all'attivo", "Chiusura programma" });
                 int selectedIndex = Menu.Run();
 
                 switch (selectedIndex)
                 {
                     case 0: // nuova escursione
-                        //Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
-                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione);
-                        double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
-                        DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
-                        string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
-                        string description = RichiestaDati("Inserire la descrizione dell'escursione: ");
-                        optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
+                        Agenzia.NuovaEscursione(1, 100, Convert.ToDateTime("29/04/2021"), "gita in barca", "gita in barca attorno alle coste di Napoli", "pranzo,visita");
+                        //Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione);
+                        //double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
+                        //DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
+                        //string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
+                        //string description = RichiestaDati("Inserire la descrizione dell'escursione: ");
+                        //optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
 
-                        Agenzia.NuovaEscursione(nEscursione, cost, date, type, description, optional);
+                        //Agenzia.NuovaEscursione(nEscursione, cost, date, type, description, optional);
                         break;
                     case 1: // registra partecipante
                         ConsoleKey keyPressed;
@@ -61,26 +61,50 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 2: //Modifica parametri dell'escursione
-                        Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional" });
-                        int opzioneScelta = Menu.Run();
-
-                        switch (opzioneScelta)
+                        while(true)
                         {
-                            case 0: //Modifica del costo
-                                Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare il costo base:"), out nEscursione);
-                                double.TryParse(RichiestaDati("Inserire il nuovo prezzo base dell'escursione:"), out double prezzo);
-                                Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, costo: prezzo));
-                                break;
+                            Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
+                            int opzioneScelta = Menu.Run();
 
-                            case 1: //Modifica della descrizione
-                                break;
+                            switch (opzioneScelta)
+                            {
+                                case 0: //Modifica del costo
+                                    Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare il costo base:"), out nEscursione);
+                                    double.TryParse(RichiestaDati("Inserire il nuovo prezzo base dell'escursione:"), out double prezzo);
+                                    Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, costo: prezzo));
+                                    Console.WriteLine("Premere un qualiasi tasto per ritornare al menù di modifica escursione...");
+                                    Console.ReadKey(true);
+                                    break;
 
-                            case 2: //Modifica della tipologia della escursione
-                                break;
+                                case 1: //Modifica della descrizione
+                                    Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare la descrizione:"), out nEscursione);
+                                    string des = RichiestaDati("Inserire la nuova descrizione dell'escursione:");
+                                    Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, descrizione: des));
+                                    Console.WriteLine("Premere un qualiasi tasto per ritornare al menù di modifica escursione...");
+                                    Console.ReadKey(true);
+                                    break;
 
-                            case 3: //Modifica degli optional della escursione
-                                break;
+                                case 2: //Modifica della tipologia della escursione
+                                    Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare la tipologia:"), out nEscursione);
+                                    string type = RichiestaDati("Inserire la nuova tipologia dell'escursione:");
+                                    Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, tipologia: type));
+                                    Console.WriteLine("Premere un qualiasi tasto per ritornare al menù di modifica escursione...");
+                                    Console.ReadKey(true);
+                                    break;
+
+                                case 3: //Modifica degli optional della escursione
+                                    Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare gli optional disponibili:"), out nEscursione);
+                                    optional = RichiestaDati("Inserire i nuovi optional offerti dall'escursione separati da una ',' es. 'pranzo,merenda':");
+                                    Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, optional:optional));
+                                    Console.WriteLine("Premere un qualiasi tasto per ritornare al menù di modifica escursione...");
+                                    Console.ReadKey(true);
+                                    break;
+
+                                case 4:
+                                    goto fineModifiche;
+                            }
                         }
+                        fineModifiche:
                         break;
 
                     case 3: // aggiunta optional
