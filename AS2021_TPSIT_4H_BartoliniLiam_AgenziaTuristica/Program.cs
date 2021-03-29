@@ -1,6 +1,7 @@
 ﻿using System;
 using AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models;
 using System.Collections.Generic;
+using Pastel;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 {
@@ -11,9 +12,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.OutputEncoding = System.Text.Encoding.UTF8;
             Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
 
+            string red = "Errore!".Pastel("#FF0000");
+            string giallo = "Attenzione!".Pastel("#FFFF00");
+            string verde = "Eseguito con successo!".Pastel("#00FF00");
+            Console.WriteLine($"Legenda:\n{red} {giallo} {verde}");
+
             //Creo una nuova escursione in barca
-            try { Agenzia.NuovaEscursione(1, 50, DateTime.Today.AddMonths(1), "Gita in barca", "Gita in barca presso le coste di Napoli", "merenda"); }
-            catch(Exception e) { Output(e); }
+            Console.WriteLine(Agenzia.NuovaEscursione(1, 50, DateTime.Today.AddMonths(1), "Gita in barca", "Gita in barca presso le coste di Napoli", "merenda"));
 
             //Creo una lista di partecipanti che si iscriveranno all'escursione
             List<Persona> partecipantiEscursione1 = new List<Persona>();
@@ -47,7 +52,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiEscursione1, optionalPartecipantiEscursione1));
 
             //Cambio gli optional dell'escursione aggiungendo anche l'optional della visita guidata
-            Console.WriteLine(Agenzia.ModificaEscursione(1, optional: "merenda, visita"));
+            Console.WriteLine(Agenzia.ModificaEscursione(1, optional: "merenda, visita", tipologia: "gita a cavallo"));
 
             //Visto la possibilità aggiungo l'optional a tutti i partecipanti
             Console.WriteLine("\n" + Agenzia.AggiuntaOptional("MRROH22", "visita", 1));
@@ -66,8 +71,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
             //----------------------------------------------------------------------------------------------------------------------------------------
             //Creo una nuova escursione
-            try { Agenzia.NuovaEscursione(1, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"); }
-            catch (Exception e) { Output(e); }
+            Console.WriteLine(Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"));
 
             //Creo una lista di partecipanti che si iscriveranno all'escursione
             List<Persona> partecipantiEscursione2 = new List<Persona>();
@@ -96,13 +100,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             Console.WriteLine($"\n{Agenzia.VisualizzaEscursioni()}");
 
             Console.WriteLine(Agenzia.SalvataggioDati());
-        }
-
-        static void Output(Exception e)
-        {
-            Console.ForegroundColor = ConsoleColor.Red;
-            Console.WriteLine(e.Message);
-            Console.ResetColor();
         }
     }
 }
