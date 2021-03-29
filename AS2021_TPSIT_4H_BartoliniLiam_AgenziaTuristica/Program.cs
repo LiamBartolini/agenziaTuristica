@@ -9,91 +9,83 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
         static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
-            Console.WriteLine("Liam Bartolini, Lorenzo Curzi, agenzia turistica");
+            // Creo una lista di partecipanti
+            List<Persona> partecipantiPrimaEscursione = new List<Persona>();
+            List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
+            do
+            {
+                Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone iscritte", "Esci" });
+                int selectedIndex = Menu.Run();
 
-            //Creo una nuova escursione in barca
-            Console.WriteLine(Agenzia.NuovaEscursione(1, 50, DateTime.Today.AddMonths(1), "Gita in barca", "Gita in barca presso le coste di Napoli", "merenda"));
+                switch (selectedIndex)
+                {
+                    case 0: // nuova escursione
+                        //Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out int code);
+                        double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
+                        DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
+                        string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
+                        string description = RichiestaDati("Inserire la descrizione dell'escursione: ");
+                        string optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
 
-            //Creo una lista di partecipanti che si iscriveranno all'escursione
-            List<Persona> partecipantiEscursione1 = new List<Persona>();
-            List<string> optionalPartecipantiEscursione1 = new List<string>();
+                        Agenzia.NuovaEscursione(code, cost, date, type, description, optional);
+                        break;
+                    case 1: // registra partecipante
+                        ConsoleKey keyPressed;
+                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione a cui si desidera registrare il partecipante: "), out int escursione);
+                        Console.WriteLine("Una volta finito l'inserimento delle persone premere il tasto ESC per terminare la digitazione");
+                        do
+                        {
+                            string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire:");
+                            string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire:");
+                            string cf = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:").ToUpper();
+                            string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire:");
+                            string optionalPartecipante = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ");
+                            partecipantiPrimaEscursione.Add(new Persona(nome, cognome, cf, residenza));
+                            optionalPerPartecipantiPrimaEscursione.Add(optionalPartecipante);
 
-            //aggiungo quattro persone ad una escursione con i corrispettivi optional
-            partecipantiEscursione1.Add(new Persona("Mario", "Rossi", "MRROH22", "Via Roma, 61"));
-            optionalPartecipantiEscursione1.Add("merenda");
-            partecipantiEscursione1.Add(new Persona("Francesca", "Rossi", "FRROH22", "Via Roma, 61"));
-            optionalPartecipantiEscursione1.Add("merenda");
-            partecipantiEscursione1.Add(new Persona("PierLuigi", "Rossi", "PRLIH22", "Via Roma, 61"));
-            optionalPartecipantiEscursione1.Add("merenda");
-            partecipantiEscursione1.Add(new Persona("GianPaolo", "Rossi", "GNPAH22", "Via Roma, 61"));
-            optionalPartecipantiEscursione1.Add("merenda");
-            partecipantiEscursione1.Add(new Persona("Vincenzo", "Gasolio", "ERVINCE65", "Via NFS, 61"));
-            optionalPartecipantiEscursione1.Add("pranzo");
-            partecipantiEscursione1.Add(new Persona("Mirko", "Alessandrini", "CPAPGRDN89", "Via Paguri, 89"));
-            optionalPartecipantiEscursione1.Add("pranzo");
-            partecipantiEscursione1.Add(new Persona("GianPaolo1", "Rossi1", "GNPAH22", "Via Roma, 61"));
-            optionalPartecipantiEscursione1.Add("merenda");
-            partecipantiEscursione1.Add(new Persona("Vincenzo1", "Gasolio1", "ERVINCE65", "Via NFS, 61"));
-            optionalPartecipantiEscursione1.Add("pranzo");
-            partecipantiEscursione1.Add(new Persona("Mirko1", "Alessandrini1", "CPAPGRDN89", "Via Paguri, 89"));
-            optionalPartecipantiEscursione1.Add("pranzo");
-            partecipantiEscursione1.Add(new Persona("GianPaolo1", "Rossi1", "GNPAH22", "Via Roma, 61"));
-            optionalPartecipantiEscursione1.Add("merenda");
-            partecipantiEscursione1.Add(new Persona("Vincenzo1", "Gasolio1", "ERVINCE65", "Via NFS, 61"));
-            optionalPartecipantiEscursione1.Add("pranzo");
+                            ConsoleKeyInfo keyInfo = Console.ReadKey(true);
+                            keyPressed = keyInfo.Key;
+                        } while (keyPressed != ConsoleKey.Escape);
 
-            //Registro i partecipanti alla prima escursione
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(1, partecipantiEscursione1, optionalPartecipantiEscursione1));
+                        Console.WriteLine(Agenzia.RegistrazionePartecipante(escursione, partecipantiPrimaEscursione, optionalPerPartecipantiPrimaEscursione));
+                        partecipantiPrimaEscursione.Clear();
+                        optionalPerPartecipantiPrimaEscursione.Clear();
+                        break;
+                    case 2: // aggiunta optional
+                        //programma vecchio
+                        break;
+                    case 3: // rimuovi optional
+                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out int nEscursione);
+                        string cf1 = RichiestaDati("Inserire il codice fiscale della persona: ");
+                        string opt = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");
+                        Agenzia.RimozioneOptional(nEscursione, opt, cf1);
+                        break;
+                    case 4: // cancella prenotazione
+                        //Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
+                        int.TryParse(RichiestaDati("Inserire il codice della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);
+                        cf1 = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");
+                        Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, cf1));
+                        break;
+                    case 5:
+                        Console.WriteLine(Agenzia.VisualizzaPersone());
+                        Console.WriteLine("Press any key to clear the window and open menu...");
+                        Console.ReadKey(true);
+                        break;
+                    case 6: // esci
+                        goto end;
+                }
 
-            //Cambio gli optional dell'escursione aggiungendo anche l'optional della visita guidata
-            Console.WriteLine(Agenzia.ModificaEscursione(1, optional: "merenda, visita"));
+            } while (true);
 
-            //Visto la possibilità aggiungo l'optional a tutti i partecipanti
-            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("MRROH22", "visita", 1));
-            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("FRROH22", "visita", 1));
-            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("PRLIH22", "visita", 1));
-            Console.WriteLine("\n" + Agenzia.AggiuntaOptional("GNPAH22", "visita", 1));
+        end:
+            Console.WriteLine("Grazie di aver usato il nostro sistema <3");
+        }
 
-            //Rimuovo l'optional merenda ai partecipanti
-            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "MRROH22"));
-            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "FRROH22"));
-            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "PRLIH22"));
-            Console.WriteLine("\n" + Agenzia.RimozioneOptional(1, "merenda", "GNPAH22"));
-
-            //Cancello la prenotazione di un partecipante
-            Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "GNPAH22"));
-
-            //----------------------------------------------------------------------------------------------------------------------------------------
-            //Creo una nuova escursione
-            Console.WriteLine(Agenzia.NuovaEscursione(2, 70, DateTime.Today.AddMonths(1), "Gita a cavallo", "Gita a cavallo nelle pianure dell'entroterra partenopea", "pranzo,merenda"));
-
-            //Creo una lista di partecipanti che si iscriveranno all'escursione
-            List<Persona> partecipantiEscursione2 = new List<Persona>();
-            List<string> optionalPartecipantiEscursione2 = new List<string>();
-            partecipantiEscursione2.Add(new Persona("Verdi", "Massimo", "VRMMM33", "Via Circonvallazione, 59"));
-            optionalPartecipantiEscursione2.Add("merenda,pranzo,visita");
-            partecipantiEscursione2.Add(new Persona("Angela", "Colonna", "ANCAN44", "Via Spiovente, 150"));
-            optionalPartecipantiEscursione2.Add("merenda");
-            partecipantiEscursione2.Add(new Persona("PierLuigi", "Pardo", "PRPRJ23", "Via delgi Ulivi, 45"));
-            optionalPartecipantiEscursione2.Add("merenda,pranzo");
-            partecipantiEscursione2.Add(new Persona("GianPaolo", "Franco", "GAFOH21", "Via Nuova, 66"));
-            optionalPartecipantiEscursione2.Add("pranzo");
-
-            //Registro i partecipanti all'escursione
-            Console.WriteLine(Agenzia.RegistrazionePartecipante(2, partecipantiEscursione2, optionalPartecipantiEscursione2));
-
-            //Cambio il costo base dell'escursione 
-            Console.WriteLine(Agenzia.ModificaEscursione(2, costo: 80));
-            Console.WriteLine(Agenzia.ModificaEscursione(2, tipologia: "test"));
-
-            //Cancello la prenotazione di un partecipante
-            Console.WriteLine(Agenzia.CancellazionePrenotazione(2, "VRMMM33"));
-
-            //Visualizzo la lista delle escursioni e delle persone all'attivo
-            Console.WriteLine($"\n{Agenzia.VisualizzaPersone()}");
-            Console.WriteLine($"\n{Agenzia.VisualizzaEscursioni()}");
-
-            Console.WriteLine(Agenzia.SalvataggioDati());
+        static private string RichiestaDati(string output)
+        {
+            Console.WriteLine(output);
+            return Console.ReadLine().ToLower().Trim();
         }
     }
 }
