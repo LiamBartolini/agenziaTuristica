@@ -17,11 +17,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             string optional = "";
             int nEscursione = -1;
 
-            //MANCANO ANCORA: ModificaEscursione, EliminaEscursione
+            //MANCANO ANCORA: EliminaEscursione
 
             do
             {
-                Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Modifica Escursione","Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone iscritte", "Visualizza tutte le escursione all'attivo", "Chiusura programma" });
+                Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Modifica Escursione", "Elimina Escursione", "Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone presenti nell'archivio", "Visualizza tutte le escursione all'attivo", "Salvataggio dati", "Chiusura programma" });
                 int selectedIndex = Menu.Run();
 
                 switch (selectedIndex)
@@ -45,10 +45,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         {
                             string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire:");
                             string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire:");
-                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:").ToUpper();
+                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:");
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire:");
                             optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ");
-                            partecipantiPrimaEscursione.Add(new Persona(nome, cognome, codiceFiscale, residenza));
+                            partecipantiPrimaEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
                             optionalPerPartecipantiPrimaEscursione.Add(optional);
 
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
@@ -107,34 +107,55 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         fineModifiche:
                         break;
 
-                    case 3: // aggiunta optional
-                        
+                    case 3: //Eliminazione di una escursione
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione che si vuole eliminare:"), out nEscursione);
+                        Console.WriteLine(Agenzia.EliminaEscursione(nEscursione));
+                        Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
+                        Console.ReadKey(true);
                         break;
-                    case 4: // rimuovi optional
+
+                    case 4: // aggiunta optional
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale del partecipante a cui si intende aggiungere gli optional:");
+                        optional = RichiestaDati("Inserire gli optional da aggiungere al partrecipante separati da una ',' es. 'pranzo,merenda':");
+                        Console.WriteLine(Agenzia.AggiuntaOptional(codiceFiscale.ToUpper(), optional, nEscursione));
+                        Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
+                        Console.ReadKey(true);
+                        break;
+                    case 5: // rimuovi optional
                         int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out nEscursione);
                         codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");
                         optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");
-                        Agenzia.RimozioneOptional(nEscursione, optional, codiceFiscale);
+                        Console.WriteLine(Agenzia.RimozioneOptional(nEscursione, optional, codiceFiscale.ToUpper()));
+                        Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
+                        Console.ReadKey(true);
                         break;
-                    case 5: // cancella prenotazione
-                        //Console.WriteLine(Agenzia.CancellazionePrenotazione(1, "mrsiosisosi"));
+                    case 6: // cancella prenotazione
                         int.TryParse(RichiestaDati("Inserire il codice della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);
                         codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");
-                        Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, codiceFiscale));
+                        Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, codiceFiscale.ToUpper()));
+                        Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
+                        Console.ReadKey(true);
                         break;
-                    case 6: //Visualizza Persone all'interno dell'archivio
+                    case 7: //Visualizza Persone all'interno dell'archivio
                         Console.WriteLine(Agenzia.VisualizzaPersone());
                         Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
                         break;
 
-                    case 7:
+                    case 8:
                         Console.WriteLine(Agenzia.VisualizzaEscursioni());
                         Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
                         break;
 
-                    case 8: // esci
+                    case 9:
+                        Console.WriteLine(Agenzia.SalvataggioDati());
+                        Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
+                        Console.ReadKey(true);
+                        break;
+
+                    case 10: // esci
                         goto end;
                 }
 
