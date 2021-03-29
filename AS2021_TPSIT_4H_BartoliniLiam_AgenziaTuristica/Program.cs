@@ -17,8 +17,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             string optional = "";
             int nEscursione = -1;
 
-            //MANCANO ANCORA: EliminaEscursione
-
             do
             {
                 Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Modifica Escursione", "Elimina Escursione", "Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone presenti nell'archivio", "Visualizza tutte le escursione all'attivo", "Salvataggio dati", "Chiusura programma" });
@@ -27,15 +25,14 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                 switch (selectedIndex)
                 {
                     case 0: // nuova escursione
-                        Agenzia.NuovaEscursione(1, 100, Convert.ToDateTime("29/04/2021"), "gita in barca", "gita in barca attorno alle coste di Napoli", "pranzo,visita");
-                        //Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione);
-                        //double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
-                        //DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
-                        //string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
-                        //string description = RichiestaDati("Inserire la descrizione dell'escursione: ");
-                        //optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione);
+                        double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
+                        DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
+                        string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
+                        string description = RichiestaDati("Inserire la descrizione dell'escursione: ");
+                        optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
 
-                        //Agenzia.NuovaEscursione(nEscursione, cost, date, type, description, optional);
+                        Agenzia.NuovaEscursione(nEscursione, cost, date, type, description, optional);
                         break;
                     case 1: // registra partecipante
                         ConsoleKey keyPressed;
@@ -86,8 +83,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                                 case 2: //Modifica della tipologia della escursione
                                     Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare la tipologia:"), out nEscursione);
-                                    string type = RichiestaDati("Inserire la nuova tipologia dell'escursione:");
-                                    Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, tipologia: type));
+                                    string tipo = RichiestaDati("Inserire la nuova tipologia dell'escursione:");
+                                    Console.WriteLine(Agenzia.ModificaEscursione(nEscursione, tipologia: tipo));
                                     Console.WriteLine("Premere un qualiasi tasto per ritornare al menù di modifica escursione...");
                                     Console.ReadKey(true);
                                     break;
