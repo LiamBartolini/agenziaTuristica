@@ -8,6 +8,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     static class Agenzia
     {
+        /*
+         * Legenda
+         * Errore           .Pastel("#FF0000");
+         * Attenzione       .Pastel("#FFFF00");
+         * Tutto corretto   .Pastel("#00FF00");
+         */
         static List<Escursione> _escursioni = new List<Escursione>();
         static List<Persona> _persone = new List<Persona>();
 
@@ -15,11 +21,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             foreach (Escursione e in _escursioni)
                 if (e.Codice == numeroEscursione)
-                    return $"Esiste gia un'escursione con codice {numeroEscursione}!".Pastel("#ff0000");
-                    
-
+                    return $"Esiste gia un'escursione con codice {numeroEscursione}!".Pastel("#FF0000");
+            
             _escursioni.Add(new Escursione(numeroEscursione, prezzo, data, tipo, descrizione, optional));
-            return "Escursione creata con successo!".Pastel("#00ff11");
+            return "Escursione creata con successo!".Pastel("#00FF00");
         }
 
         //Metodo che consente di modificare alcune propietà di una escursione già presente
@@ -31,10 +36,41 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             sb.AppendLine($"Modifica escursione n°{numeroEscursione}"); // `intestazione` output
 
             //in caso i parametri opzionali siano diversi dai parametri di default richiamo i metodi appositi della classe Escursione
-            if (costo != null) if (escursione.ModificaCosto((double)costo)) sb.AppendLine("Modifica costo riuscita!"); else sb.AppendLine("Modifica costo non riuscita!");
-            if (descrizione != "") if(escursione.ModificaDescrizione(descrizione)) sb.AppendLine("Modifica descrizione riuscita!"); else sb.AppendLine("Modifica descrizione non riuscita!");
-            if (tipologia != "") if(escursione.ModificaTipo(tipologia)) sb.AppendLine("Modifica tipologia riuscita!"); else sb.AppendLine("Modifica tipologia non riuscita!");
-            if (optional != "") if(escursione.ModificaOptional(optional)) sb.AppendLine("Modifica optional riuscita!"); else sb.AppendLine("Modifica optional non riuscita!");
+            if (costo != null)
+            {
+                sb.Append("Modifica costo:");
+                if (escursione.ModificaCosto((double)costo)) 
+                    sb.AppendLine(" riuscita!\n".Pastel("#00FF00"));
+                else 
+                    sb.AppendLine(" non riuscita!\n".Pastel("#FF0000"));
+            }
+
+            if (descrizione != "")
+            {
+                sb.Append("Modifica descrizione:");
+                if(escursione.ModificaDescrizione(descrizione))
+                    sb.Append(" riuscita!\n".Pastel("#00FF00"));
+                else
+                    sb.Append(" non riuscita!\n".Pastel("#FF0000"));
+            }
+
+            if (tipologia != "")
+            {
+                sb.Append("Modifica tipologia:");
+                if (escursione.ModificaTipo(tipologia))
+                    sb.Append(" riuscita!\n".Pastel("#00FF00"));
+                else
+                    sb.Append(" non riuscita!\n".Pastel("#FF0000"));
+            }
+
+            if (optional != "")
+            {
+                sb.Append("Modifica optional:");
+                if(escursione.ModificaOptional(optional))
+                    sb.Append(" riuscita!\n".Pastel("#00FF00"));
+                else
+                    sb.Append(" non riuscita!\n".Pastel("#FF0000"));
+            }
 
             return sb.ToString();
         }
@@ -50,7 +86,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         _escursioni.RemoveAt(i); //e la rimuovo dalla lista
                         break;
                     }
-                return "Eliminazione avvenuta con successo!".Pastel("#00ff11");
+                return "Eliminazione avvenuta con successo!".Pastel("#00FF00");
             }
             catch { return "Errore durante l'eliminazione della gita!".Pastel("#ff0000"); }
         }
@@ -92,7 +128,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
                     costoEscursione -= costoEscursione * incrementoCostoBiglietto; // calcolo il prezzo del biglietto compreso del 'moltiplicatore'
                     escursione.CostoPerPartecipante.Add(costoEscursione);
-                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.CostoPerPartecipante[indexPersona]} €");
+                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {costoEscursione} €");
                 }
                 return sb.ToString();
             }
@@ -120,9 +156,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
                     costoEscursione -= costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
                     escursione.CostoPerPartecipante.Add(costoEscursione);
-                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {escursione.CostoPerPartecipante[indexPersona]} €");
+                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare:\t{escursione.CostoPerPartecipante[indexPersona]} €");
                 }
-                return $"{sb}sono stati selezionati solo le prime {numMax} persone, il numero di partecipanti era superiore a quello limite {numMax}!";
+                return $"{sb}" + $"Sono stati selezionati solo le prime {numMax} persone, il numero di partecipanti era superiore a quello limite {numMax}!".Pastel("#FFFF00");
             }
         }
 
@@ -180,10 +216,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     return $"Optional rimosso prezzo aggiornato per `{codiceFiscale}`: {newPrezzo} €";
                 }
                 else
-                    return $"`{codiceFiscale}` non trovato!".Pastel("#ff0000");
+                    return $"`{codiceFiscale}` non trovato!".Pastel("#FF0000");
             }
 
-            return $"Escursione n° {numeroEscursione} non trovata!".Pastel("#ff0000");
+            return $"Escursione n° {numeroEscursione} non trovata!".Pastel("#FF0000");
         }
 
         // Possibile modifica degli optional da parte di un utente
@@ -199,7 +235,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     double costo = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indicePersona]);
                     return $"Optional aggiunto prezzo aggiornato per `{codiceFiscale}`: {costo} €";
                 }
-            return $"`{codiceFiscale}` non trovato!".Pastel("#ff0000");
+            return $"`{codiceFiscale}` non trovato!".Pastel("#FF0000");
         }
 
         //Metodo con il quale si annulla l'iscrizione di un utente ad una escursione
@@ -215,7 +251,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     escursione.CostoPerPartecipante.RemoveAt(indicePersona); //Rimuovo il costo dell'escursione per il partecipante
                     return $"La prenotazione di `{persona.Cognome} {persona.Nome}` all'escursione n°{escursione.Codice} è stata cancellata con successo!".Pastel("#00ff11");
                 }
-            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!".Pastel("#ff0000");
+            return $"La prenotazione di `{codiceFiscale}` all'escursione n°{escursione.Codice} non è stata trovata!".Pastel("#FF0000");
         }
 
         //Metodo interno con il quale ricerco la posizione di una escursione all'interno della lista _escursioni
