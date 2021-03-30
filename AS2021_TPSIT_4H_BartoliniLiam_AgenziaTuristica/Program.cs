@@ -15,7 +15,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             List<string> optionalPerPartecipantiPrimaEscursione = new List<string>();
             string codiceFiscale = "";
             string optional = "";
-            int nEscursione = -1;
+            int nEscursione = -1; //Controllo sull'inserimento del numero escursione molto importante --> while tue con if che verifica il risultato di ritorno del try parse
 
             do
             {
@@ -25,26 +25,28 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                 switch (selectedIndex)
                 {
                     case 0: // nuova escursione
-                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione);
-                        double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
-                        DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
-                        string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
-                        string description = RichiestaDati("Inserire la descrizione dell'escursione: ");
-                        optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione); //leggi riga 18
+                        double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost); //controllo desiderabile in quanto una escursione deve avere un costo specificato
+                        DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date); //controllo evitabile
+                        string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): "); //controllo necessario in quanto poi condiziona l'inserimento del numero max di partecipanti
+                        string description = RichiestaDati("Inserire la descrizione dell'escursione: "); //anche no
+                        optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':"); //Vi è già il metodo VerificaOptional in Escursione
 
                         Agenzia.NuovaEscursione(nEscursione, cost, date, type, description, optional);
                         break;
                     case 1: // registra partecipante
                         ConsoleKey keyPressed;
-                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione a cui si desidera registrare il partecipante: "), out nEscursione);
+                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione a cui si desidera registrare il partecipante: "), out nEscursione); //leggi riga 18
                         Console.WriteLine("Una volta finito l'inserimento delle persone premere il tasto ESC per terminare la digitazione");
                         do
                         {
+                            //in tutti questi dati sarebbe necessario un controllo per verificare che la stringa inserita non sia nulla, specialmente sugli optional scelti dall'utente
+                            //questo è dovuto al fatto che i dati verranno poi messi in due liste parallele e se esse per qualche motivo hanno indici diversi o sono scollegate il metodo RegistraPartecipante da un errore runtime
                             string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire:");
                             string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire:");
-                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:");
+                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:"); 
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire:");
-                            optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ");
+                            optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': "); 
                             partecipantiPrimaEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
                             optionalPerPartecipantiPrimaEscursione.Add(optional);
 
@@ -63,6 +65,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
                             int opzioneScelta = Menu.Run();
 
+                            //controlli non necessari in quanto i metodo di modifica presenti in Escursione hanno dei controlli già in se
                             switch (opzioneScelta)
                             {
                                 case 0: //Modifica del costo
@@ -105,31 +108,31 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 3: //Eliminazione di una escursione
-                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione che si vuole eliminare:"), out nEscursione);
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione che si vuole eliminare:"), out nEscursione);//leggi riga 18
                         Console.WriteLine(Agenzia.EliminaEscursione(nEscursione));
                         Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
                         break;
 
                     case 4: // aggiunta optional
-                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);
-                        codiceFiscale = RichiestaDati("Inserire il codice fiscale del partecipante a cui si intende aggiungere gli optional:");
-                        optional = RichiestaDati("Inserire gli optional da aggiungere al partrecipante separati da una ',' es. 'pranzo,merenda':");
+                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);//leggi riga 18
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale del partecipante a cui si intende aggiungere gli optional:"); //controllo non necessario in quanto se non va il metodo restiuisce una stringa di errore
+                        optional = RichiestaDati("Inserire gli optional da aggiungere al partrecipante separati da una ',' es. 'pranzo,merenda':"); //leggi riga 33
                         Console.WriteLine(Agenzia.AggiuntaOptional(codiceFiscale.ToUpper(), optional, nEscursione));
                         Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
                         break;
                     case 5: // rimuovi optional
-                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out nEscursione);
-                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");
-                        optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");
+                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out nEscursione);//leggi riga 18
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");//leggi riga 119
+                        optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");//leggi riga 33
                         Console.WriteLine(Agenzia.RimozioneOptional(nEscursione, optional, codiceFiscale.ToUpper()));
                         Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
                         break;
                     case 6: // cancella prenotazione
-                        int.TryParse(RichiestaDati("Inserire il codice della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);
-                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");
+                        int.TryParse(RichiestaDati("Inserire il codice della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);//leggi riga 18
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");//leggi riga 119
                         Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, codiceFiscale.ToUpper()));
                         Console.WriteLine("Premere un qualiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
