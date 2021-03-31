@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Pastel;
 using menuV1.Models;
 using System.Text.RegularExpressions;
+using StringExtensions;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 {
@@ -214,7 +215,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             {
                 Console.WriteLine(output);
                 input = Console.ReadLine().ToLower().Trim();
-                if (!Verifica(input)) ErrMsg();
+                if (!input.Verifica()) ErrMsg();
                 else break;
             } while (true);
             return input;
@@ -222,6 +223,17 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
         static void ErrMsg() => Console.WriteLine("Input errato!".Pastel("#FF0000"));
 
-        static bool Verifica(string data) => string.IsNullOrEmpty(data) ? false : true;
+        //static bool Verifica(string data) => string.IsNullOrEmpty(data) ? false : true;
+    }
+}
+
+namespace StringExtensions
+{
+    public static class Extensions
+    {
+        static public bool Verifica (this string s)
+        {
+            return string.IsNullOrEmpty(s) ? false : true;
+        }
     }
 }
