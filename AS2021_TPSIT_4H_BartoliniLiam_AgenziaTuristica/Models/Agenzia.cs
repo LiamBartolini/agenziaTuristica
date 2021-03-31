@@ -93,7 +93,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
         //Metodo con cui si registra un gruppo di partecipanti a una data escursione
         //In caso le persone che si iscriveranno all'escursione non siano presenti alla lista _persone verranno aggiunte ad essa
-        static public string RegistrazionePartecipante(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
+        static public string RegistrazionePartecipanti(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
             Escursione escursione = RicercaEscursione(numeroEscursione); 
             int numMax = escursione.NumeroMassimoPartecipanti;
