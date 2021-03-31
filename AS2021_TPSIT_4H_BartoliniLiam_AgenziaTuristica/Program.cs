@@ -40,19 +40,42 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
                     case 1: // registra partecipante
                         ConsoleKey keyPressed;
-                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione a cui si desidera registrare il partecipante: "), out nEscursione); //leggi riga 18
+                        Console.WriteLine(Agenzia.VisualizzaEscursioni());
+
+                        do
+                        {
+                            bool isValid = int.TryParse(RichiestaDati("Inserire il numero dell'escursione a cui si desidera registrare il partecipante: "), out nEscursione); //leggi riga 18
+                            if (isValid)
+                                break;
+                        } while (true);
+                        
                         Console.WriteLine("Una volta finito l'inserimento delle persone premere il tasto ESC per terminare la digitazione");
                         do
                         {
                             //in tutti questi dati sarebbe necessario un controllo per verificare che la stringa inserita non sia nulla, specialmente sugli optional scelti dall'utente
                             //questo è dovuto al fatto che i dati verranno poi messi in due liste parallele e se esse per qualche motivo hanno indici diversi o sono scollegate il metodo RegistraPartecipante da un errore runtime
-                            string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire:");
-                            string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire:");
-                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:"); 
-                            string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire:");
-                            optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': "); 
-                            partecipantiPrimaEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
-                            optionalPerPartecipantiPrimaEscursione.Add(optional);
+                            do
+                            {
+                                string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire:", true);
+                                string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire:", true);
+                                codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire:", true);
+                                string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire:", true);
+                                optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ", true);
+
+                                
+                                if (!string.IsNullOrEmpty(nome) && !string.IsNullOrEmpty(cognome) && !string.IsNullOrEmpty(residenza))
+                                {
+                                    partecipantiPrimaEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
+                                    optionalPerPartecipantiPrimaEscursione.Add(optional);
+                                    Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
+                                    break;
+                                } 
+                                else
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("Input errato, reinserire!".Pastel("#FF0000"));
+                                }
+                            } while (true);
 
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                             keyPressed = keyInfo.Key;
@@ -178,10 +201,27 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             //    Console.Write(match);
         }
 
-        static private string RichiestaDati(string output)
+        static string RichiestaDati(string output, bool verifica = false)
         {
-            Console.WriteLine(output);
-            return Console.ReadLine().ToLower().Trim();
+            if (!verifica)
+            {
+                Console.WriteLine(output);
+                return Console.ReadLine().ToLower().Trim();
+            }
+
+            string input;
+            do
+            {
+                Console.WriteLine(output);
+                input = Console.ReadLine().ToLower().Trim();
+                if (!Verifica(input)) ErrMsg();
+                else break;
+            } while (true);
+            return input;
         }
+
+        static void ErrMsg() => Console.WriteLine("Input errato!".Pastel("#FF0000"));
+
+        static bool Verifica(string data) => string.IsNullOrEmpty(data) ? false : true;
     }
 }
