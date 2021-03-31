@@ -2,6 +2,8 @@
 using AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models;
 using System.Collections.Generic;
 using Pastel;
+using menuV1.Models;
+using System.Text.RegularExpressions;
 
 namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 {
@@ -23,12 +25,27 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             {
                 Menu.Initialize("AGENZIA TURISTICA, Liam Bartolini Curzi Lorenzo", new string[] { "Crea una nuova escursione", "Registrazione partecipante", "Modifica Escursione","Aggiunta optional", "Rimozione optional", "Cancella prenotazione", "Visualizza tutte le persone iscritte", "Visualizza tutte le escursione all'attivo", "Esci" });
                 int selectedIndex = Menu.Run();
-
+                string pattern = @"[0-9]+";
+                Regex rg = new Regex(pattern);
+                
                 switch (selectedIndex)
                 {
                     case 0: // nuova escursione
-                        //Agenzia.NuovaEscursione(1, 70, DateTime.Today, "gita in barca", "gita in barca", "pranzo,merenda");
-                        Int32.TryParse(RichiestaDati("Inserire il codice dell'escursione:"), out nEscursione);
+                        do
+                        {
+                            string strInput = RichiestaDati("Inserire il codice dell'escursione:");
+                            MatchCollection matched = rg.Matches(strInput);
+
+                            if (matched.Count != 0)
+                                if (matched[0].Value != strInput)
+                                    Console.WriteLine("Codice escursione non corretto!".Pastel("#FF0000"));
+                                else break;
+                            else if (matched.Count == 0)
+                                Console.WriteLine("Codice escursione non corretto!".Pastel("#FF0000"));
+                            
+                            Console.Clear();
+                        } while (true);
+
                         double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:"), out double cost);
                         DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:"), out DateTime date);
                         string type = RichiestaDati("Inserire la topologia di escursione (gita in barca, gita a cavallo): ");
@@ -118,6 +135,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
         end:
             Console.WriteLine("Grazie di aver usato il nostro sistema <3");
+
+            //string patternLettere = @"[a-zA-Z]+"; //Rileva tutte le lettere Upper/Lower
+            //string patternNumeri = @"[0-9A-Z]+";
+            //Regex rg = new Regex(patternNumeri);
+
+            //string test = "BRTLMI03A29H294W";
+            //MatchCollection matchedAuthors = rg.Matches(test);
+            //foreach (var match in matchedAuthors)
+            //    Console.Write(match);
         }
 
         static private string RichiestaDati(string output)
