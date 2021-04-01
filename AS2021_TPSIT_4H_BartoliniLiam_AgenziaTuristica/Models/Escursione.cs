@@ -6,7 +6,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 {
     class Escursione
     {
-        int _codice; //numero identificativo
+        int _numero; //numero identificativo
         DateTime _data;
         string _tipo; // gita in barca, gita a cavallo
         string _descrizione;
@@ -27,7 +27,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public DateTime Data { get => _data; }
         public string Tipo { get => _tipo; }
         public string Descrizione { get => _descrizione; }
-        public int Codice { get => _codice; }
+        public int Numero { get => _numero; }
         public double Prezzo { get => _prezzo; }
         public string OptionalDisponibili { get => _optionalDisponibili; }
 
@@ -51,7 +51,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             OptionalPerPartecipante = new List<string>();
             CostoPerPartecipante = new List<double>();
 
-            _codice = codice;
+            _numero = codice;
             _data = data;
             _prezzo = prezzo;
             _tipo = tipo;
@@ -60,6 +60,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _numeroMaxPartecipanti = tipo.ToLower().Trim() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
         }
 
+        /// <summary>
+        /// Permette la modifica della data di svolgimento dell'escursione
+        /// </summary>
+        /// <returns>Ritorna true in caso di modifica riuscita, altrimenti falso</returns>
         //cambio della data in cui verrà effettuata l'escursione
         public bool ModificaData (DateTime date)
         {
@@ -72,6 +76,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return false;
         }
 
+        /// <summary>
+        /// Permette la modifica del tipo di escursione
+        /// </summary>
+        /// <returns>Ritorna true in caso di modifica riuscita, altrimenti falso</returns>
         //cambio del tipo di escursione
         public bool ModificaTipo(string tipo)
         {
@@ -85,6 +93,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return false;
         }
 
+        /// <summary>
+        /// Permette la modifica della descrizione dell'escursione
+        /// </summary>
+        /// <returns>Ritorna true in caso di modifica riuscita, altrimenti falso</returns>
         //cambio descrizione dell'escursione
         public bool ModificaDescrizione(string descrizione)
         {
@@ -92,6 +104,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             catch { return false; }
         }
 
+        /// <summary>
+        /// Permette la modifica del costo base dell'escursione
+        /// </summary>
+        /// <returns>Ritorna true in caso di modifica riuscita, altrimenti falso</returns>
         //cambio del costo della escursione (da finire in quanto il prezzo di ogni partecipante va ricalcolato)
         public bool ModificaCosto(double costo) 
         {   
@@ -110,6 +126,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return false;
         }
 
+        /// <summary>
+        /// Permette la modifica degli optional accetati nell'escursione
+        /// </summary>
+        /// <returns>Ritorna true in caso di modifica riuscita, altrimenti falso</returns>
         //Metodo che consente di modificare gli optional offerti da una escursione
         public bool ModificaOptional(string optional)
         {
@@ -133,6 +153,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
         }
 
+        /// <summary>
+        /// Calcola il costo dell'escursione
+        /// </summary>
+        /// <param name="optional">optional separati dalla ',' (virgola)</param>
+        /// <returns>Ritorna un double con il prezzo aggiornato</returns>
         //Metodo che calcola il costo dell'escursione per un utente a seconda del prezzo base e gli optional scelti
         public double CalcoloCostoEscursione(string optional)
         {
@@ -161,6 +186,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             return retVal;
         }
 
+        /// <summary>
+        /// Verifica correttezza degli optional inseriti
+        /// </summary>
+        /// <param name="optionalPartecipante">Una stringa contenente gli optional sparati dall ','(virgola)</param>
+        /// <returns>Ritorna una stringa che contiene la concatenazione degli optional</returns>
         //Metodo che consente di verificare che gli optional scelti da un partecipante siano conformi con quelli offerti dall'escursione
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
@@ -190,14 +220,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         continue;
                     }
                 }
-
                 return string.Join(",", retVal); //ritono la stringa unendo in una unica stringa tutti i suoi valori separandoli con una virgola
             }
 
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Numero:\t{_codice}");
+            sb.AppendLine($"Numero:\t{_numero}");
             sb.AppendLine($"Data:\t{_data:dd/MM/yyyy}");
             sb.AppendLine($"Tipo:\t{_tipo}");
             sb.AppendLine($"Descrizione:\t{_descrizione}");

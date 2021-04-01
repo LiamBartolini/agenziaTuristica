@@ -6,6 +6,16 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Salvataggio.txt" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Salvataggio.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Pastel" Version="2.1.0" />
   </ItemGroup>
 
