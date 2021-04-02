@@ -78,7 +78,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         {
                             string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire: ", true);
                             string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire: ", true);
-                            codiceFiscale = RichiestaDati("Inserire il numero fiscale della persona che si desidera inserire: ", true);
+                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire: ", true);
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire: ", true);
                             optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ", true);
 
@@ -86,14 +86,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             optinalPartecipanti.Add(optional);
                             Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
                             
-                            Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
-                            
                             Console.WriteLine("Premere `esc` (ESCAPE) tasto per uscire...");
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                             keyPressed = keyInfo.Key;
                         } while (keyPressed != ConsoleKey.Escape);
 
-
+                        Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
+                        Console.WriteLine("Premere un qualsiasi tasto per uscire...");
+                        Console.ReadKey(true);
+                        Console.Clear();
                         break;
 
                     case 2:
@@ -224,7 +225,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
-                        codiceFiscale = RichiestaDati("Inserire il numero fiscale della persona: ");//leggi riga 119
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");//leggi riga 119
                         optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");//leggi riga 33
                         Console.WriteLine(Agenzia.RimozioneOptional(nEscursione, optional, codiceFiscale.ToUpper()));
                         Console.WriteLine("Premere un qualsiasi tasto per ritornare al menù...");

@@ -19,18 +19,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         static List<Persona> _persone = new List<Persona>();
 
         /// <summary>
-        /// Controlla che il numero di escursione non sia già in utilizzo
-        /// </summary>
-        /// <returns>Ritorna false se esiste, altrimentri true</returns>
-        static public bool VerificaNumeroEscursione(int numeroEscursione)
-        {
-            foreach (Escursione e in _escursioni)
-                if (e.Numero == numeroEscursione)
-                    return false;
-            return true;
-        }
-
-        /// <summary>
         /// Permette di creare una nuova escursione
         /// </summary>
         /// <param name="numeroEscursione"></param>
@@ -312,6 +300,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 if (_escursioni[i].Numero == numeroEscursione) //ricerco l'escursione con il codice desiderato
                     return _escursioni[i];
             return null;
+        }
+
+        /// <summary>
+        /// Controlla che il numero di escursione non sia già in utilizzo
+        /// </summary>
+        /// <returns>Ritorna false se esiste, altrimentri true</returns>
+        static public bool VerificaNumeroEscursione(int numeroEscursione)
+        {
+            foreach (Escursione e in _escursioni)
+                if (e.Numero == numeroEscursione)
+                    return false;
+            return true;
         }
 
         /// <summary>
