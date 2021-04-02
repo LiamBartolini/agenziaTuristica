@@ -126,6 +126,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         /// <returns>Ritorna una stringa con il prezzo da pagare per ogni persona aggiunta, ed eventualmente un messaggio di attenzione in caso venga superato il numero massimo di partecipanti</returns>
         static public string RegistrazionePartecipanti(int numeroEscursione, List<Persona> personeIscritte, List<string> optionalPersoneIscritte)
         {
+            /*
+             * Moltiplicatore per il prezzo del biglietto in base al numero di persone che si iscrivono contemporaneamente alla gita
+             */
             Escursione escursione = RicercaEscursione(numeroEscursione); 
             int numMax = escursione.NumeroMassimoPartecipanti;
             int numeroIscritti = personeIscritte.Count;
@@ -135,6 +138,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
             else if (numeroIscritti > numMax / 2 && numeroIscritti < numMax)
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
+            //
 
             if (personeIscritte.Count <= numMax)
             {
@@ -143,8 +147,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     if (!_persone.Contains(personeIscritte[i])) // Se tra le persone che ho gia in archivio non ne trovo una uguale allora la aggiungo
                         _persone.Add(personeIscritte[i]);
 
-                escursione.PersoneIscritteEscursione.AddRange(personeIscritte); // Aggiungo tutte le persone iscritte all'escursione
-
+                // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
+                for (int i = 0; i < personeIscritte.Count; i++)
+                    if (!escursione.PersoneIscritteEscursione.Contains(personeIscritte[i]))
+                        escursione.PersoneIscritteEscursione.Add(personeIscritte[i]);
+                
                 //Inserisco gli optional per ogni persona dentro la lista
                 for (int i = 0; i < optionalPersoneIscritte.Count; i++)
                     //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
@@ -157,9 +164,9 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 {
                     int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
-                    costoEscursione -= costoEscursione * incrementoCostoBiglietto; // calcolo il prezzo del biglietto compreso del 'moltiplicatore'
+                    costoEscursione += costoEscursione * incrementoCostoBiglietto; // calcolo il prezzo del biglietto compreso del 'moltiplicatore'
                     escursione.CostoPerPartecipante.Add(costoEscursione);
-                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {costoEscursione} €");
+                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare: {costoEscursione} €".Pastel("#00FF00"));
                 }
                 return sb.ToString();
             }
@@ -185,9 +192,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     Persona persona = personeIscritte[i];
                     int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
-                    costoEscursione -= costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
+                    //costoEscursione -= costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
+                    costoEscursione += costoEscursione * incrementoCostoBiglietto;
                     escursione.CostoPerPartecipante.Add(costoEscursione);
-                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare:\t{escursione.CostoPerPartecipante[indexPersona]} €");
+                    sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare:\t{costoEscursione} €".Pastel("#00FF00"));
                 }
                 return $"Sono stati selezionati solo le prime {numMax} persone, il numero di partecipanti era superiore a quello limite {numMax}!".Pastel("#FFFF00");
             }

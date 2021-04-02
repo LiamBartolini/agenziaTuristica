@@ -33,7 +33,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il codice dell'escursione:", true, typeof(int)), out nEscursione);
+                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione:", true, typeof(int)), out nEscursione);
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione))
                             {
                                 ErrMsg($"Esiste già un'escursione di numero {nEscursione}");
@@ -57,7 +57,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
                     case 1: // registra partecipante
                         ConsoleKey keyPressed;
-                        // Visualizzo le escrusioni attive
+
+                        // Visualizzo le escursioni attive
                         Console.WriteLine(Agenzia.VisualizzaEscursioni());
 
                         // Pulisco le liste
@@ -77,7 +78,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         {
                             string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire: ", true);
                             string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire: ", true);
-                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire: ", true);
+                            codiceFiscale = RichiestaDati("Inserire il numero fiscale della persona che si desidera inserire: ", true);
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire: ", true);
                             optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ", true);
 
@@ -85,17 +86,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             optinalPartecipanti.Add(optional);
                             Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
                             
+                            Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
+                            
                             Console.WriteLine("Premere `esc` (ESCAPE) tasto per uscire...");
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                             keyPressed = keyInfo.Key;
                         } while (keyPressed != ConsoleKey.Escape);
 
-                        Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
 
                         break;
 
                     case 2:
-                        while(true)
+                        while (true)
                         {
                             Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
                             int opzioneScelta = Menu.Run();
@@ -104,9 +106,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             switch (opzioneScelta)
                             {
                                 case 0: //Modifica del costo
+                                    // Visualizzo le escursioni attive
+                                    Console.WriteLine(Agenzia.VisualizzaEscursioni());
+
                                     do
                                     {
-                                        int.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare il costo base:", true, typeof(int)), out nEscursione);
+                                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale si vuole modificare il costo base:", true, typeof(int)), out nEscursione);
                                         if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                                         ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                                     } while (true);
@@ -119,9 +124,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                                     break;
 
                                 case 1: //Modifica della descrizione
+                                    // Visualizzo le escursioni attive
+                                    Console.WriteLine(Agenzia.VisualizzaEscursioni());
+                                    
                                     do
                                     {
-                                        int.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare la descrizione:", true, typeof(int)), out nEscursione);
+                                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale si vuole modificare la descrizione:", true, typeof(int)), out nEscursione);
                                         if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                                         ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                                     } while (true);
@@ -133,9 +141,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                                     break;
 
                                 case 2: //Modifica della tipologia della escursione
+                                    // Visualizzo le escursioni attive
+                                    Console.WriteLine(Agenzia.VisualizzaEscursioni());
+                                    
                                     do
                                     {
-                                        int.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare la tipologia:", true, typeof(int)), out nEscursione);
+                                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale si vuole modificare la tipologia:", true, typeof(int)), out nEscursione);
                                         if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                                         ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                                     } while (true);
@@ -147,9 +158,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                                     break;
 
                                 case 3: //Modifica degli optional della escursione
+                                    // Visualizzo le escursioni attive
+                                    Console.WriteLine(Agenzia.VisualizzaEscursioni());
+
                                     do
                                     {
-                                        int.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale si vuole modificare gli optional disponibili:", true, typeof(int)), out nEscursione);
+                                        int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale si vuole modificare gli optional disponibili:", true, typeof(int)), out nEscursione);
                                         if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                                         ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                                     } while (true);
@@ -169,9 +183,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 3: //Eliminazione di una escursione
+                        // Visualizzo le escursioni attive
+                        Console.WriteLine(Agenzia.VisualizzaEscursioni());
+
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il codice dell'escursione che si vuole eliminare:", true, typeof(int)), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione che si vuole eliminare:", true, typeof(int)), out nEscursione);//leggi riga 18
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
@@ -182,9 +199,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 4: // aggiunta optional
+                        // Visualizzo le escursioni attive
+                        Console.WriteLine(Agenzia.VisualizzaEscursioni());
+                        
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il codice dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);//leggi riga 18
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
@@ -195,13 +215,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         Console.ReadKey(true);
                         break;
                     case 5: // rimuovi optional
+                        // Visualizzo le escursioni attive
+                        Console.WriteLine(Agenzia.VisualizzaEscursioni());
+                        
                         do
                         {
                             int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out nEscursione);//leggi riga 18
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
-                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");//leggi riga 119
+                        codiceFiscale = RichiestaDati("Inserire il numero fiscale della persona: ");//leggi riga 119
                         optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");//leggi riga 33
                         Console.WriteLine(Agenzia.RimozioneOptional(nEscursione, optional, codiceFiscale.ToUpper()));
                         Console.WriteLine("Premere un qualsiasi tasto per ritornare al menù...");
@@ -209,9 +232,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         Console.Clear();
                         break;
                     case 6: // cancella prenotazione
+                        // Visualizzo le escursioni attive
+                        Console.WriteLine(Agenzia.VisualizzaEscursioni());
+
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il codice della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);//leggi riga 18
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);

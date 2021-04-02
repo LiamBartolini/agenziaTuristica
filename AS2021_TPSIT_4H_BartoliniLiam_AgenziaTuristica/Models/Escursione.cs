@@ -226,13 +226,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"Numero:\t{_numero}");
-            sb.AppendLine($"Data:\t{_data:dd/MM/yyyy}");
-            sb.AppendLine($"Tipo:\t{_tipo}");
-            sb.AppendLine($"Descrizione:\t{_descrizione}");
+            sb.AppendLine($"Numero:\t\t\t{_numero}");
+            sb.AppendLine($"Data:\t\t\t{_data:dd/MM/yyyy}");
+            sb.AppendLine($"Tipo:\t\t\t{_tipo}");
+            sb.AppendLine($"Costo base:\t\t{_prezzo}€");
+            sb.AppendLine($"Optional disponibili:\t{OptionalDisponibili}");
+            sb.AppendLine($"Descrizione:\t\t{_descrizione}");
             sb.AppendLine("Persone iscritte alla escursione: \n");
             foreach (Persona persona in PersoneIscritteEscursione)
-                sb.AppendLine(persona.ToString());
+                sb.Append($"Codice fiscale: {persona.CodiceFiscale}");
             return sb.ToString();
         }
     }
