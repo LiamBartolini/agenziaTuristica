@@ -270,12 +270,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 10: // esci
-                        goto end;
+                        Console.WriteLine("Grazie di aver usato il nostro sistema <3");
+                        Environment.Exit(0);
+                        break;
                 }
-
             } while (true);
-        end:
-            Console.WriteLine("Grazie di aver usato il nostro sistema <3");
         }
 
         /// <summary>
