@@ -273,7 +273,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         Environment.Exit(0);
                         break;
                 }
-
             } while (true);
         }
 
