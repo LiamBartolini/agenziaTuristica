@@ -126,19 +126,14 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
             else if (numeroIscritti > numMax / 2 && numeroIscritti < numMax)
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
-            //
+            
 
             if (personeIscritte.Count <= numMax)
             {
-                // Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
-                //for (int i = 0; i < personeIscritte.Count; i++)
-                //    if (!_persone.Contains(personeIscritte[i])) // Se tra le persone che ho gia in archivio non ne trovo una uguale allora la aggiungo
-                //        _persone.Add(personeIscritte[i]);
-
+                //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
                 for (int i = 0; i < personeIscritte.Count; i++)
-                    for (int j = 0; j < _persone.Count; j++)
-                        if (_persone[j] != personeIscritte[i])
-                            _persone.Add(personeIscritte[i]);
+                    if (!_persone.Contains(personeIscritte[i])) // Se tra le persone che ho gia in archivio non ne trovo una uguale allora la aggiungo
+                        _persone.Add(personeIscritte[i]);
 
                 // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
                 for (int i = 0; i < personeIscritte.Count; i++)
