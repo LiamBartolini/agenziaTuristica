@@ -371,9 +371,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
 
             try
             {
-                //File.AppendAllText("Salvataggio.txt", sb.ToString());
-                StreamWriter writer = new StreamWriter("Salvataggio.txt", true);
-                writer.WriteLine(sb.ToString());
+                File.AppendAllText("Salvataggio.txt", sb.ToString());
                 return "Operazione di salvataggio riuscita.".Pastel("#00ff00");
             }
             catch { return "Operazione non riuscita.".Pastel("#ff0000"); }
