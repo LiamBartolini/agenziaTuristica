@@ -146,6 +146,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                                 isValid = true;
                                 index = i;
                             }
+                            else
+                            {
+                                isValid = false;
+                                break;
+                            }
                         }
                         if (isValid) _persone.Add(personeIscritte[index]);
                     }
@@ -159,13 +164,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         escursione.PersoneIscritteEscursione.Add(personeIscritte[0]);
                     else
                     {
+                        isValid = false;
                         for (int j = 0; j < escursione.PersoneIscritteEscursione.Count; j++)
                         {
-                            isValid = false;
                             if (!Equals(personeIscritte[i], escursione.PersoneIscritteEscursione[j]))
                             {
                                 isValid = true;
                                 index = i;
+                            }
+                            else
+                            {
+                                isValid = false;
+                                break;
                             }
                         }
                         if (isValid) escursione.PersoneIscritteEscursione.Add(personeIscritte[index]);
