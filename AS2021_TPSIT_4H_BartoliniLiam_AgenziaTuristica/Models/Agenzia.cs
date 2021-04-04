@@ -131,20 +131,33 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             if (personeIscritte.Count <= numMax)
             {
                 //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
+                bool isValid = false;
+                int index = -1;
                 for (int i = 0; i < personeIscritte.Count; i++)
-                    if (_persone.Count == 0)
-                        _persone.Add(personeIscritte[0]);
-                    else
+                    if (_persone.Count == 0) //in caso l'archivio _persone sia vuoto inserisco la prima persona in quanto non vi è bisogno di alcun controllo non potendoci essere persone doppie
+                        _persone.Add(personeIscritte[i]);
+                    else //se l'archivio presente al suo interno altre persone eseguo uj controllo per accertarmi che non vengano inserite persone già presenti in esso
+                    {
                         for (int j = 0; j < _persone.Count; j++)
                         {
-                            if (!Equals(personeIscritte[i], _persone[j]))
+                            if (!Equals(personeIscritte[i], _persone[j])) //tramite il metodo Equals verifico se le due persone sono ugauali tra loro
                             {
-                                _persone.Add(personeIscritte[i]);
+                                isValid = true;
+                                index = i; //in caso ciò non sia vero mi segno la posizione della persona
+                            }
+                            else
+                            {
+                                isValid = false;
                                 break;
                             }
                         }
+                        if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla nell'archivio
+                    }
 
                 // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
+                //basandomi sullo stesso principio del controllo precendente
+                isValid = false;
+                index = -1;
                 for (int i = 0; i < personeIscritte.Count; i++)
                 {
                     if (escursione.PersoneIscritteEscursione.Count == 0)
@@ -155,13 +168,19 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         {
                             if (!Equals(personeIscritte[i], escursione.PersoneIscritteEscursione[j]))
                             {
-                                escursione.PersoneIscritteEscursione.Add(personeIscritte[i]);
+                                isValid = true;
+                                index = i;
+                            }
+                            else
+                            {
+                                isValid = false;
                                 break;
                             }
                         }
+                        if (isValid) escursione.PersoneIscritteEscursione.Add(personeIscritte[index]);
                     }
                 }
-                
+
                 //Inserisco gli optional per ogni persona dentro la lista
                 for (int i = 0; i < optionalPersoneIscritte.Count; i++)
                     //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
