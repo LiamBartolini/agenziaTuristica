@@ -126,19 +126,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
             else if (numeroIscritti > numMax / 2 && numeroIscritti < numMax)
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
-            
+
+            bool isValid = false;
+            int index = -1;
 
             if (personeIscritte.Count <= numMax)
             {
                 //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
-                bool isValid = false;
-                int index = -1;
                 for (int i = 0; i < personeIscritte.Count; i++)
                     if (_persone.Count == 0)
                         _persone.Add(personeIscritte[i]);
                     else
                     {
-                        isValid = false;
                         for (int j = 0; j < _persone.Count; j++)
                         {
                             if (!Equals(personeIscritte[i], _persone[j]))
@@ -164,7 +163,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         escursione.PersoneIscritteEscursione.Add(personeIscritte[0]);
                     else
                     {
-                        isValid = false;
                         for (int j = 0; j < escursione.PersoneIscritteEscursione.Count; j++)
                         {
                             if (!Equals(personeIscritte[i], escursione.PersoneIscritteEscursione[j]))
@@ -205,13 +203,49 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
             else
             {
+                isValid = false;
+                index = -1;
                 for (int i = 0; i < numMax; i++)
-                    // Controllo che non ci siano gia le stesse persone
-                    if (!_persone.Contains(personeIscritte[i]))
+                {
+                    if (_persone.Count == 0)
                         _persone.Add(personeIscritte[i]);
+                    for (int j = 0; j < _persone.Count; j++)
+                    {
+                        if (!Equals(personeIscritte[i], _persone[j]))
+                        {
+                            isValid = true;
+                            index = i;
+                        }
+                        else
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                    if (isValid) _persone.Add(personeIscritte[index]);
+                }
+
 
                 // Aggiungo le prime 10 persone della lista di iscritti
-                escursione.PersoneIscritteEscursione.AddRange(personeIscritte.GetRange(0, numMax));
+                isValid = false;
+                index = -1;
+                for (int i = 0; i < numMax; i++)
+                {
+                    for (int j = 0; j < escursione.PersoneIscritteEscursione.Count; j++)
+                    {
+                        if (!Equals(personeIscritte[i], escursione.PersoneIscritteEscursione[j]))
+                        {
+                            isValid = true;
+                            index = i;
+                        }
+                        else
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                    if (isValid) escursione.PersoneIscritteEscursione.Add(personeIscritte[index]);
+                }
 
                 for (int i = 0; i < numMax; i++)
                     //Aggiungo gli optional per ogni paretcipante
