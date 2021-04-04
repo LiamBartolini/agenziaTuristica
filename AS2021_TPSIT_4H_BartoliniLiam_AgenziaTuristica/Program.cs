@@ -85,13 +85,13 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             partecipantiEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
                             optinalPartecipanti.Add(optional);
                             Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
-                            Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
 
                             Console.WriteLine("Premere `esc` (ESCAPE) ..");
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                             keyPressed = keyInfo.Key;
                         } while (keyPressed != ConsoleKey.Escape);
 
+                        Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
                         Console.WriteLine("Premere un qualsiasi tasto per uscire...");
                         Console.ReadKey(true);
                         Console.Clear();
