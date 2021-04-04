@@ -132,19 +132,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             {
                 //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
                 for (int i = 0; i < personeIscritte.Count; i++)
-                {
                     if (_persone.Count == 0)
                         _persone.Add(personeIscritte[0]);
                     else
-                    {
                         for (int j = 0; j < _persone.Count; j++)
-                            if (personeIscritte[i].Equals(_persone[j]))
+                            if (!personeIscritte[i].Equals(_persone[j]))
                             {
                                 _persone.Add(personeIscritte[i]);
                                 break;
                             }
-                    }
-                }
 
                 // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
                 for (int i = 0; i < personeIscritte.Count; i++)
