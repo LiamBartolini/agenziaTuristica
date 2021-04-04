@@ -134,16 +134,16 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             {
                 //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
                 for (int i = 0; i < personeIscritte.Count; i++)
-                    if (_persone.Count == 0)
+                    if (_persone.Count == 0) //in caso l'archivio _persone sia vuoto inserisco la prima persona in quanto non vi è bisogno di alcun controllo non potendoci essere persone doppie
                         _persone.Add(personeIscritte[i]);
-                    else
+                    else //se l'archivio presente al suo interno altre persone eseguo uj controllo per accertarmi che non vengano inserite persone già presenti in esso
                     {
                         for (int j = 0; j < _persone.Count; j++)
                         {
-                            if (!Equals(personeIscritte[i], _persone[j]))
+                            if (!Equals(personeIscritte[i], _persone[j])) //tramite il metodo Equals verifico se le due persone sono ugauali tra loro
                             {
                                 isValid = true;
-                                index = i;
+                                index = i; //in caso ciò non sia vero mi segno la posizione della persona
                             }
                             else
                             {
@@ -151,10 +151,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                                 break;
                             }
                         }
-                        if (isValid) _persone.Add(personeIscritte[index]);
+                        if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla nell'archivio
                     }
 
                 // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
+                //basandomi sullo stesso principio del controllo precendente
                 isValid = false;
                 index = -1;
                 for (int i = 0; i < personeIscritte.Count; i++)
@@ -179,7 +180,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         if (isValid) escursione.PersoneIscritteEscursione.Add(personeIscritte[index]);
                     }
                 }
-                
+
                 //Inserisco gli optional per ogni persona dentro la lista
                 for (int i = 0; i < optionalPersoneIscritte.Count; i++)
                     //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
@@ -259,8 +260,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     Persona persona = personeIscritte[i];
                     int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
-                    //costoEscursione -= costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
-                    costoEscursione += costoEscursione * incrementoCostoBiglietto;
+                    costoEscursione += costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
                     escursione.CostoPerPartecipante.Add(costoEscursione);
                     sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare:\t{costoEscursione} €".Pastel("#00FF00"));
                 }
