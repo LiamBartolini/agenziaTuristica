@@ -323,17 +323,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         {
             StringBuilder sb = new StringBuilder();
             sb.AppendLine($"Le persone presenti nell'archivio sono {_persone.Count}: \n");
-            _persone.ForEach(x =>
-            {
-                sb.AppendLine($"\n\t{_persone.IndexOf(x) + 1}\n{x}");
-            });
 
-            //int i = 1;
-            //foreach (Persona p in _persone)
-            //{
-            //    sb.AppendLine($"\n\t{i}\n{p}");
-            //    i++;
-            //}
+            if (_persone.Count != 0)
+                _persone.ForEach(x => { sb.AppendLine($"\n\t{_persone.IndexOf(x) + 1}\n{x}"); });
+            else
+                sb.AppendLine("Non vi è alcuna peroìsona presente nell'archivio");
+
             return sb.ToString();
         }
 
