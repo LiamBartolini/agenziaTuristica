@@ -40,11 +40,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                                 continue;
                             }
 
-                            double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:", true, typeof(double)), out costo); //controllo desiderabile in quanto una escursione deve avere un costo specificato
+                            double.TryParse(RichiestaDati("Inserire il costo base dell'escursione:", true, typeof(double)), out costo); 
 
-                            DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:", true, typeof(DateTime)), out data); //controllo evitabile
+                            DateTime.TryParse(RichiestaDati("Inserire la data in cui avverrà l'escursione:", true, typeof(DateTime)), out data);
 
-                            tipoEscursione = RichiestaDati("Inserire la tipologia di escursione (gita in barca, gita a cavallo):", true, typeof(Escursione)); //controllo necessario in quanto poi condiziona l'inserimento del numero max di partecipanti
+                            tipoEscursione = RichiestaDati("Inserire la tipologia di escursione (gita in barca, gita a cavallo):", true, typeof(Escursione));
 
                             descrizione = RichiestaDati("Inserire la descrizione dell'escursione: ");
                             optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
@@ -78,20 +78,23 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         {
                             string nome = RichiestaDati("Inserire il nome della persona che si desidera inserire: ", true);
                             string cognome = RichiestaDati("Inserire il cognome della persona che si desidera inserire: ", true);
-                            codiceFiscale = RichiestaDati("Inserire il numero fiscale della persona che si desidera inserire: ", true);
+                            codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera inserire: ", true);
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire: ", true);
                             optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ", true);
 
                             partecipantiEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
                             optinalPartecipanti.Add(optional);
                             Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
-                            
-                            Console.WriteLine("Premere `esc` (ESCAPE) tasto per uscire...");
+
+                            Console.WriteLine("Premere `esc` (ESCAPE) ..");
                             ConsoleKeyInfo keyInfo = Console.ReadKey(true);
                             keyPressed = keyInfo.Key;
                         } while (keyPressed != ConsoleKey.Escape);
 
-                            Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
+                        Console.WriteLine(Agenzia.RegistrazionePartecipanti(nEscursione, partecipantiEscursione, optinalPartecipanti));
+                        Console.WriteLine("Premere un qualsiasi tasto per uscire...");
+                        Console.ReadKey(true);
+                        Console.Clear();
                         break;
 
                     case 2:
@@ -100,7 +103,6 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
                             int opzioneScelta = Menu.Run();
 
-                            //controlli non necessari in quanto i metodo di modifica presenti in Escursione hanno dei controlli già in se
                             switch (opzioneScelta)
                             {
                                 case 0: //Modifica del costo
@@ -186,7 +188,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione che si vuole eliminare:", true, typeof(int)), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione che si vuole eliminare:", true, typeof(int)), out nEscursione);
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
@@ -202,12 +204,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione nel quale è iscritto il partecipante:"), out nEscursione);
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
-                        codiceFiscale = RichiestaDati("Inserire il codice fiscale del partecipante a cui si intende aggiungere gli optional:"); //controllo non necessario in quanto se non va il metodo restiuisce una stringa di errore
-                        optional = RichiestaDati("Inserire gli optional da aggiungere al partrecipante separati da una ',' es. 'pranzo,merenda':"); //leggi riga 33
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale del partecipante a cui si intende aggiungere gli optional:"); 
+                        optional = RichiestaDati("Inserire gli optional da aggiungere al partrecipante separati da una ',' es. 'pranzo,merenda':");
                         Console.WriteLine(Agenzia.AggiuntaOptional(codiceFiscale.ToUpper(), optional, nEscursione));
                         Console.WriteLine("Premere un qualsiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
@@ -218,12 +220,12 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero dell'escursione alla quale è iscritto il partecipante: "), out nEscursione);
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
-                        codiceFiscale = RichiestaDati("Inserire il numero fiscale della persona: ");//leggi riga 119
-                        optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");//leggi riga 33
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona: ");
+                        optional = RichiestaDati("Inserire gli optional che si desidera rimuovere separati da una ',' es. 'pranzo,merenda': ");
                         Console.WriteLine(Agenzia.RimozioneOptional(nEscursione, optional, codiceFiscale.ToUpper()));
                         Console.WriteLine("Premere un qualsiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
@@ -235,11 +237,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                         do
                         {
-                            int.TryParse(RichiestaDati("Inserire il numero della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);//leggi riga 18
+                            int.TryParse(RichiestaDati("Inserire il numero della escursione dalla quale si desidera cancellare il partecipante: "), out nEscursione);
                             if (!Agenzia.VerificaNumeroEscursione(nEscursione)) break;
                             ErrMsg($"Non esiste un escursione con il numero {nEscursione}!");
                         } while (true);
-                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");//leggi riga 119
+                        codiceFiscale = RichiestaDati("Inserire il codice fiscale della persona che si desidera cancellare dall'escursione: ");
                         Console.WriteLine(Agenzia.CancellazionePrenotazione(nEscursione, codiceFiscale.ToUpper()));
                         Console.WriteLine("Premere un qualsiasi tasto per ritornare al menù...");
                         Console.ReadKey(true);
@@ -267,7 +269,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 10: // esci
-                        Console.WriteLine("Grazie di aver usato il nostro sistema <3");
+                        Console.WriteLine("Vi ringraziamo di aver usato il nostro sistema <3");
                         Environment.Exit(0);
                         break;
                 }
@@ -331,8 +333,18 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                     else break;
                 } while (true);
 
-            if (input.Verifica())
-                return input;
+
+            if (!input.Verifica())
+            {
+                ErrMsg();
+                do
+                {
+                    Console.WriteLine(output);
+                    input = Console.ReadLine();
+                    if (!input.Verifica()) ErrMsg();
+                    else break;
+                } while (true);
+            }
 
             return input;
         }
@@ -347,9 +359,9 @@ namespace Extensions
     static public class Extension
     {
         /// <summary>
-        /// Verifica che la string sia nulla o vuota
+        /// Verifica che la string sia nulla o vuota o spazio vuoto ' '
         /// </summary>
         /// <returns>Ritorna false se la stringa è vuota o nulla, altrimentri true</returns>
-        static public bool Verifica(this string s) => string.IsNullOrEmpty(s) ? false : true;
+        static public bool Verifica(this string s) => string.IsNullOrEmpty(s) || string.IsNullOrWhiteSpace(s) ? false : true;
     }
 }

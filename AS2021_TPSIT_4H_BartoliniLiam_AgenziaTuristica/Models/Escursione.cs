@@ -233,8 +233,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             sb.AppendLine($"Optional disponibili:\t{OptionalDisponibili}");
             sb.AppendLine($"Descrizione:\t\t{_descrizione}");
             sb.AppendLine("Persone iscritte alla escursione: \n");
-            foreach (Persona persona in PersoneIscritteEscursione)
-                sb.Append($"Codice fiscale: {persona.CodiceFiscale}");
+            for(int i = 0; i < PersoneIscritteEscursione.Count; i++)
+                sb.AppendLine($"Codice fiscale: {PersoneIscritteEscursione[i].CodiceFiscale}, optional scelti: {OptionalPerPartecipante[i]}");
             return sb.ToString();
         }
     }
