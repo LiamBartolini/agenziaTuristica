@@ -316,15 +316,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                     {
                         do
                         {
-                            string retVal = "";
+                            List<string> retVal = new List<string>();
                             if (input.Split(',').Length > 1)
                             {
                                 string[] splitted = input.Split(',');
                                 for (int i = 0; i < splitted.Length; i++)
                                 {
-                                    if (splitted[i] == "pranzo") retVal += "pranzo";
-                                    if (splitted[i] == "merenda") retVal += "merenda";
-                                    if (splitted[i] == "visita") retVal += "visita";
+                                    if (splitted[i] == "pranzo") retVal.Add("pranzo");
+                                    if (splitted[i] == "merenda") retVal.Add("merenda");
+                                    if (splitted[i] == "visita") retVal.Add("visita");
                                 }
                                 return string.Join(',', retVal);
                             }
