@@ -316,26 +316,25 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                     {
                         do
                         {
-                            string retVal = "";
                             if (input.Split(',').Length > 1)
                             {
                                 string[] splitted = input.Split(',');
-                                string[] tmp = new string[splitted.Length];
+                                List<string> retVal = new List<string>();
 
                                 for (int i = 0; i < splitted.Length; i++)
                                 {
-                                    if (splitted[i] == "pranzo") tmp[i] = "pranzo";
-                                    if (splitted[i] == "merenda") tmp[i] = "merenda";
-                                    if (splitted[i] == "visita") tmp[i] = "visita";
+                                    if (splitted[i] == "pranzo") retVal.Add("pranzo");
+                                    if (splitted[i] == "merenda") retVal.Add("merenda");
+                                    if (splitted[i] == "visita") retVal.Add("visita");
                                 }
-                                return string.Join(',', tmp);
+                                return string.Join(',', retVal);
                             }
                             else
                             {
                                 if (input == "pranzo") return "pranzo";
                                 if (input == "merenda") return "merenda";
                                 if (input == "visita") return "visita";
-                                ErrMsg("Optional non esistente! (pranzo, merenda, visita)");
+                                ErrMsg("Gli optional possono essere solo: pranzo, merenda, visita");
                             }
                             Console.WriteLine(output);
                             input = Console.ReadLine();

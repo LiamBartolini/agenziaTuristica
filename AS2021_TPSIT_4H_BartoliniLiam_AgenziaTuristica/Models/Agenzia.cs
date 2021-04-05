@@ -204,18 +204,19 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
             else
             {
+                //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
                 isValid = false;
                 index = -1;
-                for (int i = 0; i < numMax; i++)
+                for (int i = 0; i < numMax; i++) //controllo solo all'interno delle persone massime inseribili
                 {
-                    if (_persone.Count == 0)
-                        _persone.Add(personeIscritte[i]);
-                    for (int j = 0; j < _persone.Count; j++)
+                    if (_persone.Count == 0) //in caso l'archivio _persone sia vuoto inserisco la prima persona in quanto non vi è bisogno di alcun controllo non potendoci essere persone doppie
+                        _persone.Add(personeIscritte[i]); 
+                    for (int j = 0; j < _persone.Count; j++) 
                     {
-                        if (!Equals(personeIscritte[i], _persone[j]))
+                        if (!Equals(personeIscritte[i], _persone[j])) //tramite il metodo Equals verifico se le due persone sono ugauali tra loro
                         {
                             isValid = true;
-                            index = i;
+                            index = i;//in caso ciò non sia vero mi segno la posizione della persona
                         }
                         else
                         {
@@ -223,11 +224,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                             break;
                         }
                     }
-                    if (isValid) _persone.Add(personeIscritte[index]);
+                    if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla all'interno dell'archivio
                 }
 
 
-                // Aggiungo le prime 10 persone della lista di iscritti
+                // Aggiungo le prime 10 persone della lista di iscritti controllando che non vi siano al suo interno due persone uguali
                 isValid = false;
                 index = -1;
                 for (int i = 0; i < numMax; i++)
