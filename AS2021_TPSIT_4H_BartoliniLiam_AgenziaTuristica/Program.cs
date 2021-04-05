@@ -98,7 +98,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 2:
-                        while (true)
+                        bool flag = true;
+                        do
                         {
                             Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
                             int opzioneScelta = Menu.Run();
@@ -176,10 +177,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                                 case 4:
                                     Console.Clear();
-                                    goto fineModifiche;
+                                    flag = false;
+                                    break;
                             }
-                        }
-                fineModifiche:
+                        } while (flag != false);
                         break;
 
                     case 3: //Eliminazione di una escursione
@@ -333,7 +334,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                                 if (input == "pranzo") return "pranzo";
                                 if (input == "merenda") return "merenda";
                                 if (input == "visita") return "visita";
-                                ErrMsg("Optional non esistente! (pranzo, merenda, visita)");
+                                ErrMsg("Gli optional possono essere solo: pranzo, merenda, visita!");
                             }
                             Console.WriteLine(output);
                             input = Console.ReadLine();
