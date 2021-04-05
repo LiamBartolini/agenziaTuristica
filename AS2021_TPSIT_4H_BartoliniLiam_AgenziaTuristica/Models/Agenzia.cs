@@ -21,7 +21,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         /// <summary>
         /// Permette di creare una nuova escursione
         /// </summary>
-        /// <param name="numeroEscursione"></param>
+        /// <param name="numeroEscursione">Numero dell'escursione</param>
         /// <param name="prezzo">Prezzo base dell'escurione</param>
         /// <param name="data">Data di svolgimento dell'escursione</param>
         /// <param name="tipo">Il tipo di escursione (gita in barca, gita a cavallo)</param>
@@ -126,25 +126,38 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
             else if (numeroIscritti > numMax / 2 && numeroIscritti < numMax)
                 incrementoCostoBiglietto = (double)numeroIscritti / (double)10;
-            
+
+            bool isValid = false;
+            int index = -1;
 
             if (personeIscritte.Count <= numMax)
             {
                 //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
                 for (int i = 0; i < personeIscritte.Count; i++)
-                    if (_persone.Count == 0)
-                        _persone.Add(personeIscritte[0]);
-                    else
+                    if (_persone.Count == 0) //in caso l'archivio _persone sia vuoto inserisco la prima persona in quanto non vi è bisogno di alcun controllo non potendoci essere persone doppie
+                        _persone.Add(personeIscritte[i]);
+                    else //se l'archivio presente al suo interno altre persone eseguo uj controllo per accertarmi che non vengano inserite persone già presenti in esso
+                    {
                         for (int j = 0; j < _persone.Count; j++)
                         {
-                            if (!Equals(personeIscritte[i], _persone[j]))
+                            if (!Equals(personeIscritte[i], _persone[j])) //tramite il metodo Equals verifico se le due persone sono ugauali tra loro
                             {
-                                _persone.Add(personeIscritte[i]);
+                                isValid = true;
+                                index = i; //in caso ciò non sia vero mi segno la posizione della persona
+                            }
+                            else
+                            {
+                                isValid = false;
                                 break;
                             }
                         }
+                        if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla nell'archivio
+                    }
 
                 // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
+                //basandomi sullo stesso principio del controllo precendente
+                isValid = false;
+                index = -1;
                 for (int i = 0; i < personeIscritte.Count; i++)
                 {
                     if (escursione.PersoneIscritteEscursione.Count == 0)
@@ -155,13 +168,19 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                         {
                             if (!Equals(personeIscritte[i], escursione.PersoneIscritteEscursione[j]))
                             {
-                                escursione.PersoneIscritteEscursione.Add(personeIscritte[i]);
+                                isValid = true;
+                                index = i;
+                            }
+                            else
+                            {
+                                isValid = false;
                                 break;
                             }
                         }
+                        if (isValid) escursione.PersoneIscritteEscursione.Add(personeIscritte[index]);
                     }
                 }
-                
+
                 //Inserisco gli optional per ogni persona dentro la lista
                 for (int i = 0; i < optionalPersoneIscritte.Count; i++)
                     //uso il metodo VerificaOptional per assicurarmi che gli optional scelti dal partecipante siano conformi con quelli offerti dall'escursione
@@ -185,13 +204,50 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             }
             else
             {
-                for (int i = 0; i < numMax; i++)
-                    // Controllo che non ci siano gia le stesse persone
-                    if (!_persone.Contains(personeIscritte[i]))
-                        _persone.Add(personeIscritte[i]);
+                //Controllo se le persone aggiunte non siano gia stata iscritte altre volte in modo da evitare di inserire una persona più volte
+                isValid = false;
+                index = -1;
+                for (int i = 0; i < numMax; i++) //controllo solo all'interno delle persone massime inseribili
+                {
+                    if (_persone.Count == 0) //in caso l'archivio _persone sia vuoto inserisco la prima persona in quanto non vi è bisogno di alcun controllo non potendoci essere persone doppie
+                        _persone.Add(personeIscritte[i]); 
+                    for (int j = 0; j < _persone.Count; j++) 
+                    {
+                        if (!Equals(personeIscritte[i], _persone[j])) //tramite il metodo Equals verifico se le due persone sono ugauali tra loro
+                        {
+                            isValid = true;
+                            index = i;//in caso ciò non sia vero mi segno la posizione della persona
+                        }
+                        else
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                    if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla all'interno dell'archivio
+                }
 
-                // Aggiungo le prime 10 persone della lista di iscritti
-                escursione.PersoneIscritteEscursione.AddRange(personeIscritte.GetRange(0, numMax));
+
+                // Aggiungo le prime 10 persone della lista di iscritti controllando che non vi siano al suo interno due persone uguali
+                isValid = false;
+                index = -1;
+                for (int i = 0; i < numMax; i++)
+                {
+                    for (int j = 0; j < escursione.PersoneIscritteEscursione.Count; j++)
+                    {
+                        if (!Equals(personeIscritte[i], escursione.PersoneIscritteEscursione[j]))
+                        {
+                            isValid = true;
+                            index = i;
+                        }
+                        else
+                        {
+                            isValid = false;
+                            break;
+                        }
+                    }
+                    if (isValid) escursione.PersoneIscritteEscursione.Add(personeIscritte[index]);
+                }
 
                 for (int i = 0; i < numMax; i++)
                     //Aggiungo gli optional per ogni paretcipante
@@ -205,8 +261,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     Persona persona = personeIscritte[i];
                     int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
-                    //costoEscursione -= costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
-                    costoEscursione += costoEscursione * incrementoCostoBiglietto;
+                    costoEscursione += costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
                     escursione.CostoPerPartecipante.Add(costoEscursione);
                     sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare:\t{costoEscursione} €".Pastel("#00FF00"));
                 }

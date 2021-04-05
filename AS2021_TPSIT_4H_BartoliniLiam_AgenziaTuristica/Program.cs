@@ -9,7 +9,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 {
     public class Program
     {
-        static public void Main(string[] args)
+        static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8; // Per visualizzare `€`
 
@@ -47,7 +47,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             tipoEscursione = RichiestaDati("Inserire la tipologia di escursione (gita in barca, gita a cavallo):", true, typeof(Escursione));
 
                             descrizione = RichiestaDati("Inserire la descrizione dell'escursione: ");
-                            optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
+                            optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':", true, typeof(ValueTuple));
 
                             Console.WriteLine(Agenzia.NuovaEscursione(nEscursione, costo, data, tipoEscursione, descrizione, optional));
                             break;
@@ -82,7 +82,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire: ", true);
                             optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ", true);
 
-                            partecipantiEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
+                            partecipantiEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper().Trim(), residenza));
                             optinalPartecipanti.Add(optional);
                             Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
 
@@ -98,7 +98,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 2:
-                        while (true)
+                        bool flag = true;
+                        do
                         {
                             Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
                             int opzioneScelta = Menu.Run();
@@ -176,10 +177,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                                 case 4:
                                     Console.Clear();
-                                    goto fineModifiche;
+                                    flag = false;
+                                    break;
                             }
-                        }
-                fineModifiche:
+                        } while (flag != false);
                         break;
 
                     case 3: //Eliminazione di una escursione
@@ -311,6 +312,37 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             if (dtRes.CompareTo(DateTime.Today) >= 0)
                                 return dtRes.ToString();
 
+                    // Se è di tipo tupla controllo quali valori sono stati inseriti
+                    if (tipoInputCercato == typeof(ValueTuple))
+                    {
+                        do
+                        {
+                            if (input.Split(',').Length > 1)
+                            {
+                                string[] splitted = input.Split(',');
+                                List<string> retVal = new List<string>();
+
+                                for (int i = 0; i < splitted.Length; i++)
+                                {
+                                    if (splitted[i] == "pranzo") retVal.Add("pranzo");
+                                    if (splitted[i] == "merenda") retVal.Add("merenda");
+                                    if (splitted[i] == "visita") retVal.Add("visita");
+                                }
+                                return string.Join(',', retVal);
+                            }
+                            else
+                            {
+                                if (input == "pranzo") return "pranzo";
+                                if (input == "merenda") return "merenda";
+                                if (input == "visita") return "visita";
+                                ErrMsg("Gli optional possono essere solo: pranzo, merenda, visita!");
+                            }
+                            Console.WriteLine(output);
+                            input = Console.ReadLine();
+                        } while (true);   
+                    }
+
+
                     if (tipoInputCercato == typeof(Escursione))
                     {
                         if (input == "gita in barca") return input;
@@ -349,7 +381,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             return input;
         }
 
+        /// <summary>
+        /// Stampa un messaggio di errore predefinito
+        /// </summary>
         static void ErrMsg() => Console.WriteLine("Input errato!".Pastel("#FF0000"));
+
+        /// <summary>
+        /// Stampa un messaggio di errore personalizzato
+        /// </summary>
+        /// <param name="msg">Messaggio da stampare</param>
         static void ErrMsg(string msg) => Console.WriteLine(msg.Pastel("#FF0000"));
     }
 }
