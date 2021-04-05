@@ -9,7 +9,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 {
     public class Program
     {
-        static public void Main(string[] args)
+        static void Main(string[] args)
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8; // Per visualizzare `€`
 
@@ -98,7 +98,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         break;
 
                     case 2:
-                        while (true)
+                        bool flag = true;
+                        do
                         {
                             Menu.Initialize("Modifica dei parametri riguardanti una escursione", new string[] { "Modifica costo", "Modifica descrizione", "Modifica tipologia", "Modifica optional", "Uscita" });
                             int opzioneScelta = Menu.Run();
@@ -176,10 +177,10 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
 
                                 case 4:
                                     Console.Clear();
-                                    goto fineModifiche;
+                                    flag = false;
+                                    break;
                             }
-                        }
-                fineModifiche:
+                        } while (flag != false);
                         break;
 
                     case 3: //Eliminazione di una escursione
@@ -334,7 +335,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                                 if (input == "pranzo") return "pranzo";
                                 if (input == "merenda") return "merenda";
                                 if (input == "visita") return "visita";
-                                ErrMsg("Gli optional possono essere solo: pranzo, merenda, visita");
+                                ErrMsg("Gli optional possono essere solo: pranzo, merenda, visita!");
                             }
                             Console.WriteLine(output);
                             input = Console.ReadLine();
@@ -380,7 +381,15 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
             return input;
         }
 
+        /// <summary>
+        /// Stampa un messaggio di errore predefinito
+        /// </summary>
         static void ErrMsg() => Console.WriteLine("Input errato!".Pastel("#FF0000"));
+
+        /// <summary>
+        /// Stampa un messaggio di errore personalizzato
+        /// </summary>
+        /// <param name="msg">Messaggio da stampare</param>
         static void ErrMsg(string msg) => Console.WriteLine(msg.Pastel("#FF0000"));
     }
 }

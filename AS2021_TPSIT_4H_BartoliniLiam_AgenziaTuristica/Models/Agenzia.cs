@@ -21,7 +21,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         /// <summary>
         /// Permette di creare una nuova escursione
         /// </summary>
-        /// <param name="numeroEscursione"></param>
+        /// <param name="numeroEscursione">Numero dell'escursione</param>
         /// <param name="prezzo">Prezzo base dell'escurione</param>
         /// <param name="data">Data di svolgimento dell'escursione</param>
         /// <param name="tipo">Il tipo di escursione (gita in barca, gita a cavallo)</param>
