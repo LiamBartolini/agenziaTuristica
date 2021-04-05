@@ -12,7 +12,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _descrizione;
         double _prezzo; // costo dell'escursione
         int _numeroMaxPartecipanti;
-        string _optionalDisponibili = ""; //optional offerti dall'escursione
+        string _optionalDisponibili; //optional offerti dall'escursione
 
         //persone attualmente iscritte all'escursione
         public List<Persona> PersoneIscritteEscursione;
@@ -56,7 +56,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
-            _optionalDisponibili = VerificaOptional(optional);
+            _optionalDisponibili = optional;
             _numeroMaxPartecipanti = tipo.ToLower().Trim() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
         }
 
