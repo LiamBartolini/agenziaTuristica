@@ -47,7 +47,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             tipoEscursione = RichiestaDati("Inserire la tipologia di escursione (gita in barca, gita a cavallo):", true, typeof(Escursione));
 
                             descrizione = RichiestaDati("Inserire la descrizione dell'escursione: ");
-                            optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':");
+                            optional = RichiestaDati("Inserire gli optional offerti dalla escursione separati da ',' es. 'pranzo,merenda':", true, typeof(ValueTuple));
 
                             Console.WriteLine(Agenzia.NuovaEscursione(nEscursione, costo, data, tipoEscursione, descrizione, optional));
                             break;
@@ -310,6 +310,36 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                         if (DateTime.TryParse(input, out DateTime dtRes))
                             if (dtRes.CompareTo(DateTime.Today) >= 0)
                                 return dtRes.ToString();
+
+                    // Se è di tipo tupla controllo quali valori sono stati inseriti
+                    if (tipoInputCercato == typeof(ValueTuple))
+                    {
+                        do
+                        {
+                            string retVal = "";
+                            if (input.Split(',').Length > 1)
+                            {
+                                string[] splitted = input.Split(',');
+                                for (int i = 0; i < splitted.Length; i++)
+                                {
+                                    if (splitted[i] == "pranzo") retVal += "pranzo";
+                                    if (splitted[i] == "merenda") retVal += "merenda";
+                                    if (splitted[i] == "visita") retVal += "visita";
+                                }
+                                return string.Join(',', retVal);
+                            }
+                            else
+                            {
+                                if (input == "pranzo") return "pranzo";
+                                if (input == "merenda") return "merenda";
+                                if (input == "visita") return "visita";
+                                ErrMsg("Optional non esistente! (pranzo, merenda, visita)");
+                            }
+                            Console.WriteLine(output);
+                            input = Console.ReadLine();
+                        } while (true);   
+                    }
+
 
                     if (tipoInputCercato == typeof(Escursione))
                     {

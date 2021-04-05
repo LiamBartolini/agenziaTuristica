@@ -151,10 +151,11 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                                 break;
                             }
                         }
-                        if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla all'interno dell'archivio
+                        if (isValid) _persone.Add(personeIscritte[index]); //per poi inserirla nell'archivio
                     }
 
                 // Controllo che dentro l'escursione non ci sia gia stato inserito una stessa persona per evitare ridondanze
+                //basandomi sullo stesso principio del controllo precendente
                 isValid = false;
                 index = -1;
                 for (int i = 0; i < personeIscritte.Count; i++)
@@ -260,8 +261,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
                     Persona persona = personeIscritte[i];
                     int indexPersona = escursione.PersoneIscritteEscursione.IndexOf(persona);
                     double costoEscursione = escursione.CalcoloCostoEscursione(escursione.OptionalPerPartecipante[indexPersona]);
-                    //costoEscursione -= costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
-                    costoEscursione += costoEscursione * incrementoCostoBiglietto;
+                    costoEscursione += costoEscursione * incrementoCostoBiglietto; // Calcolo il prezzo comprensivo dell'incremento del biglietto
                     escursione.CostoPerPartecipante.Add(costoEscursione);
                     sb.AppendLine($"{persona.Cognome} {persona.Nome} dovrà pagare:\t{costoEscursione} €".Pastel("#00FF00"));
                 }

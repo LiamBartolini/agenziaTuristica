@@ -12,7 +12,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         string _descrizione;
         double _prezzo; // costo dell'escursione
         int _numeroMaxPartecipanti;
-        string _optionalDisponibili; //optional offerti dall'escursione
+        string _optionalDisponibili = ""; //optional offerti dall'escursione
 
         //persone attualmente iscritte all'escursione
         public List<Persona> PersoneIscritteEscursione;
@@ -56,7 +56,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             _prezzo = prezzo;
             _tipo = tipo;
             _descrizione = descrizione;
-            _optionalDisponibili = optional;
+            _optionalDisponibili = VerificaOptional(optional);
             _numeroMaxPartecipanti = tipo.ToLower().Trim() == "gita in barca" ? (int)MaxPartecipanti.gitaBarca : (int)MaxPartecipanti.gitaCavallo;
         }
 
@@ -195,8 +195,8 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
         //Ritorna una stringa che conterrà gli opotional del partecipante
         public string VerificaOptional(string optionalPartecipante)
         {
-            var splittedOptionalEscursione = _optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
-            var splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
+            string[] splittedOptionalEscursione = _optionalDisponibili.ToLower().Split(',');//splitto gli optional offerti dall'escursione
+            string[] splittedOptionalPartecipante = optionalPartecipante.ToLower().Split(','); //splitto gli optional scleti dal partecipante
             List<string> retVal = new List<string>(); //lista di stringhe in cui aggiungerò gli optional scelti dal partecipante verificando che siano conformi con quelli offerti dalla escursione
 
             for (int i = 0; i < splittedOptionalEscursione.Length; i++)
@@ -235,6 +235,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica.Models
             sb.AppendLine("Persone iscritte alla escursione: \n");
             for(int i = 0; i < PersoneIscritteEscursione.Count; i++)
                 sb.AppendLine($"Codice fiscale: {PersoneIscritteEscursione[i].CodiceFiscale}, optional scelti: {OptionalPerPartecipante[i]}");
+            sb.AppendLine("\t===============");
             return sb.ToString();
         }
     }
