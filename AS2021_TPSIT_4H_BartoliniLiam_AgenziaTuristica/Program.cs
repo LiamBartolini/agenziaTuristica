@@ -82,7 +82,7 @@ namespace AS2021_TPSIT_4H_BartoliniLiam_AgenziaTuristica
                             string residenza = RichiestaDati("Inserire la residenza della persona che si desidera inserire: ", true);
                             optional = RichiestaDati("Inserire gli optional scelti al partrecipante separati da una ',' es. 'pranzo,merenda': ", true);
 
-                            partecipantiEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper(), residenza));
+                            partecipantiEscursione.Add(new Persona(nome, cognome, codiceFiscale.ToUpper().Trim(), residenza));
                             optinalPartecipanti.Add(optional);
                             Console.WriteLine("Partecipante aggiunto!".Pastel("#00FF00"));
                             
