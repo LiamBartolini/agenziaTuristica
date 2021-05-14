@@ -10,4 +10,4 @@ Il progetto in particolare deve poter:
 6. Annullare la prenotazione du un partecipante ad una data escursione.
 
 Di seguito in allegato il PDF contentenente il progetto del programma:
-<a href="https://drive.google.com/file/d/1pmHH9yhMyklODu2NmbY4qUW1apMKYF7e/view?usp=sharing" target="_blank">Diagramma UML</a>
+[Diagramma UML](https://drive.google.com/file/d/1pmHH9yhMyklODu2NmbY4qUW1apMKYF7e/view?usp=sharing)
